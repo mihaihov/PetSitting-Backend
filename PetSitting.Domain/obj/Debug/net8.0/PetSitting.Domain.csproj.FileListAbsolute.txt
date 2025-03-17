@@ -1,0 +1,13 @@
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/bin/Debug/net8.0/PetSitting.Domain.deps.json
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/bin/Debug/net8.0/PetSitting.Domain.dll
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/bin/Debug/net8.0/PetSitting.Domain.pdb
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/obj/Debug/net8.0/PetSitting.Domain.csproj.AssemblyReference.cache
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/obj/Debug/net8.0/PetSitting.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/obj/Debug/net8.0/PetSitting.Domain.AssemblyInfoInputs.cache
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/obj/Debug/net8.0/PetSitting.Domain.AssemblyInfo.cs
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/obj/Debug/net8.0/PetSitting.Domain.csproj.CoreCompileInputs.cache
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/obj/Debug/net8.0/PetSitting.Domain.sourcelink.json
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/obj/Debug/net8.0/PetSitting.Domain.dll
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/obj/Debug/net8.0/refint/PetSitting.Domain.dll
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/obj/Debug/net8.0/PetSitting.Domain.pdb
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/obj/Debug/net8.0/ref/PetSitting.Domain.dll

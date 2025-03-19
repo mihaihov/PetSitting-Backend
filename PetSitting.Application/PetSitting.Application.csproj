@@ -8,6 +8,15 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="3.1.0" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <PackageReference Include="MediatR" Version="11.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PetSitting.Domain\PetSitting.Domain.csproj" />
+    <ProjectReference Include="..\PetSitting.Infrastructure\PetSitting.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

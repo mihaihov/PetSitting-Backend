@@ -1,13 +1,13 @@
 using PetSitting.Application.Common;
 using MediatR;
 using PetSitting.Application.Features.UserManagement.Validators;
-using Petsitting.Application.Interfaces.Services;
 using PetSitting.Domain.Entities.UserManagement;
 using FirebaseAdmin.Auth;
 using PetSitting.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PetSitting.Domain.Enums;
+using PetSitting.Domain.Interfaces.Services;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {

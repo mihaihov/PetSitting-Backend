@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Petsitting.Application.Interfaces.Services;
-using Petsitting.Infrastructure.Services;
+using PetSitting.Domain.Interfaces.Services;
 
 namespace PetSitting.Infrastructure.Services
 {

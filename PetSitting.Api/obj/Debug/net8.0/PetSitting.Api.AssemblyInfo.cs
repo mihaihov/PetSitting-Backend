@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PetSitting.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f4f27afa1392f2a9e75fbec70e53066c9ad4ed5e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ae23a33d193c56ad89859b83453a3b26d8224604")]
 [assembly: System.Reflection.AssemblyProductAttribute("PetSitting.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PetSitting.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

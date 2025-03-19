@@ -2,7 +2,7 @@ using PetSitting.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PetSitting.Application.Interfaces.Repositories;
+using PetSitting.Domain.Interfaces.Repositories;
 
 namespace PetSitting.Infrastructure
 {

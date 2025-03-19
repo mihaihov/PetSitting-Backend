@@ -1319,6 +1319,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
+          "FirebaseAdmin": "3.1.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.14"
         },
         "compile": {
@@ -1332,6 +1333,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
+          "FirebaseAdmin": "3.1.0",
           "Microsoft.EntityFrameworkCore": "8.0.14",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.14",
           "PetSitting.Domain": "1.0.0"

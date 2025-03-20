@@ -381,7 +381,6 @@
       },
       "PetSitting.Domain/1.0.0": {
         "dependencies": {
-          "FirebaseAdmin": "3.1.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.14"
         },
         "runtime": {

@@ -76,7 +76,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                 
                 await _userRepository.AddAsync(newUser);
 
-                var role = _roleRepository.FirstOrDefaultAsync(r => r.Name == Roles.PetOwner.ToString());
+                var role = await _roleRepository.FirstOrDefaultAsync(r => r.Name == Roles.PetOwner.ToString());
                 if (role == null)
                     throw new Exception("Default role does not exists in the database!");
 

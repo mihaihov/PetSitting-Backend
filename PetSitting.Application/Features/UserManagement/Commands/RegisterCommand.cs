@@ -66,6 +66,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                     Id = firebaseUser.Uid,
                     Email = request.email,
                     UserName = request.email,
+                    PasswordHash = request.password,
                     FirstName = string.IsNullOrEmpty(request.firstName) ? string.Empty : request.firstName,
                     LastName = string.IsNullOrEmpty(request.lastName) ? string.Empty : request.lastName,
                     DateJoined = DateTime.Now,
@@ -87,7 +88,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                 await _userRepository.SaveChangesAsync();
                 await _roleRepository.SaveChangesAsync();
                 
-                await userTransactions.CommitAsync();
+                await _userRepository.CommitTransactionAsync();
 
                 return response;
             }

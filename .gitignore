@@ -63,3 +63,15 @@ PetSitting.Infrastructure/obj/Debug/net8.0/PetSitting.Infrastructure.dll
 PetSitting.Infrastructure/obj/Debug/net8.0/PetSitting.Infrastructure.pdb
 PetSitting.Infrastructure/obj/Debug/net8.0/ref/PetSitting.Infrastructure.dll
 PetSitting.Infrastructure/obj/Debug/net8.0/refint/PetSitting.Infrastructure.dll
+# Ignore build artifacts
+bin/
+obj/
+*.dll
+*.exe
+*.pdf
+*.pdb
+*.log
+*.cache
+*.so
+*.dylib
+*.swp

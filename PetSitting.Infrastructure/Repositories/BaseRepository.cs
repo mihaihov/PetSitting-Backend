@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using PetSitting.Application.Interfaces.Repositories;
@@ -60,5 +61,9 @@ namespace PetSitting.Infrastructure.Repositories
             await _dbContext.Database.CommitTransactionAsync();
         }
 
+        public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbContext.Set<T>().FirstOrDefaultAsync(predicate);
+        }
     }
 }

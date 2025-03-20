@@ -1895,8 +1895,7 @@
           "FluentValidation.DependencyInjectionExtensions": "11.11.0",
           "MediatR": "11.1.0",
           "MediatR.Extensions.Microsoft.DependencyInjection": "11.1.0",
-          "PetSitting.Domain": "1.0.0",
-          "PetSitting.Infrastructure": "1.0.0"
+          "PetSitting.Domain": "1.0.0"
         },
         "compile": {
           "bin/placeholder/PetSitting.Application.dll": {}
@@ -1926,6 +1925,7 @@
           "FirebaseAdmin": "3.1.0",
           "Microsoft.EntityFrameworkCore": "8.0.14",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.14",
+          "PetSitting.Application": "1.0.0",
           "PetSitting.Domain": "1.0.0"
         },
         "compile": {

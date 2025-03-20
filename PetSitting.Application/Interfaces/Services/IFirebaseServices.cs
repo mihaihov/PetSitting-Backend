@@ -1,6 +1,6 @@
 using FirebaseAdmin.Auth;
 
-namespace PetSitting.Domain.Interfaces.Services
+namespace PetSitting.Application.Interfaces.Services
 {
     public interface IFirebaseServices
     {

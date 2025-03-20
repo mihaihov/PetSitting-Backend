@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using PetSitting.Domain.Interfaces.Services;
+using PetSitting.Application.Interfaces.Services;
 
 namespace PetSitting.Infrastructure.Services
 {
@@ -7,7 +7,7 @@ namespace PetSitting.Infrastructure.Services
     {
         public static IServiceCollection RegisterFirebaseServices(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddScoped<IFirebaseServices, FirebaseServices>();
+            serviceCollection.AddScoped<IFirebaseServices,FirebaseServices>();
             return serviceCollection;
         }
     }

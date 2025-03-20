@@ -1,11 +1,3 @@
-/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.csproj.AssemblyReference.cache
-/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.GeneratedMSBuildEditorConfig.editorconfig
-/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.AssemblyInfoInputs.cache
-/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.AssemblyInfo.cs
-/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.csproj.CoreCompileInputs.cache
-/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.MvcApplicationPartsAssemblyInfo.cs
-/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.MvcApplicationPartsAssemblyInfo.cache
-/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.sourcelink.json
 /Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/bin/Debug/net8.0/appsettings.Development.json
 /Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/bin/Debug/net8.0/appsettings.json
 /Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/bin/Debug/net8.0/PetSitting.Api
@@ -155,6 +147,14 @@
 /Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/bin/Debug/net8.0/PetSitting.Application.pdb
 /Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/bin/Debug/net8.0/PetSitting.Infrastructure.pdb
 /Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/bin/Debug/net8.0/PetSitting.Domain.pdb
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.csproj.AssemblyReference.cache
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.GeneratedMSBuildEditorConfig.editorconfig
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.AssemblyInfoInputs.cache
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.AssemblyInfo.cs
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.csproj.CoreCompileInputs.cache
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.MvcApplicationPartsAssemblyInfo.cs
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.MvcApplicationPartsAssemblyInfo.cache
+/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/PetSitting.Api.sourcelink.json
 /Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/staticwebassets.build.json
 /Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/staticwebassets.development.json
 /Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Api/obj/Debug/net8.0/staticwebassets/msbuild.PetSitting.Api.Microsoft.AspNetCore.StaticWebAssets.props

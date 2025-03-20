@@ -112,9 +112,6 @@
             "projectReferences": {
               "/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/PetSitting.Domain.csproj": {
                 "projectPath": "/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/PetSitting.Domain.csproj"
-              },
-              "/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Infrastructure/PetSitting.Infrastructure.csproj": {
-                "projectPath": "/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Infrastructure/PetSitting.Infrastructure.csproj"
               }
             }
           }
@@ -265,6 +262,9 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
+              "/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Application/PetSitting.Application.csproj": {
+                "projectPath": "/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Application/PetSitting.Application.csproj"
+              },
               "/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/PetSitting.Domain.csproj": {
                 "projectPath": "/Users/danielaarvinti/Desktop/Mihai/PetSitting-Backend/PetSitting.Domain/PetSitting.Domain.csproj"
               }

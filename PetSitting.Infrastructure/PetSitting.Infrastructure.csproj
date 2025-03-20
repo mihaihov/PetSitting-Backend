@@ -3,6 +3,7 @@
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="3.1.0" />
     <ProjectReference Include="..\PetSitting.Domain\PetSitting.Domain.csproj" />
+    <ProjectReference Include="..\PetSitting.Application\PetSitting.Application.csproj" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.14">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

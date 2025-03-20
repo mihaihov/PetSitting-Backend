@@ -3,11 +3,11 @@ using MediatR;
 using PetSitting.Application.Features.UserManagement.Validators;
 using PetSitting.Domain.Entities.UserManagement;
 using FirebaseAdmin.Auth;
-using PetSitting.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PetSitting.Domain.Enums;
-using PetSitting.Domain.Interfaces.Services;
+using PetSitting.Application.Interfaces.Services;
+using PetSitting.Application.Interfaces.Repositories;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
@@ -18,17 +18,20 @@ namespace PetSitting.Application.Features.UserManagement.Commands
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterCommandResponse>
     {
         private readonly IFirebaseServices _firebaseService;
-        private readonly ApplicationDbContext _dbContext;
-        public RegisterCommandHandler(IFirebaseServices firebaseServices, ApplicationDbContext dbContext)
+        private readonly IUserRepository _userRepository;
+        private readonly IBaseRepository<IdentityRole> _roleRepository;
+        public RegisterCommandHandler(IFirebaseServices firebaseServices, IUserRepository userRepository, IBaseRepository<IdentityRole> roleRepository)
         {
             _firebaseService = firebaseServices;
-            _dbContext = dbContext;
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
         }
 
         public async Task<RegisterCommandResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             string? firebaseUID = null;
-            using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            using var userTransactions = await _userRepository.BeginTransactionAsync();
+            using var rolesTransactions = await _roleRepository.BeginTransactionAsync();
 
             try
             {
@@ -76,24 +79,29 @@ namespace PetSitting.Application.Features.UserManagement.Commands
 
                 };
                 
-                await _dbContext.Users.AddAsync(newUser);
+                await _userRepository.AddAsync(newUser);
 
-                var role = await _dbContext.Roles.Where(r => r.Name == Roles.PetOwner.ToString()).FirstOrDefaultAsync();
+                var roles = await _roleRepository.GetAllAsync();
+                var role = roles.Where(r => r.Name == Roles.PetOwner.ToString()).FirstOrDefault();
                 if (role == null)
                     throw new Exception("Default role does not exists in the database!");
 
-                await _dbContext.UserRoles.AddAsync(new IdentityUserRole<string> { RoleId = role.Id, UserId = firebaseUser.Uid });
-                await _dbContext.UserProfiles!.AddAsync(new UserProfile { User = newUser });
-                await _dbContext.UserSettings!.AddAsync(new UserSettings { User = newUser });
+                await _userRepository.AddRole(new IdentityUserRole<string> { RoleId = role.Id, UserId = firebaseUser.Uid });
+                await _userRepository.AddUserProfile(new UserProfile { User = newUser });
+                await _userRepository.AddUserSettings(new UserSettings { User = newUser });
 
-                await _dbContext.SaveChangesAsync();
-                await transaction.CommitAsync();
+                await _userRepository.SaveChangesAsync();
+                await _roleRepository.SaveChangesAsync();
+                
+                await userTransactions.CommitAsync();
+                await rolesTransactions.CommitAsync();
 
                 return response;
             }
             catch(Exception)
             {
-                await transaction.RollbackAsync();
+                await userTransactions.RollbackAsync();
+                await rolesTransactions.RollbackAsync();
 
                 if(!string.IsNullOrEmpty(firebaseUID))
                 {

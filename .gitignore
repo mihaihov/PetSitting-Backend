@@ -76,3 +76,5 @@ obj/
 *.dylib
 *.swp
 PetSitting.Api/bin/Debug/net8.0/
+PetSitting.Api/appsettings.json
+PetSitting.Api/appsettings.Development.json

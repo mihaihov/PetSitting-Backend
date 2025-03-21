@@ -75,3 +75,4 @@ obj/
 *.so
 *.dylib
 *.swp
+PetSitting.Api/bin/Debug/net8.0/

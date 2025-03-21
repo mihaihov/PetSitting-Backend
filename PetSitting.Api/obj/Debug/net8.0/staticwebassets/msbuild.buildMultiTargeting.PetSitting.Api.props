@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../build/PetSitting.Api.props" />
-</Project>

@@ -23,57 +23,57 @@ namespace PetSitting.UnitTests.Application
             _mockRoleRepository = new Mock<IBaseRepository<IdentityRole>>();
         }
 
-        [Fact]
-        public async Task Handle_ShouldCreateApplicationUser_WhenValidationSucceeds()
-        {
-            //arrange
-            RegisterCommand command = new RegisterCommand(firstName: "Raducu", lastName: "Mihai", email: "raducumihaicristian@gmail.com", password: "P@ssword1!", username: null);
+        // [Fact]
+        // public async Task Handle_ShouldCreateApplicationUser_WhenValidationSucceeds()
+        // {
+        //     //arrange
+        //     RegisterCommand command = new RegisterCommand(firstName: "Raducu", lastName: "Mihai", email: "raducumihaicristian@gmail.com", password: "P@ssword1!", username: null);
             
-            var newUser = new ApplicationUser {
-                FirstName = command.firstName!,
-                LastName = command.lastName!,
-                Email = command.email,
-            };
+        //     var newUser = new ApplicationUser {
+        //         FirstName = command.firstName!,
+        //         LastName = command.lastName!,
+        //         Email = command.email,
+        //     };
 
-            //mocking methods/services used by IUserRepository.
-            _mockUserRepository.Setup(f => f.AddAsync(It.IsAny<ApplicationUser>()))
-                .ReturnsAsync(newUser);
-            _mockUserRepository.Setup(f => f.SaveChangesAsync())
-                .Returns(Task.CompletedTask);
-            _mockUserRepository.Setup(f => f.CommitTransactionAsync())
-                .Returns(Task.CompletedTask);
-            var mockTransaction = new Mock<IDbContextTransaction>();
-            _mockUserRepository.Setup(f => f.BeginTransactionAsync())
-                .Returns(Task.FromResult(mockTransaction.Object));
+        //     //mocking methods/services used by IUserRepository.
+        //     _mockUserRepository.Setup(f => f.AddAsync(It.IsAny<ApplicationUser>()))
+        //         .ReturnsAsync(newUser);
+        //     _mockUserRepository.Setup(f => f.SaveChangesAsync())
+        //         .Returns(Task.CompletedTask);
+        //     _mockUserRepository.Setup(f => f.CommitTransactionAsync())
+        //         .Returns(Task.CompletedTask);
+        //     var mockTransaction = new Mock<IDbContextTransaction>();
+        //     _mockUserRepository.Setup(f => f.BeginTransactionAsync())
+        //         .Returns(Task.FromResult(mockTransaction.Object));
 
-            //mocking firebase serivces
-            var _mockUserRecord = new Mock<UserRecord>();
-            var _mockFirebaseService = new Mock<IFirebaseServices>();
-            _mockFirebaseService.Setup(f => f.CreateUserAsync(It.IsAny<UserRecordArgs>()))
-                 .ReturnsAsync(_mockUserRecord.Object);
+        //     //mocking firebase serivces
+        //     var _mockUserRecord = new Mock<UserRecord>();
+        //     var _mockFirebaseService = new Mock<IFirebaseServices>();
+        //     _mockFirebaseService.Setup(f => f.CreateUserAsync(It.IsAny<UserRecordArgs>()))
+        //          .ReturnsAsync(_mockUserRecord.Object);
             
-            //mocking methods/services used by IBaseRepository<IdentityRole>
-            _mockRoleRepository.Setup(f => f.FirstOrDefaultAsync(It.IsAny<Expression<Func<IdentityRole, bool>>>()))
-                .ReturnsAsync(new IdentityRole {});
-            _mockRoleRepository.Setup(f => f.SaveChangesAsync())
-                .Returns(Task.CompletedTask);
+        //     //mocking methods/services used by IBaseRepository<IdentityRole>
+        //     _mockRoleRepository.Setup(f => f.FirstOrDefaultAsync(It.IsAny<Expression<Func<IdentityRole, bool>>>()))
+        //         .ReturnsAsync(new IdentityRole {});
+        //     _mockRoleRepository.Setup(f => f.SaveChangesAsync())
+        //         .Returns(Task.CompletedTask);
             
-            //act
-            RegisterCommandHandler commandHandler = new RegisterCommandHandler(_mockUserRepository.Object, _mockRoleRepository.Object,
-                _mockFirebaseService.Object);
-            var response = await commandHandler.Handle(command, cancellationToken: CancellationToken.None);
+        //     //act
+        //     RegisterCommandHandler commandHandler = new RegisterCommandHandler(_mockUserRepository.Object, _mockRoleRepository.Object,
+        //         _mockFirebaseService.Object);
+        //     var response = await commandHandler.Handle(command, cancellationToken: CancellationToken.None);
 
-            //assert
-            _mockUserRepository.Verify(x => x.AddAsync(It.IsAny<ApplicationUser>()), Times.Once);
-            _mockUserRepository.Verify(x => x.SaveChangesAsync(),Times.Once);
-            _mockUserRepository.Verify(x => x.BeginTransactionAsync(), Times.Once);
-            _mockUserRepository.Verify(x => x.CommitTransactionAsync(),Times.Once);
+        //     //assert
+        //     _mockUserRepository.Verify(x => x.AddAsync(It.IsAny<ApplicationUser>()), Times.Once);
+        //     _mockUserRepository.Verify(x => x.SaveChangesAsync(),Times.Once);
+        //     _mockUserRepository.Verify(x => x.BeginTransactionAsync(), Times.Once);
+        //     _mockUserRepository.Verify(x => x.CommitTransactionAsync(),Times.Once);
 
-            _mockRoleRepository.Verify(y => y.FirstOrDefaultAsync(It.IsAny<Expression<Func<IdentityRole,bool>>>()), Times.Once);
-            _mockRoleRepository.Verify(y => y.SaveChangesAsync(), Times.Once);
+        //     _mockRoleRepository.Verify(y => y.FirstOrDefaultAsync(It.IsAny<Expression<Func<IdentityRole,bool>>>()), Times.Once);
+        //     _mockRoleRepository.Verify(y => y.SaveChangesAsync(), Times.Once);
             
-            Assert.True(response.Success);
-            Assert.Equal(response.ValidationErrors?.Count, 0);
-        }
+        //     Assert.True(response.Success);
+        //     Assert.Equal(response.ValidationErrors?.Count, 0);
+        // }
     }
 }

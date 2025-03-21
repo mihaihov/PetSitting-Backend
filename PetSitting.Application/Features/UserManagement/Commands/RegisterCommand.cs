@@ -19,11 +19,14 @@ namespace PetSitting.Application.Features.UserManagement.Commands
         private readonly IUserRepository _userRepository;
         private readonly IBaseRepository<IdentityRole> _roleRepository;
         private readonly IFirebaseServices _firebaseServices;
-        public RegisterCommandHandler(IUserRepository userRepository, IBaseRepository<IdentityRole> roleRepository, IFirebaseServices firebaseServices)
+        UserManager<ApplicationUser> _userManager;
+        public RegisterCommandHandler(IUserRepository userRepository, IBaseRepository<IdentityRole> roleRepository, IFirebaseServices firebaseServices,
+            UserManager<ApplicationUser> userManager)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _firebaseServices = firebaseServices;
+            _userManager = userManager;
         }
 
         public async Task<RegisterCommandResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -68,8 +71,8 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                 {
                     Id = firebaseUser.Uid,
                     Email = request.email,
-                    UserName = request.email,
-                    PasswordHash = request.password,
+                    UserName = request.username,
+                    PasswordHash = _userManager.PasswordHasher.HashPassword(null, request.password),
                     FirstName = string.IsNullOrEmpty(request.firstName) ? string.Empty : request.firstName,
                     LastName = string.IsNullOrEmpty(request.lastName) ? string.Empty : request.lastName,
                     DateJoined = DateTime.Now,

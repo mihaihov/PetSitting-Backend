@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="3.1.0" />
+    <PackageReference Include="FirebaseAuthentication.net" Version="3.7.1" />
     <ProjectReference Include="..\PetSitting.Domain\PetSitting.Domain.csproj" />
     <ProjectReference Include="..\PetSitting.Application\PetSitting.Application.csproj" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.14" />

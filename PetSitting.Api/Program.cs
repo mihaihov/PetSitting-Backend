@@ -3,6 +3,8 @@ using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using PetSitting.Infrastructure.Services;
 using PetSitting.Application;
+using PetSitting.Domain.Entities.UserManagement;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,9 @@ builder.Services.RegisterRepositories();
 builder.Services.RegisterFirebaseServices();
 //register application srervices
 builder.Services.AddApplicationServices();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 
 
@@ -35,7 +40,7 @@ var firebaseApp = FirebaseApp.Create(new AppOptions {
 var app = builder.Build();
 
 //seed roles
-//Seeder.SeedRoles(app.Services);
+PetSitting.Infrastructure.Utils.Seeder.SeedRoles(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using PetSitting.Application.Features.UserManagement.Commands;
+using PetSitting.Application.Features.UserManagement;
 
 namespace PetSitting.Api.Controllers
 {
@@ -16,6 +17,20 @@ namespace PetSitting.Api.Controllers
 
         [HttpPost("register", Name = "Register")]
         public async Task<ActionResult<RegisterCommandResponse>> Register([FromBody] RegisterCommand command)
+        {
+            try
+            {
+                var result = await _mediator.Send(command);
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new {message = ex.Message});
+            }
+        }
+
+        [HttpPost("login", Name = "Login")]
+        public async Task<ActionResult<LoginWithCredentialsCommandResponse>> Login([FromBody] LoginWithCredentialsCommand command)
         {
             try
             {

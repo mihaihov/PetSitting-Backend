@@ -31,7 +31,7 @@ namespace PetSitting.Infrastructure.Repositories
             return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(int Id)
+        public async Task<T?> GetByIdAsync(string Id)
         {
             return await _dbContext.Set<T>().FindAsync(Id);
         }

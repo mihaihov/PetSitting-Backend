@@ -51,6 +51,10 @@
               "target": "Package",
               "version": "[3.1.0, )"
             },
+            "FirebaseAuthentication.net": {
+              "target": "Package",
+              "version": "[3.7.1, )"
+            },
             "FluentValidation": {
               "target": "Package",
               "version": "[11.11.0, )"

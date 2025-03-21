@@ -10,7 +10,7 @@ namespace PetSitting.Application.Interfaces.Repositories
         public Task CommitTransactionAsync();
         public Task RollbackTransactionAsync();
         public Task<IReadOnlyList<T>> GetAllAsync();
-        public Task<T?> GetByIdAsync(int Id);
+        public Task<T?> GetByIdAsync(string Id);
         public Task<T?> FirstOrDefaultAsync(Expression<Func<T,bool>> predicate); 
         public void DeleteAsync(T Entity);
         public void UpdateAsync(T Entity);

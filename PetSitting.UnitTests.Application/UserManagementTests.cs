@@ -7,6 +7,8 @@ using PetSitting.Domain.Entities.UserManagement;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Storage;
+using Google.Apis.Auth.OAuth2;
+using PetSitting.Application.Interfaces.Services;
 
 namespace PetSitting.UnitTests.Application
 {
@@ -43,6 +45,12 @@ namespace PetSitting.UnitTests.Application
             var mockTransaction = new Mock<IDbContextTransaction>();
             _mockUserRepository.Setup(f => f.BeginTransactionAsync())
                 .Returns(Task.FromResult(mockTransaction.Object));
+
+            //mocking firebase serivces
+            var _mockUserRecord = new Mock<UserRecord>();
+            var _mockFirebaseService = new Mock<IFirebaseServices>();
+            _mockFirebaseService.Setup(f => f.CreateUserAsync(It.IsAny<UserRecordArgs>()))
+                 .ReturnsAsync(_mockUserRecord.Object);
             
             //mocking methods/services used by IBaseRepository<IdentityRole>
             _mockRoleRepository.Setup(f => f.FirstOrDefaultAsync(It.IsAny<Expression<Func<IdentityRole, bool>>>()))
@@ -51,7 +59,8 @@ namespace PetSitting.UnitTests.Application
                 .Returns(Task.CompletedTask);
             
             //act
-            RegisterCommandHandler commandHandler = new RegisterCommandHandler(_mockUserRepository.Object, _mockRoleRepository.Object);
+            RegisterCommandHandler commandHandler = new RegisterCommandHandler(_mockUserRepository.Object, _mockRoleRepository.Object,
+                _mockFirebaseService.Object);
             var response = await commandHandler.Handle(command, cancellationToken: CancellationToken.None);
 
             //assert

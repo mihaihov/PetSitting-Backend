@@ -16,6 +16,7 @@ namespace PetSitting.Infrastructure
 
         public static IServiceCollection RegisterRepositories(this IServiceCollection serviceCollection)
         {
+            //one instance per http request.
             serviceCollection.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             serviceCollection.AddScoped<IUserRepository, UserRepository>();
             return serviceCollection;

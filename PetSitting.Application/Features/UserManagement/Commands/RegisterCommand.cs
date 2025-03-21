@@ -2,10 +2,11 @@ using PetSitting.Application.Common;
 using MediatR;
 using PetSitting.Application.Features.UserManagement.Validators;
 using PetSitting.Domain.Entities.UserManagement;
-using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Identity;
 using PetSitting.Domain.Enums;
 using PetSitting.Application.Interfaces.Repositories;
+using PetSitting.Application.Interfaces.Services;
+using FirebaseAdmin.Auth;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
@@ -17,10 +18,12 @@ namespace PetSitting.Application.Features.UserManagement.Commands
     {
         private readonly IUserRepository _userRepository;
         private readonly IBaseRepository<IdentityRole> _roleRepository;
-        public RegisterCommandHandler(IUserRepository userRepository, IBaseRepository<IdentityRole> roleRepository)
+        private readonly IFirebaseServices _firebaseServices;
+        public RegisterCommandHandler(IUserRepository userRepository, IBaseRepository<IdentityRole> roleRepository, IFirebaseServices firebaseServices)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
+            _firebaseServices = firebaseServices;
         }
 
         public async Task<RegisterCommandResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -46,7 +49,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                 }
 
                 //creates firebaseUser 
-                var firebaseUser = await FirebaseAuth.DefaultInstance.CreateUserAsync(new UserRecordArgs
+                var firebaseUser = await _firebaseServices.CreateUserAsync(new UserRecordArgs
                     {
                         Email = request.email,
                         Password = request.password,

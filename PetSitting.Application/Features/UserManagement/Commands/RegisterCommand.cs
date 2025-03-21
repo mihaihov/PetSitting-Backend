@@ -52,24 +52,16 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                 }
 
                 //creates firebaseUser 
-                var firebaseUser = await _firebaseServices.CreateUserAsync(new UserRecordArgs
-                    {
-                        Email = request.email,
-                        Password = request.password,
-                        DisplayName = string.IsNullOrEmpty(request.username) ? string.Empty : request.username,
-                        EmailVerified = false,
-                        Disabled = false,
-                    }
-                );
+                var firebaseUser = await _firebaseServices.CreateUserWithEmailAndPasswordAsync(request.email,request.password);
                 if (firebaseUser == null)
                     throw new Exception("Failed to create user in Firebase!");
 
-                firebaseUID = firebaseUser.Uid;
+                firebaseUID = firebaseUser.User.LocalId;
 
                 //creates sql user.
                 var newUser = new ApplicationUser
                 {
-                    Id = firebaseUser.Uid,
+                    Id = firebaseUser.User.LocalId,
                     Email = request.email,
                     UserName = request.username,
                     PasswordHash = _userManager.PasswordHasher.HashPassword(null, request.password),
@@ -87,7 +79,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                 if (role == null)
                     throw new Exception("Default role does not exists in the database!");
 
-                await _userRepository.AddRole(new IdentityUserRole<string> { RoleId = role.Id.ToString(), UserId = firebaseUser.Uid });
+                await _userRepository.AddRole(new IdentityUserRole<string> { RoleId = role.Id.ToString(), UserId = firebaseUser.User.LocalId });
                 await _userRepository.AddUserProfile(new UserProfile { User = newUser });
                 await _userRepository.AddUserSettings(new UserSettings { User = newUser });
 

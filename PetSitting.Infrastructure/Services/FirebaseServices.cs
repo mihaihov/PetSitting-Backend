@@ -1,14 +1,19 @@
-using FirebaseAdmin.Auth;
+using FirebaseAuth = FirebaseAdmin.Auth.FirebaseAuth;
+using UserRecord = FirebaseAdmin.Auth.UserRecord;
+using UserRecordArgs = FirebaseAdmin.Auth.UserRecordArgs;
+using FirebaseToken = FirebaseAdmin.Auth.FirebaseToken;
 using Google.Apis.Auth.OAuth2;
 using PetSitting.Application.Interfaces.Services;
+using Firebase.Auth;
 
 namespace PetSitting.Infrastructure.Services
 {
     public class FirebaseServices : IFirebaseServices
     {
+        private readonly FirebaseAuthProvider _firebaseProvider;
         public FirebaseServices()
         {
-            
+            _firebaseProvider = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyA-oK7GEDK6S-UYdLEBm2DhrSix1k-zQAM"));
         }
         public async Task<UserRecord> CreateUserAsync(UserRecordArgs args)
         {
@@ -26,9 +31,14 @@ namespace PetSitting.Infrastructure.Services
         }
 
         //test 
-        public async Task<UserCredential> SignInWithEmailAndPasswordAsync(string Email, string Password)
+        public async Task<FirebaseAuthLink> CreateUserWithEmailAndPasswordAsync(string email, string password)
         {
-            throw new NotImplementedException();
+            return await _firebaseProvider.CreateUserWithEmailAndPasswordAsync(email,password);
+        }
+
+        public async Task<FirebaseAuthLink> SignInWithEmailAndPasswordAsync(string email, string password)
+        {
+            return await _firebaseProvider.SignInWithEmailAndPasswordAsync(email,password);
         }
     }
 }

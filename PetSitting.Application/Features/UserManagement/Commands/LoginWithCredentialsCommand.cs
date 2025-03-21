@@ -7,7 +7,10 @@ using PetSitting.Application.Interfaces.Services;
 namespace PetSitting.Application.Features.UserManagement
 {
     public record LoginWithCredentialsCommand(string email, string password) : IRequest<LoginWithCredentialsCommandResponse>;
-    public record LoginWithCredentialsCommandResponse : BaseResponse;
+    public record LoginWithCredentialsCommandResponse : BaseResponse
+    {
+        public string? JWToken {get;set;} = null;
+    }
 
     public class LoginWithCredentialsCommandHandler : IRequestHandler<LoginWithCredentialsCommand, LoginWithCredentialsCommandResponse>
     {
@@ -36,18 +39,11 @@ namespace PetSitting.Application.Features.UserManagement
                     return response;
                 }
 
-                // var firebaseUser = await _firebaseService.GetUserByEmailAsync(request.email);
-                // if (firebaseUser == null)
-                //     throw new Exception("User not found");
-                
-                // var sqlUser = await _userRepository.GetByIdAsync(firebaseUser.Uid);
-                // if(sqlUser == null)
-                //     throw new Exception("User not found!");
-                var signIn = await _firebaseService.SignInWithEmailAndPasswordAsync(request.email,request.password);
-                if(signIn == null)
+                var loginResult = await _firebaseService.SignInWithEmailAndPasswordAsync(request.email,request.password);
+                if(loginResult == null)
                     throw new Exception("LogIn failed");
 
-
+                response.JWToken = loginResult.FirebaseToken;
                 return response;
             }
             catch (Exception)

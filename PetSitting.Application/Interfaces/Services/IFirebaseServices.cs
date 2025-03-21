@@ -1,5 +1,5 @@
+using Firebase.Auth;
 using FirebaseAdmin.Auth;
-using Google.Apis.Auth.OAuth2;
 
 namespace PetSitting.Application.Interfaces.Services
 {
@@ -9,6 +9,7 @@ namespace PetSitting.Application.Interfaces.Services
         public Task<UserRecord> CreateUserAsync (UserRecordArgs args);
 
         public Task<UserRecord> GetUserByEmailAsync(string email);
-        public Task<UserCredential> SignInWithEmailAndPasswordAsync(string email, string password);
+        public Task<FirebaseAuthLink> CreateUserWithEmailAndPasswordAsync(string email, string password);
+        public Task<FirebaseAuthLink> SignInWithEmailAndPasswordAsync(string email, string password);
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using PetSitting.Application.Features.UserManagement.Commands;
 using PetSitting.Application.Features.UserManagement;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PetSitting.Api.Controllers
 {
@@ -15,7 +16,7 @@ namespace PetSitting.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("register", Name = "Register")]
+        [HttpPost("register", Name = "Register"), Authorize(Roles = "PetOwner")]
         public async Task<ActionResult<RegisterCommandResponse>> Register([FromBody] RegisterCommand command)
         {
             try

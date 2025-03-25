@@ -10,7 +10,9 @@ namespace PetSitting.Domain.Entities.UserManagement
         [ForeignKey(nameof(Id))]
         public virtual ApplicationUser User {get;set;} = new ApplicationUser();
 
-        public bool ReceiveNotifications {get;set;} = false;
+        public bool ReceiveEmailNotifications {get;set;} = false;
+        public bool ReceiveSMSNotifications {get;set;} = false;
+        public bool IsProfilePublic {get;set;} = true;
         public string PreferedLanguage {get;set;} = "en-us";
 
     }

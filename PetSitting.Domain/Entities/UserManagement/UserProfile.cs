@@ -13,5 +13,7 @@ namespace PetSitting.Domain.Entities.UserManagement
         public string? Bio {get;set;}
         public string? ProfilePictureUrl {get;set;}
         public string? CoverPictureUrl {get;set;} 
+        public string? Location {get;set;}
+        public DateTime? DateOfBirth {get;set;}
     }
 }

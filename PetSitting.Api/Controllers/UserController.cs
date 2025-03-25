@@ -22,6 +22,11 @@ namespace PetSitting.Api.Controllers
             try
             {
                 var result = await _mediator.Send(command);
+                
+                if(result.ValidationErrors != null && result.ValidationErrors.Count != 0)
+                {
+                    return StatusCode(500, result.ValidationErrors);
+                }
                 return Ok(result);
             }
             catch(Exception ex)
@@ -36,6 +41,11 @@ namespace PetSitting.Api.Controllers
             try
             {
                 var result = await _mediator.Send(command);
+                
+                if(result.ValidationErrors != null && result.ValidationErrors.Count != 0)
+                {
+                    return StatusCode(500, result.ValidationErrors);
+                }
                 return Ok(result);
             }
             catch(Exception ex)

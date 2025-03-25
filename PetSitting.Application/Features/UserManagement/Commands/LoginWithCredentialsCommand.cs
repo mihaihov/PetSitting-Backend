@@ -55,6 +55,8 @@ namespace PetSitting.Application.Features.UserManagement
                 var loginResult = await _firebaseService.SignInWithEmailAndPasswordAsync(request.email,request.password);
                 if(loginResult == null)
                     throw new Exception("LogIn failed");
+                if(loginResult.User.IsEmailVerified)
+                    throw new Exception ("Please verify your account first!");
                 var tokenVerification = await _firebaseService.VerifyTokenAsync(loginResult.FirebaseToken);
 
                 var sqlUser = await _userRepository.GetByIdAsync(tokenVerification.Uid);

@@ -53,6 +53,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
 
                 //creates firebaseUser 
                 var firebaseUser = await _firebaseServices.CreateUserWithEmailAndPasswordAsync(request.email,request.password);
+                await _firebaseServices.SendEmailVerificationAsync(firebaseUser.FirebaseToken);
                 if (firebaseUser == null)
                     throw new Exception("Failed to create user in Firebase!");
 

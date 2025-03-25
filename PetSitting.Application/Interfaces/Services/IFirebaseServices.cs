@@ -11,5 +11,6 @@ namespace PetSitting.Application.Interfaces.Services
         public Task<UserRecord> GetUserByEmailAsync(string email);
         public Task<FirebaseAuthLink> CreateUserWithEmailAndPasswordAsync(string email, string password);
         public Task<FirebaseAuthLink> SignInWithEmailAndPasswordAsync(string email, string password);
+        public Task SendEmailVerificationAsync(string token);
     }
 }

@@ -78,3 +78,4 @@ obj/
 PetSitting.Api/bin/Debug/net8.0/
 PetSitting.Api/appsettings.json
 PetSitting.Api/appsettings.Development.json
+PetSitting.Api/petsitting-development-firebase-adminsdk-fbsvc-c802b066a1.json

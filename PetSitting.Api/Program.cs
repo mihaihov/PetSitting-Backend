@@ -62,7 +62,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 //initialize firebase
 var firebaseApp = FirebaseApp.Create(new AppOptions {
-    Credential = GoogleCredential.FromFile("/Users/danielaarvinti/Desktop/Mihai/Documents/petsitting-development-firebase-adminsdk-fbsvc-c802b066a1.json")
+    Credential = GoogleCredential.FromFile("./petsitting-development-firebase-adminsdk-fbsvc-c802b066a1.json")
 });
 
 

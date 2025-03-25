@@ -16,7 +16,7 @@ namespace PetSitting.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("register", Name = "Register"), Authorize(Roles = "PetOwner")]
+        [HttpPost("register", Name = "Register"), AllowAnonymous]
         public async Task<ActionResult<RegisterCommandResponse>> Register([FromBody] RegisterCommand command)
         {
             try

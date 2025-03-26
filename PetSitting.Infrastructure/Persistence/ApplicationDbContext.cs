@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PetSitting.Domain.Entities.Security;
 using PetSitting.Domain.Entities.UserManagement;
 
 namespace PetSitting.Infrastructure
@@ -12,6 +13,7 @@ namespace PetSitting.Infrastructure
 
         public DbSet<UserProfile>? UserProfiles {get;set;}
         public DbSet<UserSettings>? UserSettings {get;set;}
+        public DbSet<RefreshToken>? RefreshTokens {get;set;}
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

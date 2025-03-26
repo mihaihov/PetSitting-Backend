@@ -64,7 +64,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                     Id = firebaseUser.User.LocalId,
                     Email = request.email,
                     UserName = request.username,
-                    PasswordHash = _userManager.PasswordHasher.HashPassword(null, request.password),
+                    PasswordHash = _userManager.PasswordHasher.HashPassword(new ApplicationUser(), request.password),
                     FirstName = string.IsNullOrEmpty(request.firstName) ? string.Empty : request.firstName,
                     LastName = string.IsNullOrEmpty(request.lastName) ? string.Empty : request.lastName,
                     DateJoined = DateTime.Now,

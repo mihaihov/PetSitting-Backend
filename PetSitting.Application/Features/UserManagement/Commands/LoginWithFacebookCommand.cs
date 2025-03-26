@@ -9,13 +9,9 @@ using PetSitting.Domain.Features;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
-    public record LoginWithFacebookCommand(string firebaseToken) : IRequest<LoginWithFacebookCommandResponse>;
+    public record LoginWithFacebookCommand(string firebaseToken) : IRequest<LoginWithCredentialsCommandResponse>;
 
-    public record LoginWithFacebookCommandResponse : BaseResponse
-    {
-        public string? JWToken {get;set;} = null;
-    }
-    public class LoginWithFacebookCommandHandler : IRequestHandler<LoginWithFacebookCommand, LoginWithFacebookCommandResponse>
+    public class LoginWithFacebookCommandHandler : IRequestHandler<LoginWithFacebookCommand, LoginWithCredentialsCommandResponse>
     {
         private readonly IFirebaseServices _firebaseService;
         private readonly IUserRepository _userRepository;
@@ -28,11 +24,12 @@ namespace PetSitting.Application.Features.UserManagement.Commands
             _jwtSettings = jwtSettings;
         }
 
-        public async Task<LoginWithFacebookCommandResponse> Handle(LoginWithFacebookCommand request, CancellationToken cancellationToken)
+        public async Task<LoginWithCredentialsCommandResponse> Handle(LoginWithFacebookCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                LoginWithFacebookCommandResponse response = new LoginWithFacebookCommandResponse();
+                if(string.IsNullOrEmpty(request.firebaseToken)) throw new Exception("Something went wrong!");
+                LoginWithCredentialsCommandResponse response = new LoginWithCredentialsCommandResponse();
 
                 //verifies firebase token agains the firebase database
                 var firebaseTokenAuthenticity = await _firebaseService.VerifyTokenAsync(request.firebaseToken);
@@ -65,9 +62,11 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                 }
 
                 var roles = await _userRepository.GetRoles(firebaseTokenAuthenticity.Uid);
-                var token = Security._Instance.GenerateJwtToken(sqlUser!,roles,_jwtSettings);
-
-                response.JWToken = token;
+                
+                response.JWToken = Security._Instance.GenerateJwtToken(sqlUser!,roles,_jwtSettings);
+                var refreshToken = Security._Instance.GenerateRefreshToken(sqlUser!, roles, _jwtSettings);
+                response.RefreshsToken = refreshToken.Token;
+                await _userRepository.StoreRefreshToken(refreshToken);
 
                 return response;
             }

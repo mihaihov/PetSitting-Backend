@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PetSitting.Application.Interfaces.Repositories;
+using PetSitting.Domain.Entities.Security;
 using PetSitting.Domain.Entities.UserManagement;
 
 namespace PetSitting.Infrastructure.Repositories
@@ -14,16 +15,19 @@ namespace PetSitting.Infrastructure.Repositories
         public async Task AddRole(IdentityUserRole<string> role)
         {
             await _dbContext.UserRoles.AddAsync(role);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task AddUserProfile(UserProfile userProfile)
         {
-            await _dbContext.UserProfiles!.AddAsync(userProfile);
+            await _dbContext.Set<UserProfile>().AddAsync(userProfile);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task AddUserSettings(UserSettings userSettings)
         {
-            await _dbContext.UserSettings!.AddAsync(userSettings);
+            await _dbContext.Set<UserSettings>().AddAsync(userSettings);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<IReadOnlyList<string>> GetRoles(string UserId)
@@ -31,6 +35,12 @@ namespace PetSitting.Infrastructure.Repositories
             return await _dbContext.UserRoles.Where(ur => ur.UserId == UserId)
                 .Join(_dbContext.Roles, ur => ur.RoleId, r => r.Id, (ur,r) => r.Name!)
                 .ToListAsync();
+        }
+
+        public async Task StoreRefreshToken(RefreshToken token)
+        {
+            await _dbContext.Set<RefreshToken>().AddAsync(token);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

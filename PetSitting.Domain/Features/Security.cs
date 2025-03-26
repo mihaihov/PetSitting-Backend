@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using PetSitting.Domain.Entities.Security;
 using PetSitting.Domain.Entities.UserManagement;
 using PetSitting.Domain.Entities.Utils;
 
@@ -48,6 +49,16 @@ namespace PetSitting.Domain.Features
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public RefreshToken GenerateRefreshToken(ApplicationUser user, IReadOnlyList<string> roles, IOptions<JwtSettings> _jwtSettings)
+        {
+            RefreshToken refreshToken = new RefreshToken {
+                Token = GenerateJwtToken(user,roles,_jwtSettings),
+                UserId = user.Id,
+                User = user
+            };
+            return refreshToken;
         }
     }
 }

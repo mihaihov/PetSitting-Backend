@@ -10,6 +10,7 @@ using PetSitting.Application.Common;
 using PetSitting.Application.Features.UserManagement.Validators;
 using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Application.Interfaces.Services;
+using PetSitting.Domain.Entities.Security;
 using PetSitting.Domain.Entities.UserManagement;
 using PetSitting.Domain.Entities.Utils;
 using PetSitting.Domain.Features;
@@ -65,7 +66,11 @@ namespace PetSitting.Application.Features.UserManagement
                 var roles = await _userRepository.GetRoles(sqlUser.Id.ToString());
 
                 response.JWToken = Security._Instance.GenerateJwtToken(sqlUser,roles, _jwtSettings);
-                response.RefreshsToken = loginResult.RefreshToken;
+                var refreshToken = Security._Instance.GenerateRefreshToken(sqlUser,roles,_jwtSettings);
+                response.RefreshsToken = refreshToken.Token;
+
+                await _userRepository.StoreRefreshToken(refreshToken);
+
 
                 return response;
             }

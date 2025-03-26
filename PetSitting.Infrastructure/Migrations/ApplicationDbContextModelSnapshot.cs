@@ -248,6 +248,12 @@ namespace PetSitting.Infrastructure.Migrations
                     b.Property<string>("CoverPictureUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ProfilePictureUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -261,11 +267,17 @@ namespace PetSitting.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("IsProfilePublic")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PreferedLanguage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("ReceiveNotifications")
+                    b.Property<bool>("ReceiveEmailNotifications")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ReceiveSMSNotifications")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");

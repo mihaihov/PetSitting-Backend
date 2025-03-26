@@ -3146,8 +3146,7 @@
           "FluentValidation.DependencyInjectionExtensions": "11.11.0",
           "MediatR": "11.1.0",
           "MediatR.Extensions.Microsoft.DependencyInjection": "11.1.0",
-          "PetSitting.Domain": "1.0.0",
-          "System.IdentityModel.Tokens.Jwt": "8.7.0"
+          "PetSitting.Domain": "1.0.0"
         },
         "compile": {
           "bin/placeholder/PetSitting.Application.dll": {}
@@ -3160,7 +3159,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.14"
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.14",
+          "System.IdentityModel.Tokens.Jwt": "8.7.0"
         },
         "compile": {
           "bin/placeholder/PetSitting.Domain.dll": {}

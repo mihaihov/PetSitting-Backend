@@ -12,6 +12,7 @@ using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Application.Interfaces.Services;
 using PetSitting.Domain.Entities.UserManagement;
 using PetSitting.Domain.Entities.Utils;
+using PetSitting.Domain.Features;
 
 namespace PetSitting.Application.Features.UserManagement
 {
@@ -63,7 +64,7 @@ namespace PetSitting.Application.Features.UserManagement
 
                 var roles = await _userRepository.GetRoles(sqlUser.Id.ToString());
 
-                response.JWToken = GenerateJwtToken(sqlUser,roles);
+                response.JWToken = Security._Instance.GenerateJwtToken(sqlUser,roles, _jwtSettings);
                 response.RefreshsToken = loginResult.RefreshToken;
 
                 return response;
@@ -72,32 +73,6 @@ namespace PetSitting.Application.Features.UserManagement
             {
                 throw;
             }
-        }
-
-        private string GenerateJwtToken(ApplicationUser user, IReadOnlyList<string> roles)
-        {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Value.SecretKey));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-                new Claim("uid", user.Id) // Firebase UID
-            };
-
-            // Add roles as claims
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
-
-            var token = new JwtSecurityToken(
-                issuer: _jwtSettings.Value.Issuer,
-                audience: _jwtSettings.Value.Audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.Value.ExpiryMinutes),
-                signingCredentials: credentials
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
     }

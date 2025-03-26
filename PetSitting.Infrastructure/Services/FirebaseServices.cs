@@ -40,5 +40,10 @@ namespace PetSitting.Infrastructure.Services
         {
             return await _firebaseProvider.SignInWithEmailAndPasswordAsync(email,password);
         }
+
+        public async Task<UserRecord?> GetUserByIdAsync(string id)
+        {
+            return await FirebaseAuth.DefaultInstance.GetUserAsync(id);
+        }
     }
 }

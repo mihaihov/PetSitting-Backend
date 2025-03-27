@@ -8,10 +8,9 @@ namespace PetSitting.Application.Features.UserManagement.Validators
     {
         public SendEmailResetPasswordCommandValidator()
         {
-            RuleFor(p => p.email)
-                .NotEmpty().WithMessage("Email cannot be empty")
-                .NotNull().WithMessage("Email cannot be null")
-                .EmailAddress().WithMessage("Must be a valid email adress");
+            RuleFor(p => p.firebaseToken)
+                .NotEmpty().WithMessage("Token cannot be empty")
+                .NotNull().WithMessage("Token cannot be null");
         }
     }
 }

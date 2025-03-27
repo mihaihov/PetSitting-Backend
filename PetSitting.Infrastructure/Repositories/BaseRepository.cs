@@ -36,7 +36,7 @@ namespace PetSitting.Infrastructure.Repositories
             return await _dbContext.Set<T>().FindAsync(Id);
         }
 
-        public void UpdateAsync(T Entity)
+        public void Update(T Entity)
         {
             _dbContext.Entry(Entity).State = EntityState.Modified;
         }

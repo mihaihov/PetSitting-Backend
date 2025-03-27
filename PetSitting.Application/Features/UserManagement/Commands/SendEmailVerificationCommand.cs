@@ -11,11 +11,9 @@ namespace PetSitting.Application.Features.UserManagement.Commands
     public class SendEmailVerificationCommandHandler : IRequestHandler<SendEmailVerificationCommand, BaseResponse>
     {
         private readonly IFirebaseService _firebaseService;
-        private readonly IUserRepository _userRepository;
-        public SendEmailVerificationCommandHandler(IFirebaseService firebaseService, IUserRepository userRepository)
+        public SendEmailVerificationCommandHandler(IFirebaseService firebaseService)
         {
             _firebaseService = firebaseService;
-            _userRepository = userRepository;
         }
         public async Task<BaseResponse> Handle(SendEmailVerificationCommand request, CancellationToken cancellationToken)
         {
@@ -33,6 +31,9 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                         response.ValidationErrors.Add(error.ErrorMessage);
                     return response;
                 }
+                var tokenVerificationResult = await _firebaseService.VerifyTokenAsync(request.firebaseToken);
+                if(tokenVerificationResult == null)
+                    throw new Exception("Token verification failed!");
 
                 await _firebaseService.SendEmailVerificationAsync(request.firebaseToken);               
 

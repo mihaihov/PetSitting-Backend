@@ -30,6 +30,11 @@ namespace PetSitting.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<ApplicationUser?> GetByEmailAsync(string email)
+        {
+            return await _dbContext.Set<ApplicationUser>().FirstOrDefaultAsync(au => au.Email == email);
+        }
+
         public async Task<IReadOnlyList<string>> GetRoles(string UserId)
         {
             return await _dbContext.UserRoles.Where(ur => ur.UserId == UserId)

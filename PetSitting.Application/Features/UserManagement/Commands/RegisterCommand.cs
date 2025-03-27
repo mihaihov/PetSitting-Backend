@@ -18,9 +18,9 @@ namespace PetSitting.Application.Features.UserManagement.Commands
     {
         private readonly IUserRepository _userRepository;
         private readonly IBaseRepository<IdentityRole> _roleRepository;
-        private readonly IFirebaseServices _firebaseServices;
+        private readonly IFirebaseService _firebaseServices;
         UserManager<ApplicationUser> _userManager;
-        public RegisterCommandHandler(IUserRepository userRepository, IBaseRepository<IdentityRole> roleRepository, IFirebaseServices firebaseServices,
+        public RegisterCommandHandler(IUserRepository userRepository, IBaseRepository<IdentityRole> roleRepository, IFirebaseService firebaseServices,
             UserManager<ApplicationUser> userManager)
         {
             _userRepository = userRepository;

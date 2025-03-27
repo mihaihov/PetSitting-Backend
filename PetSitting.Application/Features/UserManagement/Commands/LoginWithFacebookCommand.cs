@@ -13,10 +13,10 @@ namespace PetSitting.Application.Features.UserManagement.Commands
 
     public class LoginWithFacebookCommandHandler : IRequestHandler<LoginWithFacebookCommand, LoginWithCredentialsCommandResponse>
     {
-        private readonly IFirebaseServices _firebaseService;
+        private readonly IFirebaseService _firebaseService;
         private readonly IUserRepository _userRepository;
         private readonly IOptions<JwtSettings> _jwtSettings;
-        public LoginWithFacebookCommandHandler(IFirebaseServices firebaseService, IUserRepository userRepository,
+        public LoginWithFacebookCommandHandler(IFirebaseService firebaseService, IUserRepository userRepository,
             IOptions<JwtSettings> jwtSettings)
         {
             _firebaseService = firebaseService;

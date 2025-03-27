@@ -9,7 +9,7 @@ namespace PetSitting.Infrastructure.Services
         public static IServiceCollection RegisterFirebaseServices(this IServiceCollection serviceCollection)
         {
             //one instance per application lifetime.
-            serviceCollection.AddSingleton<IFirebaseServices>(new FirebaseServices());
+            serviceCollection.AddSingleton<IFirebaseService>(new FirebaseService());
             return serviceCollection;
         }
     }

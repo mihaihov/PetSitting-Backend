@@ -8,10 +8,10 @@ using Firebase.Auth;
 
 namespace PetSitting.Infrastructure.Services
 {
-    public class FirebaseServices : IFirebaseServices
+    public class FirebaseService : IFirebaseService
     {
         private readonly FirebaseAuthProvider _firebaseProvider;
-        public FirebaseServices()
+        public FirebaseService()
         {
             _firebaseProvider = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyA-oK7GEDK6S-UYdLEBm2DhrSix1k-zQAM"));
         }

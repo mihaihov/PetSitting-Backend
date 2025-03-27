@@ -26,10 +26,10 @@ namespace PetSitting.Application.Features.UserManagement
 
     public class LoginWithCredentialsCommandHandler : IRequestHandler<LoginWithCredentialsCommand, LoginWithCredentialsCommandResponse>
     {
-        private readonly IFirebaseServices _firebaseService;
+        private readonly IFirebaseService _firebaseService;
         private readonly IUserRepository _userRepository;
         private readonly IOptions<JwtSettings> _jwtSettings;
-        public LoginWithCredentialsCommandHandler(IFirebaseServices firebaseService, IUserRepository userRepository,
+        public LoginWithCredentialsCommandHandler(IFirebaseService firebaseService, IUserRepository userRepository,
             IOptions<JwtSettings> jwtSettings)
         {
             _firebaseService = firebaseService;

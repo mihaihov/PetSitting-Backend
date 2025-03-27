@@ -61,11 +61,6 @@ namespace PetSitting.Infrastructure.Services
             return await _firebaseProvider.ChangeUserPassword(firebaseToken,newPassword);
         }
 
-        public async Task ChangeEmailAsync(string firebaseToken, string newEmail)
-        {
-            await _firebaseProvider.ChangeUserEmail(firebaseToken,newEmail);
-        }
-
         public async Task<string> CreateCustomTokenAsync(string uid)
         {
            return await FirebaseAuth.DefaultInstance.CreateCustomTokenAsync(uid);

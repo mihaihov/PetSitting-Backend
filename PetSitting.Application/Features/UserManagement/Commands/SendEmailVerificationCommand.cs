@@ -6,7 +6,7 @@ using PetSitting.Application.Interfaces.Services;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
-    public record SendEmailVerificationCommand(string email) : IRequest<BaseResponse>;
+    public record SendEmailVerificationCommand(string firebaseToken) : IRequest<BaseResponse>;
 
     public class SendEmailVerificationCommandHandler : IRequestHandler<SendEmailVerificationCommand, BaseResponse>
     {
@@ -34,15 +34,8 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                     return response;
                 }
 
-                var sqlUser = await _userRepository.GetByEmailAsync(request.email);
-                if (sqlUser == null) throw new Exception("User not found in the database!");
+                await _firebaseService.SendEmailVerificationAsync(request.firebaseToken);               
 
-                var firebaseToken = await _firebaseService.CreateCustomTokenAsync(sqlUser.Id); 
-                if(firebaseToken == null)
-                    throw new Exception("Could not create custom firebase token!");
-
-                await _firebaseService.SendEmailVerificationAsync(firebaseToken);               
-                
                 return response;
             }
             catch(Exception)

@@ -72,5 +72,23 @@ namespace PetSitting.Api.Controllers
                 return StatusCode(500, new {message = ex.Message});
             }
         }
+
+        [HttpPost("sendresetpasswordemail", Name = "SendResetPasswordEmail")]
+        public async Task<ActionResult<BaseResponse>> SendResetPasswordEmail([FromBody]SendEmailResetPasswordCommand command)
+        {
+            try
+            {
+                var result = await _mediator.Send(command);
+                if(result.ValidationErrors != null && result.ValidationErrors.Count != 0)
+                {
+                    return StatusCode(500, result.ValidationErrors);
+                }
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new {message = ex.Message});
+            }
+        }
     }
 }

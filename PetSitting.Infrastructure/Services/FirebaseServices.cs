@@ -45,5 +45,25 @@ namespace PetSitting.Infrastructure.Services
         {
             return await FirebaseAuth.DefaultInstance.GetUserAsync(id);
         }
+
+        public async Task SendEmailVerificationAsync(string firebaseToken)
+        {
+            await _firebaseProvider.SendEmailVerificationAsync(firebaseToken);
+        }
+
+        public async Task SendPasswordResetEmailAsync(string firebaseToken)
+        {
+            await _firebaseProvider.SendPasswordResetEmailAsync(firebaseToken);
+        }
+
+        public async Task<FirebaseAuthLink> ResetPasswordAsync(string firebaseToken, string newPassword)
+        {
+            return await _firebaseProvider.ChangeUserPassword(firebaseToken,newPassword);
+        }
+
+        public async Task ChangeEmailAsync(string firebaseToken, string newEmail)
+        {
+            await _firebaseProvider.ChangeUserEmail(firebaseToken,newEmail);
+        }
     }
 }

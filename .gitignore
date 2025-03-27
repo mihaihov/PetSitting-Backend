@@ -82,3 +82,7 @@ PetSitting.Api/petsitting-development-firebase-adminsdk-fbsvc-c802b066a1.json
 PetSitting.Infrastructure/Migrations/20250325161202_EntitiesUpdate.cs
 PetSitting.Infrastructure/Migrations/20250325161202_EntitiesUpdate.Designer.cs
 PetSitting.Infrastructure/Migrations/ApplicationDbContextModelSnapshot.cs
+PetSitting.Application/obj/
+PetSitting.Domain/obj/
+PetSitting.Infrastructure/obj/
+PetSitting.Api/obj/

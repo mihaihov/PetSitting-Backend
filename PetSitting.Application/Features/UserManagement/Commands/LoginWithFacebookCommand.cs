@@ -1,6 +1,6 @@
 using MediatR;
 using Microsoft.Extensions.Options;
-using PetSitting.Application.Common;
+using PetSitting.Application.Features.Common;
 using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Application.Interfaces.Services;
 using PetSitting.Domain.Entities.UserManagement;

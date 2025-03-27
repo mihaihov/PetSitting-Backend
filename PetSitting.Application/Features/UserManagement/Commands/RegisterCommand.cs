@@ -1,4 +1,4 @@
-using PetSitting.Application.Common;
+using PetSitting.Application.Features.Common;
 using MediatR;
 using PetSitting.Application.Features.UserManagement.Validators;
 using PetSitting.Domain.Entities.UserManagement;

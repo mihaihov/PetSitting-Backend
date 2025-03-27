@@ -1,4 +1,4 @@
-namespace PetSitting.Application.Common
+namespace PetSitting.Application.Features.Common
 {
     public record BaseResponse
     {

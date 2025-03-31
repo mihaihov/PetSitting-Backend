@@ -6,12 +6,11 @@ using PetSitting.Application.Interfaces.Services;
 using PetSitting.Domain.Entities.UserManagement;
 using PetSitting.Domain.Entities.Utils;
 using PetSitting.Domain.Features;
+using PetSitting.Application.Features.UserManagement.Entities;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
-    public record LoginWithFacebookCommand(string firebaseToken) : IRequest<LoginWithCredentialsCommandResponse>;
-
-    public class LoginWithFacebookCommandHandler : IRequestHandler<LoginWithFacebookCommand, LoginWithCredentialsCommandResponse>
+    public class LoginWithFacebookCommandHandler : UserManagementBaseCommandHandler<UserManagementBaseCommand<ThirdPartyAuthResponse>,ThirdPartyAuthResponse>
     {
         private readonly IFirebaseService _firebaseService;
         private readonly IUserRepository _userRepository;
@@ -24,15 +23,14 @@ namespace PetSitting.Application.Features.UserManagement.Commands
             _jwtSettings = jwtSettings;
         }
 
-        public async Task<LoginWithCredentialsCommandResponse> Handle(LoginWithFacebookCommand request, CancellationToken cancellationToken)
+        protected override async Task<ThirdPartyAuthResponse> HandleCommand(UserManagementBaseCommand<ThirdPartyAuthResponse> request, ThirdPartyAuthResponse response, CancellationToken cancellationToken)
         {
             try
             {
-                if(string.IsNullOrEmpty(request.firebaseToken)) throw new Exception("Something went wrong!");
-                LoginWithCredentialsCommandResponse response = new LoginWithCredentialsCommandResponse();
+                if(string.IsNullOrEmpty(request.FirebaseToken)) throw new Exception("Invalid Token");
 
                 //verifies firebase token agains the firebase database
-                var firebaseTokenAuthenticity = await _firebaseService.VerifyTokenAsync(request.firebaseToken);
+                var firebaseTokenAuthenticity = await _firebaseService.VerifyTokenAsync(request.FirebaseToken);
                 if (firebaseTokenAuthenticity == null)
                     throw new Exception("Firebase user does not exist");
 

@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using PetSitting.Application.Features.Common;
+using PetSitting.Application.Features.UserManagement.Entities;
 using PetSitting.Application.Features.UserManagement.Validators;
 using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Application.Interfaces.Services;
@@ -10,7 +11,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
 {
     public record ResetPasswordCommand(string firebaseToken, string newPassword) : IRequest<BaseResponse>;
 
-    public class ResetPasswordCommandHandler : UserManagementBaseCommand<ResetPasswordCommand,BaseResponse,ResetPasswordCommandValidator>
+    public class ResetPasswordCommandHandler : UserManagementBaseCommandHandler<ResetPasswordCommand,BaseResponse,ResetPasswordCommandValidator>
     {
         private readonly IFirebaseService _firebaseservice;
         private readonly IUserRepository _userRepository;

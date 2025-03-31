@@ -15,6 +15,7 @@ using PetSitting.Domain.Entities.Security;
 using PetSitting.Domain.Entities.UserManagement;
 using PetSitting.Domain.Entities.Utils;
 using PetSitting.Domain.Features;
+using PetSitting.Application.Features.UserManagement.Entities;
 
 namespace PetSitting.Application.Features.UserManagement
 {
@@ -23,9 +24,11 @@ namespace PetSitting.Application.Features.UserManagement
     {
         public string? JWToken {get;set;} = null;
         public string? RefreshsToken {get;set;} = null;
+
+        //more properties later.
     }
 
-    public class LoginWithCredentialsCommandHandler : UserManagementBaseCommand<LoginWithCredentialsCommand,LoginWithCredentialsCommandResponse,LoginWithCredentialsCommandValidator>
+    public class LoginWithCredentialsCommandHandler : UserManagementBaseCommandHandler<LoginWithCredentialsCommand,LoginWithCredentialsCommandResponse,LoginWithCredentialsCommandValidator>
     {
         private readonly IFirebaseService _firebaseService;
         private readonly IUserRepository _userRepository;

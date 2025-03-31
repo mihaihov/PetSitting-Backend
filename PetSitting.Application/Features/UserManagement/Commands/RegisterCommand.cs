@@ -7,14 +7,14 @@ using PetSitting.Domain.Enums;
 using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Application.Interfaces.Services;
 using FirebaseAdmin.Auth;
+using PetSitting.Application.Features.UserManagement.Entities;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
 
-    public record RegisterCommand(string? firstName, string? lastName, string? username, string email, string password) : IRequest<RegisterCommandResponse> {}
-    public record RegisterCommandResponse : BaseResponse;
+    public record RegisterCommand(string? firstName, string? lastName, string? username, string email, string password) : IRequest<BaseResponse> {}
 
-    public class RegisterCommandHandler : UserManagementBaseCommand<RegisterCommand,RegisterCommandResponse,RegisterCommandValidator>
+    public class RegisterCommandHandler : UserManagementBaseCommandHandler<RegisterCommand,BaseResponse,RegisterCommandValidator>
     {
         private readonly IUserRepository _userRepository;
         private readonly IBaseRepository<IdentityRole> _roleRepository;
@@ -29,7 +29,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
             _userManager = userManager;
         }
 
-        protected override async Task<RegisterCommandResponse> HandleCommand(RegisterCommand request, RegisterCommandResponse response, CancellationToken cancellationToken)
+        protected override async Task<BaseResponse> HandleCommand(RegisterCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
             string? firebaseUID = null;
             using var userTransactions = await _userRepository.BeginTransactionAsync();

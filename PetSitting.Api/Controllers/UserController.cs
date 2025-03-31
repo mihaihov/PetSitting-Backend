@@ -4,6 +4,7 @@ using PetSitting.Application.Features.UserManagement.Commands;
 using PetSitting.Application.Features.UserManagement;
 using Microsoft.AspNetCore.Authorization;
 using PetSitting.Application.Features.Common;
+using PetSitting.Application.Features.UserManagement.Entities;
 
 namespace PetSitting.Api.Controllers
 {
@@ -18,7 +19,7 @@ namespace PetSitting.Api.Controllers
         }
 
         [HttpPost("register", Name = "Register"), AllowAnonymous]
-        public async Task<ActionResult<RegisterCommandResponse>> Register([FromBody] RegisterCommand command)
+        public async Task<ActionResult<BaseResponse>> Register([FromBody] RegisterCommand command)
         {
             try
             {
@@ -56,7 +57,7 @@ namespace PetSitting.Api.Controllers
         }
 
         [HttpPost("sendverifiactionemail", Name ="SendVerificationEmail"), Authorize(Roles = "PetOwner, PetSitter, Admin")]
-        public async Task<ActionResult<BaseResponse>> SendVerficationEmail([FromBody] SendEmailVerificationCommand command)
+        public async Task<ActionResult<BaseResponse>> SendVerficationEmail([FromBody] UserManagementBaseCommand<BaseResponse> command)
         {
             try
             {
@@ -74,7 +75,7 @@ namespace PetSitting.Api.Controllers
         }
 
         [HttpPost("sendresetpasswordemail", Name = "SendResetPasswordEmail")]
-        public async Task<ActionResult<BaseResponse>> SendResetPasswordEmail([FromBody]SendEmailResetPasswordCommand command)
+        public async Task<ActionResult<BaseResponse>> SendResetPasswordEmail([FromBody]UserManagementBaseCommand<BaseResponse> command)
         {
             try
             {

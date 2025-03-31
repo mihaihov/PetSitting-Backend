@@ -7,14 +7,14 @@ using PetSitting.Domain.Enums;
 using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Application.Interfaces.Services;
 using FirebaseAdmin.Auth;
+using PetSitting.Application.Features.UserManagement.Entities;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
 
-    public record RegisterCommand(string? firstName, string? lastName, string? username, string email, string password) : IRequest<RegisterCommandResponse> {}
-    public record RegisterCommandResponse : BaseResponse;
+    public record RegisterCommand(string? firstName, string? lastName, string? username, string email, string password) : IRequest<BaseResponse> {}
 
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterCommandResponse>
+    public class RegisterCommandHandler : UserManagementBaseCommandHandler<RegisterCommand,BaseResponse,RegisterCommandValidator>
     {
         private readonly IUserRepository _userRepository;
         private readonly IBaseRepository<IdentityRole> _roleRepository;
@@ -29,28 +29,13 @@ namespace PetSitting.Application.Features.UserManagement.Commands
             _userManager = userManager;
         }
 
-        public async Task<RegisterCommandResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        protected override async Task<BaseResponse> HandleCommand(RegisterCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
             string? firebaseUID = null;
             using var userTransactions = await _userRepository.BeginTransactionAsync();
 
             try
             {
-                RegisterCommandResponse response = new RegisterCommandResponse();
-
-                var validator = new RegisterCommandValidator();
-                var validationResult = await validator.ValidateAsync(request);
-
-                if (validationResult.Errors.Any())
-                {
-                    response.Success = false;
-                    response.ValidationErrors = new List<string>();
-                    foreach (var error in validationResult.Errors)
-                        response.ValidationErrors.Add(error.ErrorMessage);
-
-                    return response;
-                }
-
                 //creates firebaseUser 
                 var firebaseUser = await _firebaseServices.CreateUserWithEmailAndPasswordAsync(request.email,request.password);
                 if (firebaseUser == null)

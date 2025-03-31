@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PetSitting.Application.Features.Common;
+using PetSitting.Application.Features.UserManagement.Commands;
 using PetSitting.Application.Features.UserManagement.Validators;
 using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Application.Interfaces.Services;
@@ -14,6 +15,7 @@ using PetSitting.Domain.Entities.Security;
 using PetSitting.Domain.Entities.UserManagement;
 using PetSitting.Domain.Entities.Utils;
 using PetSitting.Domain.Features;
+using PetSitting.Application.Features.UserManagement.Entities;
 
 namespace PetSitting.Application.Features.UserManagement
 {
@@ -22,9 +24,11 @@ namespace PetSitting.Application.Features.UserManagement
     {
         public string? JWToken {get;set;} = null;
         public string? RefreshsToken {get;set;} = null;
+
+        //more properties later.
     }
 
-    public class LoginWithCredentialsCommandHandler : IRequestHandler<LoginWithCredentialsCommand, LoginWithCredentialsCommandResponse>
+    public class LoginWithCredentialsCommandHandler : UserManagementBaseCommandHandler<LoginWithCredentialsCommand,LoginWithCredentialsCommandResponse,LoginWithCredentialsCommandValidator>
     {
         private readonly IFirebaseService _firebaseService;
         private readonly IUserRepository _userRepository;
@@ -37,23 +41,10 @@ namespace PetSitting.Application.Features.UserManagement
             _jwtSettings = jwtSettings;
         }
 
-        public async Task<LoginWithCredentialsCommandResponse> Handle(LoginWithCredentialsCommand request, CancellationToken cancellationToken)
+        protected override async Task<LoginWithCredentialsCommandResponse> HandleCommand(LoginWithCredentialsCommand request, LoginWithCredentialsCommandResponse response, CancellationToken cancellationToken)
         {
             try
             {
-                LoginWithCredentialsCommandResponse response = new LoginWithCredentialsCommandResponse();
-                var validator = new LoginWithCredentialsCommandValidator();
-                var validationResult = await validator.ValidateAsync(request);
-
-                if (validationResult.Errors.Any())
-                {
-                    response.Success = false;
-                    response.ValidationErrors = new List<string>();
-                    foreach (var error in validationResult.Errors)
-                        response.ValidationErrors.Add(error.ErrorMessage);
-                    return response;
-                }
-
                 var loginResult = await _firebaseService.SignInWithEmailAndPasswordAsync(request.email,request.password);
                 if(loginResult == null)
                     throw new Exception("LogIn failed");

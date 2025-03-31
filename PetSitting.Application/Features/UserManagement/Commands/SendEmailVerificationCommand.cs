@@ -1,41 +1,28 @@
-using MediatR;
 using PetSitting.Application.Features.Common;
-using PetSitting.Application.Features.UserManagement.Validators;
-using PetSitting.Application.Interfaces.Repositories;
+using PetSitting.Application.Features.UserManagement.Entities;
 using PetSitting.Application.Interfaces.Services;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
-    public record SendEmailVerificationCommand(string firebaseToken) : IRequest<BaseResponse>;
-
-    public class SendEmailVerificationCommandHandler : IRequestHandler<SendEmailVerificationCommand, BaseResponse>
+    public class SendEmailVerificationCommandHandler : UserManagementBaseCommandHandler<UserManagementBaseCommand<BaseResponse>,BaseResponse>
     {
         private readonly IFirebaseService _firebaseService;
         public SendEmailVerificationCommandHandler(IFirebaseService firebaseService)
         {
             _firebaseService = firebaseService;
         }
-        public async Task<BaseResponse> Handle(SendEmailVerificationCommand request, CancellationToken cancellationToken)
+        protected override async Task<BaseResponse> HandleCommand(UserManagementBaseCommand<BaseResponse> request, BaseResponse response, CancellationToken cancellationToken)
         {
             try
             {
-                BaseResponse response = new BaseResponse();
-                var validator = new SendEmailVerificationCommandValidator();
-                var validationResult = await validator.ValidateAsync(request);
+                if(string.IsNullOrEmpty(request.FirebaseToken))
+                    throw new Exception("Invalid token!");
 
-                if (validationResult.Errors.Count > 0)
-                {
-                    response.Success = false;
-                    response.ValidationErrors = new List<string>();
-                    foreach (var error in validationResult.Errors)
-                        response.ValidationErrors.Add(error.ErrorMessage);
-                    return response;
-                }
-                var tokenVerificationResult = await _firebaseService.VerifyTokenAsync(request.firebaseToken);
+                var tokenVerificationResult = await _firebaseService.VerifyTokenAsync(request.FirebaseToken);
                 if(tokenVerificationResult == null)
                     throw new Exception("Token verification failed!");
 
-                await _firebaseService.SendEmailVerificationAsync(request.firebaseToken);               
+                await _firebaseService.SendEmailVerificationAsync(request.FirebaseToken);               
 
                 return response;
             }

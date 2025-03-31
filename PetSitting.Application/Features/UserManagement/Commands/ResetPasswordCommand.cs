@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using PetSitting.Application.Features.Common;
+using PetSitting.Application.Features.UserManagement.Entities;
 using PetSitting.Application.Features.UserManagement.Validators;
 using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Application.Interfaces.Services;
@@ -10,7 +11,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
 {
     public record ResetPasswordCommand(string firebaseToken, string newPassword) : IRequest<BaseResponse>;
 
-    public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, BaseResponse>
+    public class ResetPasswordCommandHandler : UserManagementBaseCommandHandler<ResetPasswordCommand,BaseResponse,ResetPasswordCommandValidator>
     {
         private readonly IFirebaseService _firebaseservice;
         private readonly IUserRepository _userRepository;
@@ -23,24 +24,10 @@ namespace PetSitting.Application.Features.UserManagement.Commands
             _userManager = userManager;
         }
 
-        public async Task<BaseResponse> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+        protected override async Task<BaseResponse> HandleCommand(ResetPasswordCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
             try
             {
-                BaseResponse response = new BaseResponse();
-                var validator = new ResetPasswordCommandValidator();
-                var validationResult = await validator.ValidateAsync(request);
-
-                if (validationResult.Errors.Any())
-                {
-                    response.Success = false;
-                    response.ValidationErrors = new List<string>();
-                    foreach (var error in validationResult.Errors)
-                        response.ValidationErrors.Add(error.ErrorMessage);
-
-                    return response;
-                }
-
                 var tokenValidationResult = await _firebaseservice.VerifyTokenAsync(request.firebaseToken);
                 if (tokenValidationResult == null)
                     throw new Exception("Token validation failed!");

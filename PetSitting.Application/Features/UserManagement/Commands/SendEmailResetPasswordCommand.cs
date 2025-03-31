@@ -5,7 +5,7 @@ using PetSitting.Application.Interfaces.Services;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
-    public class SendEmailResetPasswordCommandHandler : UserManagementBaseCommandHandler<UserManagementBaseCommand<BaseResponse>,BaseResponse>
+    public class SendEmailResetPasswordCommandHandler : BaseCommandHandler<UserManagementBaseCommand<BaseResponse>,BaseResponse>
     {
         private readonly IFirebaseService _firebaseService;
         public SendEmailResetPasswordCommandHandler(IFirebaseService firebaseService, IUserRepository userRepository)

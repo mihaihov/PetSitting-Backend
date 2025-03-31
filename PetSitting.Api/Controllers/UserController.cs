@@ -18,90 +18,40 @@ namespace PetSitting.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("register", Name = "Register"), AllowAnonymous]
-        public async Task<ActionResult<BaseResponse>> Register([FromBody] RegisterCommand command)
-        {
-            try
-            {
-                var result = await _mediator.Send(command);
-                
-                if(result.ValidationErrors != null && result.ValidationErrors.Count != 0)
-                {
-                    return StatusCode(500, result.ValidationErrors);
-                }
-                return Ok(result);
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(500, new {message = ex.Message});
-            }
-        }
+        [HttpPost("register"), AllowAnonymous]
+        public Task<ActionResult<BaseResponse>> Register([FromBody] RegisterCommand command) => 
+            HandleRequest<RegisterCommand,BaseResponse>(command);
 
-        [HttpPost("login", Name = "Login")]
-        public async Task<ActionResult<LoginWithCredentialsCommandResponse>> Login([FromBody] LoginWithCredentialsCommand command)
-        {
-            try
-            {
-                var result = await _mediator.Send(command);
-                
-                if(result.ValidationErrors != null && result.ValidationErrors.Count != 0)
-                {
-                    return StatusCode(500, result.ValidationErrors);
-                }
-                return Ok(result);
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(500, new {message = ex.Message});
-            }
-        }
+        [HttpPost("login")]
+        public Task<ActionResult<LoginWithCredentialsCommandResponse>> Login([FromBody] LoginWithCredentialsCommand command) => 
+            HandleRequest<LoginWithCredentialsCommand,LoginWithCredentialsCommandResponse>(command);
 
-        [HttpPost("sendverifiactionemail", Name ="SendVerificationEmail"), Authorize(Roles = "PetOwner, PetSitter, Admin")]
-        public async Task<ActionResult<BaseResponse>> SendVerficationEmail([FromBody] UserManagementBaseCommand<BaseResponse> command)
-        {
-            try
-            {
-                var result = await _mediator.Send(command);
-                if(result.ValidationErrors != null && result.ValidationErrors.Count !=0)
-                {
-                    return StatusCode(500, result.ValidationErrors);
-                }
-                return Ok(result);
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(500, new {message = ex.Message});
-            }
-        }
+        [HttpPost("sendverifiactionemail"), Authorize(Roles = "PetOwner, PetSitter, Admin")]
+        public Task<ActionResult<BaseResponse>> SendVerficationEmail([FromBody] UserManagementBaseCommand<BaseResponse> command) =>
+            HandleRequest<UserManagementBaseCommand<BaseResponse>,BaseResponse>(command);
+
 
         [HttpPost("sendresetpasswordemail", Name = "SendResetPasswordEmail")]
-        public async Task<ActionResult<BaseResponse>> SendResetPasswordEmail([FromBody]UserManagementBaseCommand<BaseResponse> command)
-        {
-            try
-            {
-                var result = await _mediator.Send(command);
-                if(result.ValidationErrors != null && result.ValidationErrors.Count != 0)
-                {
-                    return StatusCode(500, result.ValidationErrors);
-                }
-                return Ok(result);
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(500, new {message = ex.Message});
-            }
-        }
+        public Task<ActionResult<BaseResponse>> SendResetPasswordEmail([FromBody]UserManagementBaseCommand<BaseResponse> command) =>
+            HandleRequest<UserManagementBaseCommand<BaseResponse>, BaseResponse>(command);
 
         [HttpPost("resetpassword", Name = "ResetPassword")]
-        public async Task<ActionResult<BaseResponse>> ResetPassword([FromBody]ResetPasswordCommand command)
+        public Task<ActionResult<BaseResponse>> ResetPassword([FromBody]ResetPasswordCommand command) => 
+            HandleRequest<ResetPasswordCommand,BaseResponse>(command);
+
+
+        private async Task<ActionResult<TResponse>> HandleRequest<TRequest, TResponse>(TRequest command)
+    where TRequest : IRequest<TResponse>
         {
             try
             {
                 var result = await _mediator.Send(command);
-                if (result.ValidationErrors != null && result.ValidationErrors.Count != 0)
+
+                if (result is BaseResponse baseResponse && baseResponse.ValidationErrors?.Count > 0)
                 {
-                    return StatusCode(500, result.ValidationErrors);
+                    return StatusCode(500, baseResponse.ValidationErrors);
                 }
+
                 return Ok(result);
             }
             catch (Exception ex)
@@ -109,5 +59,6 @@ namespace PetSitting.Api.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
     }
 }

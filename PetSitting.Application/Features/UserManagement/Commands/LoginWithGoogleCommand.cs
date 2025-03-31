@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Options;
+using PetSitting.Application.Features.Common;
+using PetSitting.Application.Features.UserManagement.Entities;
 using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Application.Interfaces.Services;
 using PetSitting.Domain.Entities.UserManagement;
@@ -8,8 +10,7 @@ using PetSitting.Domain.Features;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
-    public record LoginWithGoogleCommand(string firebaseToken) : IRequest<LoginWithCredentialsCommandResponse>;
-    public class LoginWithGoogleCommandHandler : IRequestHandler<LoginWithGoogleCommand, LoginWithCredentialsCommandResponse>
+    public class LoginWithGoogleCommandHandler : BaseCommandHandler<UserManagementBaseCommand<ThirdPartyAuthResponse>, ThirdPartyAuthResponse>
     {
         private readonly IFirebaseService _firebaseService;
         private readonly IUserRepository _userRepository;
@@ -22,15 +23,14 @@ namespace PetSitting.Application.Features.UserManagement.Commands
             _jwtSettings = jwtSettings;
         }
 
-        public async Task<LoginWithCredentialsCommandResponse> Handle(LoginWithGoogleCommand request, CancellationToken cancellationToken)
+        protected override async Task<ThirdPartyAuthResponse> HandleCommand(UserManagementBaseCommand<ThirdPartyAuthResponse> request, ThirdPartyAuthResponse response, CancellationToken cancellationToken)
         {
             try
             {
-                if (string.IsNullOrEmpty(request.firebaseToken)) throw new Exception("Something went wrong!");
-                LoginWithCredentialsCommandResponse response = new LoginWithCredentialsCommandResponse();
+                if (string.IsNullOrEmpty(request.FirebaseToken)) throw new Exception("Something went wrong!");
 
                 //verifies firebase token agains the firebase database
-                var firebaseTokenAuthenticity = await _firebaseService.VerifyTokenAsync(request.firebaseToken);
+                var firebaseTokenAuthenticity = await _firebaseService.VerifyTokenAsync(request.FirebaseToken);
                 if (firebaseTokenAuthenticity == null)
                     throw new Exception("Firebase user does not exist");
 

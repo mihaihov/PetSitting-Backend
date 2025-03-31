@@ -14,7 +14,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
     public record RegisterCommand(string? firstName, string? lastName, string? username, string email, string password) : IRequest<RegisterCommandResponse> {}
     public record RegisterCommandResponse : BaseResponse;
 
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterCommandResponse>
+    public class RegisterCommandHandler : UserManagementBaseCommand<RegisterCommand,RegisterCommandResponse,RegisterCommandValidator>
     {
         private readonly IUserRepository _userRepository;
         private readonly IBaseRepository<IdentityRole> _roleRepository;
@@ -29,28 +29,13 @@ namespace PetSitting.Application.Features.UserManagement.Commands
             _userManager = userManager;
         }
 
-        public async Task<RegisterCommandResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        protected override async Task<RegisterCommandResponse> HandleCommand(RegisterCommand request, RegisterCommandResponse response, CancellationToken cancellationToken)
         {
             string? firebaseUID = null;
             using var userTransactions = await _userRepository.BeginTransactionAsync();
 
             try
             {
-                RegisterCommandResponse response = new RegisterCommandResponse();
-
-                var validator = new RegisterCommandValidator();
-                var validationResult = await validator.ValidateAsync(request);
-
-                if (validationResult.Errors.Any())
-                {
-                    response.Success = false;
-                    response.ValidationErrors = new List<string>();
-                    foreach (var error in validationResult.Errors)
-                        response.ValidationErrors.Add(error.ErrorMessage);
-
-                    return response;
-                }
-
                 //creates firebaseUser 
                 var firebaseUser = await _firebaseServices.CreateUserWithEmailAndPasswordAsync(request.email,request.password);
                 if (firebaseUser == null)

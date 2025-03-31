@@ -98,5 +98,28 @@ namespace PetSitting.UnitTests.Application
             Assert.True(response.Success);
             Assert.Null(response.ValidationErrors);
         }
+
+        [Fact]
+        public async Task Handle_ShouldThrowError_WhenFirebaseUserCreationFails()
+        {
+            //arrange
+            var command = new RegisterCommand(firstName: "Raducu", lastName: "Mihai",
+                email: "raducumihaicristian@gmail.com",password: "P@ssword1!", username: null);
+            
+#pragma warning disable
+            _mockFirebaseServices.Setup(f => f.CreateUserWithEmailAndPasswordAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync((FirebaseAuthLink)null);
+#pragma warning restore
+
+            var commandHandler = new RegisterCommandHandler(_mockUserRepository.Object,
+                _mockRoleRepository.Object, _mockFirebaseServices.Object, _userManager.Object);
+
+            //act and assert
+            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command, CancellationToken.None));
+
+            _mockFirebaseServices.Verify(f => f.CreateUserWithEmailAndPasswordAsync(command.email,command.password), Times.Once);
+            _mockRoleRepository.VerifyNoOtherCalls();
+            //ASSERT THAT THE TRANSACTION IS ROLLED BACK.
+        }
     }
 }

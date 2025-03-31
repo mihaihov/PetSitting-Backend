@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PetSitting.Domain.Entities.UserManagement
 {
     public class UserProfile {
+#pragma warning disable CS8618
         [Key]
         public string Id {get;set;}
+#pragma warning restore CS8618
 
         [ForeignKey(nameof(Id))]
         public virtual ApplicationUser User {get;set;} = new ApplicationUser();

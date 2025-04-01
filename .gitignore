@@ -86,3 +86,4 @@ PetSitting.Application/obj/
 PetSitting.Domain/obj/
 PetSitting.Infrastructure/obj/
 PetSitting.Api/obj/
+PetSitting.Infrastructure/Migrations/

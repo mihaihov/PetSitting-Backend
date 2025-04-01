@@ -8,7 +8,7 @@ namespace PetSitting.Domain.Entities.PostManagement
         public Guid Id {get;set;}
         public string Url {get;set;} = string.Empty;
         public MediaType Type {get;set;}
-        public Guid PostId {get;set;}
+        public required string PostId {get;set;}
         public Post? Post {get;set;}
     }
 

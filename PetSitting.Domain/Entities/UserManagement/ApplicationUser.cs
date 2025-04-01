@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using PetSitting.Domain.Entities.PostManagement;
 using PetSitting.Domain.Entities.Security;
 
 namespace PetSitting.Domain.Entities.UserManagement
@@ -12,5 +13,6 @@ namespace PetSitting.Domain.Entities.UserManagement
         public bool IsPetSitter {get;set;} = false;
 
         public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+        public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
     }
 }

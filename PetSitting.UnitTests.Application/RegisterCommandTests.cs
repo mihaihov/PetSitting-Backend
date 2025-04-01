@@ -22,6 +22,7 @@ namespace PetSitting.UnitTests.Application
         private readonly Mock<Firebase.Auth.FirebaseAuth> _mockFirebaseAuth;
         private readonly Mock<FirebaseAuthLink> _mockFirebaseAuthLink;
         private readonly Mock<UserManager<ApplicationUser>> _userManager;
+        private readonly Mock<IDbContextTransaction>  _mockTransaction;
 
         public RegisterCommandTests()
         {
@@ -31,9 +32,9 @@ namespace PetSitting.UnitTests.Application
                 .Returns(Task.CompletedTask);
             _mockUserRepository.Setup(user => user.CommitTransactionAsync())
                 .Returns(Task.CompletedTask);
-            var mockTransaction = new Mock<IDbContextTransaction>();
+            _mockTransaction = new Mock<IDbContextTransaction>();
             _mockUserRepository.Setup(f => f.BeginTransactionAsync())
-                .Returns(Task.FromResult(mockTransaction.Object));
+                .Returns(Task.FromResult(_mockTransaction.Object));
 
             //generic arrange for _mockRoleRepository.
             _mockRoleRepository = new Mock<IBaseRepository<IdentityRole>>();
@@ -114,12 +115,47 @@ namespace PetSitting.UnitTests.Application
             var commandHandler = new RegisterCommandHandler(_mockUserRepository.Object,
                 _mockRoleRepository.Object, _mockFirebaseServices.Object, _userManager.Object);
 
+            _mockTransaction.Setup(t => t.RollbackAsync(It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+
             //act and assert
             await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command, CancellationToken.None));
 
             _mockFirebaseServices.Verify(f => f.CreateUserWithEmailAndPasswordAsync(command.email,command.password), Times.Once);
             _mockRoleRepository.VerifyNoOtherCalls();
-            //ASSERT THAT THE TRANSACTION IS ROLLED BACK.
+            _mockUserRepository.Verify(u => u.BeginTransactionAsync(),Times.Once);
+            _mockUserRepository.Verify(u => u.CommitTransactionAsync(),Times.Never);
+            _mockTransaction.Verify(t => t.RollbackAsync(CancellationToken.None), Times.Once);
+        }
+
+
+        [Fact]
+        public async Task Handle_RollbackTransaction_WhenDefaultRoleIsNull()
+        {
+            //arrange
+            var command = new RegisterCommand(firstName: "Raducu", lastName: "Mihai",
+                email: "raducumihaicristian@gmail.com",password: "P@ssword1!", username: null);
+
+#pragma warning disable
+            _mockRoleRepository.Setup(r => r.FirstOrDefaultAsync(It.IsAny<Expression<Func<IdentityRole, bool>>>()))
+                .Returns(Task.FromResult((IdentityRole)null));
+#pragma warning restore
+            _mockTransaction.Setup(t => t.RollbackAsync(It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+
+            _mockFirebaseServices.Setup(f => f.DeleteUserAsync(It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+
+            var commandHandler = new RegisterCommandHandler(_mockUserRepository.Object, _mockRoleRepository.Object,
+                _mockFirebaseServices.Object, _userManager.Object);
+
+            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command, CancellationToken.None));
+
+            //act & assert
+            _mockUserRepository.Verify(u => u.BeginTransactionAsync(), Times.Once);
+            _mockUserRepository.Verify(u => u.CommitTransactionAsync(), Times.Never);
+            _mockTransaction.Verify(t => t.RollbackAsync(CancellationToken.None), Times.Once);
+            
         }
     }
 }

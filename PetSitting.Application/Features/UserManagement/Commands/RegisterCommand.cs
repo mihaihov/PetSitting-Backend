@@ -81,7 +81,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
 
                 if(!string.IsNullOrEmpty(firebaseUID))
                 {
-                    await FirebaseAuth.DefaultInstance.DeleteUserAsync(firebaseUID);
+                    await _firebaseServices.DeleteUserAsync(firebaseUID);
                 }
 
                 throw;

@@ -65,5 +65,10 @@ namespace PetSitting.Infrastructure.Services
         {
            return await FirebaseAuth.DefaultInstance.CreateCustomTokenAsync(uid);
         }
+
+        public async Task DeleteUserAsync(string uid)
+        {
+            await _firebaseProvider.DeleteUserAsync(uid);
+        }
     }
 }

@@ -16,6 +16,8 @@ namespace PetSitting.Application.Interfaces.Services
         public Task SendPasswordResetEmailAsync(string firebaseToken);
         public Task<FirebaseAuthLink> ResetPasswordAsync(string firebaseToken, string newPassword);
         public Task<string> CreateCustomTokenAsync(string uid);
+        public Task DeleteUserAsync(string uid);
+
  
     }
 }

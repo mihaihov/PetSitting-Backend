@@ -62,6 +62,12 @@ namespace PetSitting.Infrastructure
                 .WithMany()
                 .HasForeignKey(ja => ja.ApplicantId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Media>()
+                .HasOne(m => m.Post)
+                .WithMany(p => p.MediaFiles)
+                .HasForeignKey(m => m.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

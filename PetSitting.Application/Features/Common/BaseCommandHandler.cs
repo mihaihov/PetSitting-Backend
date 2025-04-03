@@ -5,7 +5,7 @@ using PetSitting.Application.Features.Common;
 namespace PetSitting.Application.Features.UserManagement.Entities
 {
     //used with a validator.
-    public abstract class BaseCommandHandler<TRequest, TResponse, TValidator> : IRequestHandler<TRequest, TResponse>
+    public abstract class BaseHandler<TRequest, TResponse, TValidator> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
         where TResponse : BaseResponse, new()
         where TValidator: AbstractValidator<TRequest>, new()
@@ -31,7 +31,7 @@ namespace PetSitting.Application.Features.UserManagement.Entities
     }
 
     //used without a validator.
-    public abstract class BaseCommandHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
+    public abstract class BaseHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
         where TResponse : BaseResponse, new()
     {

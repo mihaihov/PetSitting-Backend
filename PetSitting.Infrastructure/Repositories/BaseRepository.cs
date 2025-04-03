@@ -21,7 +21,7 @@ namespace PetSitting.Infrastructure.Repositories
             return Entity;
         }
 
-        public void DeleteAsync(T Entity)
+        public void Delete(T Entity)
         {
             _dbContext.Set<T>().Remove(Entity);
         }

@@ -14,7 +14,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
 
     public record RegisterCommand(string? firstName, string? lastName, string? username, string email, string password) : IRequest<BaseResponse> {}
 
-    public class RegisterCommandHandler : BaseCommandHandler<RegisterCommand,BaseResponse,RegisterCommandValidator>
+    public class RegisterCommandHandler : BaseHandler<RegisterCommand,BaseResponse,RegisterCommandValidator>
     {
         private readonly IUserRepository _userRepository;
         private readonly IBaseRepository<IdentityRole> _roleRepository;

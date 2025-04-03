@@ -9,11 +9,12 @@ namespace PetSitting.Domain.Entities.PostManagement
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public required string AuthorId { get; set; }
-        public required ApplicationUser Author { get; set; }
+        public ApplicationUser? Author { get; set; }
 
         public ICollection<Media>? MediaFiles {get;set;}
-        // Discriminator to differentiate post types
-        public PostType PostType { get; set; } = PostType.General;
+        
+        // Discriminator to differentiate post types. Default value is assigned due to configuration in OnModelCreating.
+        public PostType PostType { get; set; }
     }
 
     public enum PostType

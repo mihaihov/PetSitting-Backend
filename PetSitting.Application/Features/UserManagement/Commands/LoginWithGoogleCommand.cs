@@ -10,7 +10,7 @@ using PetSitting.Domain.Features;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
-    public class LoginWithGoogleCommandHandler : BaseCommandHandler<UserManagementBaseCommand<ThirdPartyAuthResponse>, ThirdPartyAuthResponse>
+    public class LoginWithGoogleCommandHandler : BaseHandler<UserManagementBaseCommand<ThirdPartyAuthResponse>, ThirdPartyAuthResponse>
     {
         private readonly IFirebaseService _firebaseService;
         private readonly IUserRepository _userRepository;

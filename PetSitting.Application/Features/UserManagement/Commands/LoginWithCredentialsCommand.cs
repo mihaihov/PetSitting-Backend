@@ -28,7 +28,7 @@ namespace PetSitting.Application.Features.UserManagement
         //more properties later.
     }
 
-    public class LoginWithCredentialsCommandHandler : BaseCommandHandler<LoginWithCredentialsCommand,LoginWithCredentialsCommandResponse,LoginWithCredentialsCommandValidator>
+    public class LoginWithCredentialsCommandHandler : BaseHandler<LoginWithCredentialsCommand,LoginWithCredentialsCommandResponse,LoginWithCredentialsCommandValidator>
     {
         private readonly IFirebaseService _firebaseService;
         private readonly IUserRepository _userRepository;

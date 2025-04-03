@@ -10,7 +10,7 @@ using PetSitting.Application.Features.UserManagement.Entities;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
-    public class LoginWithFacebookCommandHandler : BaseCommandHandler<UserManagementBaseCommand<ThirdPartyAuthResponse>,ThirdPartyAuthResponse>
+    public class LoginWithFacebookCommandHandler : BaseHandler<UserManagementBaseCommand<ThirdPartyAuthResponse>,ThirdPartyAuthResponse>
     {
         private readonly IFirebaseService _firebaseService;
         private readonly IUserRepository _userRepository;

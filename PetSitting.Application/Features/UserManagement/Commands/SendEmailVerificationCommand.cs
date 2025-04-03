@@ -4,7 +4,7 @@ using PetSitting.Application.Interfaces.Services;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
-    public class SendEmailVerificationCommandHandler : BaseCommandHandler<UserManagementBaseCommand<BaseResponse>,BaseResponse>
+    public class SendEmailVerificationCommandHandler : BaseHandler<UserManagementBaseCommand<BaseResponse>,BaseResponse>
     {
         private readonly IFirebaseService _firebaseService;
         public SendEmailVerificationCommandHandler(IFirebaseService firebaseService)

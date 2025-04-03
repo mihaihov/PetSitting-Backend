@@ -11,7 +11,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
 {
     public record ResetPasswordCommand(string firebaseToken, string newPassword) : IRequest<BaseResponse>;
 
-    public class ResetPasswordCommandHandler : BaseCommandHandler<ResetPasswordCommand,BaseResponse,ResetPasswordCommandValidator>
+    public class ResetPasswordCommandHandler : BaseHandler<ResetPasswordCommand,BaseResponse,ResetPasswordCommandValidator>
     {
         private readonly IFirebaseService _firebaseservice;
         private readonly IUserRepository _userRepository;

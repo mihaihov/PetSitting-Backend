@@ -13,6 +13,24 @@ namespace PetSitting.Domain.Entities.PostManagement
 #pragma warning restore
         public DateTime AppliedAt { get; set; } = DateTime.UtcNow;
         public JobApplicationStatus Status {get;set;} = JobApplicationStatus.Pending;
+
+        public void UpdateStatus(JobApplicationStatus newStatus)
+        {
+            if(IsValidStatusTransition(Status,newStatus))
+                Status = newStatus;
+        }
+
+        private bool IsValidStatusTransition(JobApplicationStatus current, JobApplicationStatus newStatus)
+        {
+            return current switch
+            {
+                JobApplicationStatus.Pending => newStatus != JobApplicationStatus.Pending,
+                JobApplicationStatus.Approved => false,
+                JobApplicationStatus.Rejected => false,
+                _ => false
+            };
+        }
+
     }
 
     public enum JobApplicationStatus

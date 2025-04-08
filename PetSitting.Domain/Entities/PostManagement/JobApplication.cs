@@ -31,6 +31,14 @@ namespace PetSitting.Domain.Entities.PostManagement
             };
         }
 
+        public static JobApplication Create(string jobPostId, string applicantId)
+        {
+            return new JobApplication {
+                    JobPostId = jobPostId,
+                    ApplicantId = applicantId
+                };
+        }
+
     }
 
     public enum JobApplicationStatus

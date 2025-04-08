@@ -38,10 +38,7 @@ namespace PetSitting.Application.Features.PostManagement.Commands
                 if(await _applicationsRepository.Exists(request.jobPostId,request.applicantId))
                     throw new Exception("You've already applied to this job!");
 
-                JobApplication ja = new JobApplication {
-                    JobPostId = request.jobPostId,
-                    ApplicantId = request.applicantId
-                };
+                JobApplication ja = JobApplication.Create(request.jobPostId, request.applicantId);
 
                 await _applicationsRepository.AddAsync(ja);
 

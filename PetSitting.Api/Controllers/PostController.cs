@@ -52,5 +52,9 @@ namespace PetSitting.Api.Controllers
         [HttpPost("applytojobpost"), Authorize(Roles = "PetSitter,Admin")]
         public Task<ActionResult<BaseResponse>> ApplyToJob([FromBody]ApplyToJobPostCommand command) =>
             HandleRequest<ApplyToJobPostCommand,BaseResponse>(command);
+
+        [HttpPut("updatejobofferstatus"), Authorize(Roles = "PetSitter,PetOwner,Admin")]
+        public Task<ActionResult<BaseResponse>> UpdateJobOfferStatus([FromBody]UpdateJobOfferStatusCommand command) =>
+            HandleRequest<UpdateJobOfferStatusCommand,BaseResponse>(command);
     }
 }

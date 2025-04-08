@@ -12,6 +12,14 @@ namespace PetSitting.Domain.Entities.PostManagement
         public ApplicationUser? Applicant { get; set; }
 #pragma warning restore
         public DateTime AppliedAt { get; set; } = DateTime.UtcNow;
+        public JobApplicationStatus Status {get;set;} = JobApplicationStatus.Pending;
+    }
+
+    public enum JobApplicationStatus
+    {
+        Pending,
+        Approved,
+        Rejected
     }
 
 }

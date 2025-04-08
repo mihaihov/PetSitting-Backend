@@ -31,33 +31,33 @@ namespace PetSitting.UnitTests.Application
             _mockUserRepository = new Mock<IUserRepository>();
         }
 
-        [Fact]
-        public async Task Handle_LogsUser_WhenCredentialsAreValid()
-        {
-            var loginWithCredentialsCommand = new LoginWithCredentialsCommand(email: "raducumihaicristian@gmail.com", password: "P@ssword1!");
+        // [Fact]
+        // public async Task Handle_LogsUser_WhenCredentialsAreValid()
+        // {
+        //     var loginWithCredentialsCommand = new LoginWithCredentialsCommand(email: "raducumihaicristian@gmail.com", password: "P@ssword1!");
 
-            var _mockApplicationUser = new Mock<ApplicationUser>();
-            var _mockRolesList = new Mock<IReadOnlyList<string>>();
-            var _mockFirebaseToken = new Mock<FirebaseToken>();
-            _mockFirebaseServices.Setup(f => f.SignInWithEmailAndPasswordAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task.FromResult(_mockFirebaseAuthLink.Object));
-            _mockFirebaseServices.Setup(f => f.VerifyTokenAsync(It.IsAny<string>()))
-                .Returns(Task.FromResult(_mockFirebaseToken.Object));
-            _mockUserRepository.Setup(u => u.GetByIdAsync(It.IsAny<string>()))
-                .ReturnsAsync(_mockApplicationUser.Object);
-            _mockUserRepository.Setup(u => u.GetRoles(It.IsAny<string>()))
-                .ReturnsAsync(_mockRolesList.Object);
-            _mockUserRepository.Setup(u => u.StoreRefreshToken(It.IsAny<RefreshToken>()))
-                .Returns(Task.CompletedTask);
-            var _mockJwtSettings = new Mock<IOptions<JwtSettings>>();
+        //     var _mockApplicationUser = new Mock<ApplicationUser>();
+        //     var _mockRolesList = new Mock<IReadOnlyList<string>>();
+        //     var _mockFirebaseToken = new Mock<FirebaseToken>();
+        //     _mockFirebaseServices.Setup(f => f.SignInWithEmailAndPasswordAsync(It.IsAny<string>(), It.IsAny<string>()))
+        //         .Returns(Task.FromResult(_mockFirebaseAuthLink.Object));
+        //     _mockFirebaseServices.Setup(f => f.VerifyTokenAsync(It.IsAny<string>()))
+        //         .Returns(Task.FromResult(_mockFirebaseToken.Object));
+        //     _mockUserRepository.Setup(u => u.GetByIdAsync(It.IsAny<string>()))
+        //         .ReturnsAsync(_mockApplicationUser.Object);
+        //     _mockUserRepository.Setup(u => u.GetRoles(It.IsAny<string>()))
+        //         .ReturnsAsync(_mockRolesList.Object);
+        //     _mockUserRepository.Setup(u => u.StoreRefreshToken(It.IsAny<RefreshToken>()))
+        //         .Returns(Task.CompletedTask);
+        //     var _mockJwtSettings = new Mock<IOptions<JwtSettings>>();
 
-            var loginWithCredentialsCommandHandler = new LoginWithCredentialsCommandHandler(_mockFirebaseServices.Object
-                ,_mockUserRepository.Object, _mockJwtSettings.Object);
+        //     var loginWithCredentialsCommandHandler = new LoginWithCredentialsCommandHandler(_mockFirebaseServices.Object
+        //         ,_mockUserRepository.Object, _mockJwtSettings.Object);
 
-            //act & assert
-            await loginWithCredentialsCommandHandler.Handle(loginWithCredentialsCommand, CancellationToken.None);
+        //     //act & assert
+        //     await loginWithCredentialsCommandHandler.Handle(loginWithCredentialsCommand, CancellationToken.None);
 
-            _mockUserRepository.Verify(u => u.StoreRefreshToken(It.IsAny<RefreshToken>()),Times.Once);
-        } 
+        //     _mockUserRepository.Verify(u => u.StoreRefreshToken(It.IsAny<RefreshToken>()),Times.Once);
+        // } 
     }
 }

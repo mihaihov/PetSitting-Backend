@@ -1,10 +1,12 @@
 using FirebaseAdmin.Messaging;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetSitting.Application.Features.Common;
 using PetSitting.Application.Features.PostManagement.Commands;
 using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Domain.Entities.PostManagement;
+using PetSitting.Domain.Enums;
 
 
 namespace PetSitting.Api.Controllers
@@ -46,5 +48,9 @@ namespace PetSitting.Api.Controllers
                 return StatusCode(500, new {message = ex.Message});
             }
         }
+
+        [HttpPost("applytojobpost"), Authorize(Roles = "PetSitter,Admin")]
+        public Task<ActionResult<BaseResponse>> ApplyToJob([FromBody]ApplyToJobPostCommand command) =>
+            HandleRequest<ApplyToJobPostCommand,BaseResponse>(command);
     }
 }

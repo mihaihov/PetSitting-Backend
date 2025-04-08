@@ -19,11 +19,13 @@ namespace PetSitting.Application.Features.PostManagement.Commands
         {
             try
             {
+                if(string.IsNullOrEmpty(request.id))
+                    throw new Exception("Id is expected!");
                 var jobPost = await _jobPostRepository.GetByIdAsync(request.id);
                 if(jobPost == null)
                     throw new Exception("Job post not found!");
                 
-                _jobPostRepository.Delete(jobPost);
+                await _jobPostRepository.Delete(jobPost);
                 return response;
             }
             catch(Exception)

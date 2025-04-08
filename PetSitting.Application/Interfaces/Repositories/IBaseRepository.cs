@@ -12,8 +12,8 @@ namespace PetSitting.Application.Interfaces.Repositories
         public Task<IReadOnlyList<T>> GetAllAsync();
         public Task<T?> GetByIdAsync(string Id);
         public Task<T?> FirstOrDefaultAsync(Expression<Func<T,bool>> predicate); 
-        public void Delete(T Entity);
-        public void Update(T Entity);
+        public Task Delete(T Entity);
+        public Task Update(T Entity);
         public Task<T> AddAsync(T Entity);
     }
 }

@@ -20,8 +20,8 @@ namespace PetSitting.Api.Controllers
             _jobPostRepository = jobPostRepository;
         }
 
-        [HttpPost("addpost")]
-        public Task<ActionResult<BaseResponse>> AddPost([FromBody] CreateJobPostCommand command) =>
+        [HttpPost("addpost"), Authorize(Roles="PetOwner,PetSitter,Admin")]
+        public Task<ActionResult<BaseResponse>> AddPost([FromBody]CreateJobPostCommand command) =>
             HandleRequest<CreateJobPostCommand,BaseResponse>(command);
 
         [HttpPut("updatepost")]

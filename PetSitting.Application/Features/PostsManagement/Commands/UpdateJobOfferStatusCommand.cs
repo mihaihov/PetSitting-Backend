@@ -25,13 +25,16 @@ namespace PetSitting.Application.Features.PostManagement.Commands
                 if(jobApplication == null)
                     throw new Exception("Job application does not exists!");
 
-                var allJobOffers = await _jobApplicationRepository.GetAllJobApplicationsForAJobPost(jobApplication.JobPostId);
-                var approvedJobOffers = allJobOffers.Where(jo => jo.Status == JobApplicationStatus.Approved).FirstOrDefault();
-                if(approvedJobOffers != null)
-                    throw new Exception("You've already approved an offer for this Job!");
+                if(request.status == JobApplicationStatus.Approved)
+                {
+                    var allJobOffers = await _jobApplicationRepository.GetAllJobApplicationsForAJobPost(jobApplication.JobPostId);
+                    var approvedJobOffers = allJobOffers.Where(jo => jo.Status == JobApplicationStatus.Approved).FirstOrDefault();
+                    if (approvedJobOffers != null)
+                        throw new Exception("You've already approved an offer for this Job!");
+                }
                 
                 jobApplication.UpdateStatus(request.status);
-                _jobApplicationRepository.Update(jobApplication);
+                await _jobApplicationRepository.Update(jobApplication);
 
                 return response;
             }

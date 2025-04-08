@@ -37,7 +37,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                     throw new Exception("User not found in the database");
                 sqlUser.PasswordHash = _userManager.PasswordHasher.HashPassword(sqlUser,request.newPassword);
                 
-                _userRepository.Update(sqlUser);
+                await _userRepository.Update(sqlUser);
                 await _firebaseservice.ResetPasswordAsync(request.firebaseToken, request.newPassword);
                 return response;
             }

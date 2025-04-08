@@ -24,9 +24,6 @@ namespace PetSitting.Application.Features.PostManagement.Commands
         {
             try
             {
-                if(string.IsNullOrEmpty(request.applicantId) || string.IsNullOrEmpty(request.jobPostId))
-                    throw new Exception("Bad request!");
-
                 var user = await _userRepository.GetByIdAsync(request.applicantId);
                 if(user == null)
                     throw new Exception("User not found!");

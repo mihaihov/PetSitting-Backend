@@ -21,9 +21,10 @@ namespace PetSitting.Infrastructure.Repositories
             return Entity;
         }
 
-        public void Delete(T Entity)
+        public async Task Delete(T Entity)
         {
             _dbContext.Set<T>().Remove(Entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<IReadOnlyList<T>> GetAllAsync()
@@ -36,9 +37,10 @@ namespace PetSitting.Infrastructure.Repositories
             return await _dbContext.Set<T>().FindAsync(Id);
         }
 
-        public void Update(T Entity)
+        public async Task Update(T Entity)
         {
             _dbContext.Entry(Entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task SaveChangesAsync()

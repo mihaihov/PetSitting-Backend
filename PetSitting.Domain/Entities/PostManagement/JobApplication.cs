@@ -18,6 +18,7 @@ namespace PetSitting.Domain.Entities.PostManagement
         {
             if(IsValidStatusTransition(Status,newStatus))
                 Status = newStatus;
+            else throw new Exception("Invalid state transition!");
         }
 
         private bool IsValidStatusTransition(JobApplicationStatus current, JobApplicationStatus newStatus)

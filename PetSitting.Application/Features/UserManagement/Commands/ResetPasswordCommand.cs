@@ -1,5 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using PetSitting.Application.Exceptions;
+using PetSitting.Application.Exceptions.Firebase;
 using PetSitting.Application.Features.Common;
 using PetSitting.Application.Features.UserManagement.Entities;
 using PetSitting.Application.Features.UserManagement.Validators;
@@ -26,25 +28,18 @@ namespace PetSitting.Application.Features.UserManagement.Commands
 
         protected override async Task<BaseResponse> HandleCommand(ResetPasswordCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
-            try
-            {
-                var tokenValidationResult = await _firebaseservice.VerifyTokenAsync(request.firebaseToken);
-                if (tokenValidationResult == null)
-                    throw new Exception("Token validation failed!");
-                
-                var sqlUser = await _userRepository.GetByIdAsync(tokenValidationResult.Uid);
-                if(sqlUser == null)
-                    throw new Exception("User not found in the database");
-                sqlUser.PasswordHash = _userManager.PasswordHasher.HashPassword(sqlUser,request.newPassword);
-                
-                await _userRepository.Update(sqlUser);
-                await _firebaseservice.ResetPasswordAsync(request.firebaseToken, request.newPassword);
-                return response;
-            }
-            catch(Exception)
-            {
-                throw;
-            }
+            var tokenValidationResult = await _firebaseservice.VerifyTokenAsync(request.firebaseToken);
+            if (tokenValidationResult == null)
+                throw new FirebaseTokenValidationException();
+
+            var sqlUser = await _userRepository.GetByIdAsync(tokenValidationResult.Uid);
+            if (sqlUser == null)
+                throw new InternalUserNotFoundException();
+            sqlUser.PasswordHash = _userManager.PasswordHasher.HashPassword(sqlUser, request.newPassword);
+
+            await _userRepository.Update(sqlUser);
+            await _firebaseservice.ResetPasswordAsync(request.firebaseToken, request.newPassword);
+            return response;
         }
     }
 }

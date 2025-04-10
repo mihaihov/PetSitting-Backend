@@ -1,4 +1,5 @@
 using MediatR;
+using PetSitting.Application.Exceptions;
 using PetSitting.Application.Features.Common;
 using PetSitting.Application.Features.UserManagement.Entities;
 using PetSitting.Application.Interfaces.Repositories;
@@ -23,21 +24,14 @@ namespace PetSitting.Application.Features.PostManagement.Queries
 
         protected override async Task<GetJobPostsByUserQueryResponse> HandleCommand(GetJobPostsByUserQuery request, GetJobPostsByUserQueryResponse response, CancellationToken cancellationToken)
         {
-            try
-            {
-                if(string.IsNullOrEmpty(request.userId))
-                    throw new Exception("User id cannot be null or empty!");
+            if (string.IsNullOrEmpty(request.userId))
+                throw new GenericValidationException("User id cannot is not valid!");
 
-                var jobPosts = await _baseJobPostRepository.GetAllAsync();
-                var jobPostsByUser = jobPosts.Where(jp => jp.AuthorId == request.userId);
-                response.PostsByUser = jobPostsByUser;
+            var jobPosts = await _baseJobPostRepository.GetAllAsync();
+            var jobPostsByUser = jobPosts.Where(jp => jp.AuthorId == request.userId);
+            response.PostsByUser = jobPostsByUser;
 
-                return response;
-            }
-            catch(Exception)
-            {
-                throw;
-            }
+            return response;
         }
     }
 }

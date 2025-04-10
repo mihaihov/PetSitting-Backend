@@ -16,6 +16,8 @@ using PetSitting.Domain.Entities.UserManagement;
 using PetSitting.Domain.Entities.Utils;
 using PetSitting.Domain.Features;
 using PetSitting.Application.Features.UserManagement.Entities;
+using PetSitting.Application.Exceptions.Firebase;
+using PetSitting.Application.Exceptions;
 
 namespace PetSitting.Application.Features.UserManagement
 {
@@ -43,32 +45,24 @@ namespace PetSitting.Application.Features.UserManagement
 
         protected override async Task<LoginWithCredentialsCommandResponse> HandleCommand(LoginWithCredentialsCommand request, LoginWithCredentialsCommandResponse response, CancellationToken cancellationToken)
         {
-            try
-            {
-                var loginResult = await _firebaseService.SignInWithEmailAndPasswordAsync(request.email,request.password);
-                if(loginResult == null)
-                    throw new Exception("LogIn failed");
-                var tokenVerification = await _firebaseService.VerifyTokenAsync(loginResult.FirebaseToken);
+            var loginResult = await _firebaseService.SignInWithEmailAndPasswordAsync(request.email, request.password);
+            if (loginResult == null)
+                throw new FirebaseLoginFailedException();
+            var tokenVerification = await _firebaseService.VerifyTokenAsync(loginResult.FirebaseToken);
 
-                var sqlUser = await _userRepository.GetByIdAsync(tokenVerification.Uid);
-                if(sqlUser == null)
-                    throw new Exception ("User not authorized");
+            var sqlUser = await _userRepository.GetByIdAsync(tokenVerification.Uid);
+            if (sqlUser == null)
+                throw new InternalUserNotFoundException();
 
-                var roles = await _userRepository.GetRoles(sqlUser.Id.ToString());
+            var roles = await _userRepository.GetRoles(sqlUser.Id.ToString());
 
-                response.JWToken = Security._Instance.GenerateJwtToken(sqlUser,roles, _jwtSettings);
-                var refreshToken = Security._Instance.GenerateRefreshToken(sqlUser,roles,_jwtSettings);
-                response.RefreshsToken = refreshToken.Token;
+            response.JWToken = Security._Instance.GenerateJwtToken(sqlUser, roles, _jwtSettings);
+            var refreshToken = Security._Instance.GenerateRefreshToken(sqlUser, roles, _jwtSettings);
+            response.RefreshsToken = refreshToken.Token;
 
-                await _userRepository.StoreRefreshToken(refreshToken);
+            await _userRepository.StoreRefreshToken(refreshToken);
 
-
-                return response;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return response;
         }
 
     }

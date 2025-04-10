@@ -8,6 +8,8 @@ using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Application.Interfaces.Services;
 using FirebaseAdmin.Auth;
 using PetSitting.Application.Features.UserManagement.Entities;
+using PetSitting.Application.Exceptions.Firebase;
+using PetSitting.Application.Exceptions;
 
 namespace PetSitting.Application.Features.UserManagement.Commands
 {
@@ -39,7 +41,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                 //creates firebaseUser 
                 var firebaseUser = await _firebaseServices.CreateUserWithEmailAndPasswordAsync(request.email,request.password);
                 if (firebaseUser == null)
-                    throw new Exception("Failed to create user in Firebase!");
+                    throw new FirebaseUserCannotBeCreatedException();
 
                 firebaseUID = firebaseUser.User.LocalId;
 
@@ -62,7 +64,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
 
                 var role = await _roleRepository.FirstOrDefaultAsync(r => r.Name == Roles.PetOwner.ToString());
                 if (role == null)
-                    throw new Exception("Default role does not exists in the database!");
+                    throw new InternalRoleNotFoundException(Roles.PetOwner.ToString());
 
                 await _userRepository.AddRole(new IdentityUserRole<string> { RoleId = role.Id.ToString(), UserId = firebaseUser.User.LocalId });
                 await _userRepository.AddUserProfile(new UserProfile { User = newUser });

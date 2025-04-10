@@ -1,4 +1,5 @@
 using MediatR;
+using PetSitting.Application.Exceptions;
 using PetSitting.Application.Features.Common;
 using PetSitting.Application.Features.PostManagement.Validators;
 using PetSitting.Application.Features.UserManagement.Entities;
@@ -19,29 +20,22 @@ namespace PetSitting.Application.Features.PostManagement.Commands
 
         protected override async Task<BaseResponse> HandleCommand(UpdateJobOfferStatusCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
-            try
-            {
-                var jobApplication = await _jobApplicationRepository.GetByIdAsync(request.jobApplicationId);
-                if(jobApplication == null)
-                    throw new Exception("Job application does not exists!");
+            var jobApplication = await _jobApplicationRepository.GetByIdAsync(request.jobApplicationId);
+            if (jobApplication == null)
+                throw new JobApplicationNotFoundException();
 
-                if(request.status == JobApplicationStatus.Approved)
-                {
-                    var allJobOffers = await _jobApplicationRepository.GetAllJobApplicationsForAJobPost(jobApplication.JobPostId);
-                    var approvedJobOffers = allJobOffers.Where(jo => jo.Status == JobApplicationStatus.Approved).FirstOrDefault();
-                    if (approvedJobOffers != null)
-                        throw new Exception("You've already approved an offer for this Job!");
-                }
-                
-                jobApplication.UpdateStatus(request.status);
-                await _jobApplicationRepository.Update(jobApplication);
-
-                return response;
-            }
-            catch(Exception)
+            if (request.status == JobApplicationStatus.Approved)
             {
-                throw;
+                var allJobOffers = await _jobApplicationRepository.GetAllJobApplicationsForAJobPost(jobApplication.JobPostId);
+                var approvedJobOffers = allJobOffers.Where(jo => jo.Status == JobApplicationStatus.Approved).FirstOrDefault();
+                if (approvedJobOffers != null)
+                    throw new JobApplicationAlreadyAcceptedException();
             }
+
+            jobApplication.UpdateStatus(request.status);
+            await _jobApplicationRepository.Update(jobApplication);
+
+            return response;
         }
     }
 }

@@ -20,30 +20,21 @@ namespace PetSitting.Application.Features.PostManagement.Commands
 
         protected override async Task<BaseResponse> HandleCommand(CreateJobPostCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
-            try
+            JobPost jobPost = new JobPost
             {
-                JobPost jobPost = new JobPost
-                {
-                    Description = request.description,
-                    AuthorId = request.authorId,
-                    MediaFiles = request.medias,
-                    Title = request.title,
-                    Location = request.location,
-                    StartDate = request.startDate,
-                    EndDate = request.endDate,
-                    Payment = request.payment
-                };
-                
-                await _jobPost.AddAsync(jobPost);
+                Description = request.description,
+                AuthorId = request.authorId,
+                MediaFiles = request.medias,
+                Title = request.title,
+                Location = request.location,
+                StartDate = request.startDate,
+                EndDate = request.endDate,
+                Payment = request.payment
+            };
 
-                return response;
-            }
-            catch(Exception)
-            {
-                throw;
-            }
+            await _jobPost.AddAsync(jobPost);
 
-
+            return response;
         }
     }
 

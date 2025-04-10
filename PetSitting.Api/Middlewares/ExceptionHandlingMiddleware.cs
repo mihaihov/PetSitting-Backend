@@ -1,5 +1,6 @@
 using System.Net;
 using PetSitting.Application.Exceptions;
+using PetSitting.Application.Exceptions.Firebase;
 
 namespace PetSitting.Api.Middlewares
 {
@@ -35,6 +36,38 @@ namespace PetSitting.Api.Middlewares
             {
                 //_logger.LogError(ex,"The user is trying to submit a job offer for a job post but one already exists. Submitting multiple offers by the same user is not allowed.");
                 httpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch(GenericValidationException ex)
+            {
+                //_logger.LogError(ex,"The user is trying to submit a job offer for a job post but one already exists. Submitting multiple offers by the same user is not allowed.");
+                httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch(FirebaseLoginFailedException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.BadGateway;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch(FirebaseUserCannotBeCreatedException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.BadGateway;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch(FirebaseUserNotFoundException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.BadGateway;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch(FirebaseTokenValidationException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.BadGateway;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch(Exception ex)
+            {
+                //log it.
+                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
             }
         }

@@ -1,4 +1,5 @@
 using MediatR;
+using PetSitting.Application.Exceptions;
 using PetSitting.Application.Features.Common;
 using PetSitting.Application.Features.UserManagement.Entities;
 using PetSitting.Application.Interfaces.Repositories;
@@ -17,21 +18,15 @@ namespace PetSitting.Application.Features.PostManagement.Commands
         }
         protected override async Task<BaseResponse> HandleCommand(DeleteJobPostCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
-            try
-            {
-                if(string.IsNullOrEmpty(request.id))
-                    throw new Exception("Id is expected!");
-                var jobPost = await _jobPostRepository.GetByIdAsync(request.id);
-                if(jobPost == null)
-                    throw new Exception("Job post not found!");
-                
-                await _jobPostRepository.Delete(jobPost);
-                return response;
-            }
-            catch(Exception)
-            {
-                throw;
-            }
+
+            if (string.IsNullOrEmpty(request.id))
+                throw new GenericValidationException("Id is expected!");
+            var jobPost = await _jobPostRepository.GetByIdAsync(request.id);
+            if (jobPost == null)
+                throw new JobApplicationNotFoundException();
+
+            await _jobPostRepository.Delete(jobPost);
+            return response;
         }
     }
 }

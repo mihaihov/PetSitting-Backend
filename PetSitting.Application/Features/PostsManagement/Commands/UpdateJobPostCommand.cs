@@ -1,4 +1,5 @@
 using MediatR;
+using PetSitting.Application.Exceptions;
 using PetSitting.Application.Features.Common;
 using PetSitting.Application.Features.PostManagement.Validators;
 using PetSitting.Application.Features.UserManagement.Entities;
@@ -19,29 +20,22 @@ namespace PetSitting.Application.Features.PostManagement.Commands
         }
         protected override async Task<BaseResponse> HandleCommand(UpdateJobPostCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
-            try
-            {
-                var jobPost = await _jobPostRepository.GetByIdAsync(request.id);
-                if(jobPost == null)
-                    throw new Exception("Post not found!");
+            var jobPost = await _jobPostRepository.GetByIdAsync(request.id);
+            if (jobPost == null)
+                throw new PostNotFoundException();
 
-                if(request.description is not null) jobPost.Description = request.description;
-                if(request.medias is not null) jobPost.MediaFiles = request.medias;
-                if(request.title is not null) jobPost.Title = request.title;
-                if(request.location is not null) jobPost.Location = request.location;
-                if(request.startDate is not null) jobPost.StartDate = (DateTime)request.startDate;
-                if(request.endDate is not null) jobPost.EndDate = (DateTime)request.endDate;
-                if(request.payment is not null) jobPost.Payment = request.payment;
-                if(request.isOpen is not null) jobPost.IsOpen = (bool)request.isOpen;
+            if (request.description is not null) jobPost.Description = request.description;
+            if (request.medias is not null) jobPost.MediaFiles = request.medias;
+            if (request.title is not null) jobPost.Title = request.title;
+            if (request.location is not null) jobPost.Location = request.location;
+            if (request.startDate is not null) jobPost.StartDate = (DateTime)request.startDate;
+            if (request.endDate is not null) jobPost.EndDate = (DateTime)request.endDate;
+            if (request.payment is not null) jobPost.Payment = request.payment;
+            if (request.isOpen is not null) jobPost.IsOpen = (bool)request.isOpen;
 
-                await _jobPostRepository.Update(jobPost);
+            await _jobPostRepository.Update(jobPost);
 
-                return response;
-            }
-            catch(Exception)
-            {
-                throw;
-            }
+            return response;
         }
     }
 }

@@ -15,21 +15,14 @@ namespace PetSitting.Api
         protected async Task<ActionResult<TResponse>> HandleRequest<TRequest, TResponse>(TRequest command)
     where TRequest : IRequest<TResponse>
         {
-            try
-            {
-                var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command);
 
-                if (result is BaseResponse baseResponse && baseResponse.ValidationErrors?.Count > 0)
-                {
-                    return StatusCode(500, baseResponse.ValidationErrors);
-                }
-
-                return Ok(result);
-            }
-            catch (Exception ex)
+            if (result is BaseResponse baseResponse && baseResponse.ValidationErrors?.Count > 0)
             {
-                return StatusCode(500, new { message = ex.Message });
+                return StatusCode(400, baseResponse.ValidationErrors);
             }
+
+            return Ok(result);
         }
     }
 }

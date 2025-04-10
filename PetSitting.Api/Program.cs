@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text.Json.Serialization;
+using PetSitting.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,7 +76,7 @@ var firebaseApp = FirebaseApp.Create(new AppOptions {
 var app = builder.Build();
 
 //seed roles
-PetSitting.Infrastructure.Utils.Seeder.SeedRoles(app.Services);
+//PetSitting.Infrastructure.Utils.Seeder.SeedRoles(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -84,6 +85,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

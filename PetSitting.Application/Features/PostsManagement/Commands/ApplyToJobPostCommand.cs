@@ -1,4 +1,5 @@
 using MediatR;
+using PetSitting.Application.Exceptions;
 using PetSitting.Application.Features.Common;
 using PetSitting.Application.Features.PostManagement.Validators;
 using PetSitting.Application.Features.UserManagement.Entities;
@@ -22,29 +23,22 @@ namespace PetSitting.Application.Features.PostManagement.Commands
         }
         protected override async Task<BaseResponse> HandleCommand(ApplyToJobPostCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
-            try
-            {
-                var user = await _userRepository.GetByIdAsync(request.applicantId);
-                if(user == null)
-                    throw new Exception("User not found!");
+            var user = await _userRepository.GetByIdAsync(request.applicantId);
+            if (user == null)
+                throw new InternalUserNotFoundException();
 
-                var post = await _postRepository.GetByIdAsync(request.jobPostId);
-                if(post == null)
-                    throw new Exception("Post not found");
+            var post = await _postRepository.GetByIdAsync(request.jobPostId);
+            if (post == null)
+                throw new PostNotFoundException();
 
-                if(await _applicationsRepository.Exists(request.jobPostId,request.applicantId))
-                    throw new Exception("You've already applied to this job!");
+            if (await _applicationsRepository.Exists(request.jobPostId, request.applicantId))
+                throw new JobApplicationAlreadyExistsException();
 
-                JobApplication ja = JobApplication.Create(request.jobPostId, request.applicantId, request.title, request.description);
+            JobApplication ja = JobApplication.Create(request.jobPostId, request.applicantId, request.title, request.description);
 
-                await _applicationsRepository.AddAsync(ja);
+            await _applicationsRepository.AddAsync(ja);
 
-                return response;
-            }
-            catch(Exception)
-            {
-                throw;
-            }
+            return response;
 
         }
     }

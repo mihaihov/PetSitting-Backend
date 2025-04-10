@@ -1,4 +1,5 @@
 using Moq;
+using PetSitting.Application.Exceptions;
 using PetSitting.Application.Features.Common;
 using PetSitting.Application.Features.PostManagement.Commands;
 using PetSitting.Application.Interfaces.Repositories;
@@ -59,7 +60,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             //act
             var commandHandler = new ApplyToJobPostCommandHandler(_mockUserRepository.Object, 
                 _mockPostsRepository.Object, _mockJobApplicationRepository.Object);
-            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command,CancellationToken.None));
+            await Assert.ThrowsAsync<InternalUserNotFoundException>(() => commandHandler.Handle(command,CancellationToken.None));
 
             //assert
             _mockUserRepository.Verify(u => u.GetByIdAsync(It.IsAny<string>()), Times.Once);
@@ -82,7 +83,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             //act
             var commandHandler = new ApplyToJobPostCommandHandler(_mockUserRepository.Object, 
                 _mockPostsRepository.Object, _mockJobApplicationRepository.Object);
-            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command,CancellationToken.None));
+            await Assert.ThrowsAsync<PostNotFoundException>(() => commandHandler.Handle(command,CancellationToken.None));
 
             //assert
             _mockUserRepository.Verify(u => u.GetByIdAsync(It.IsAny<string>()), Times.Once);
@@ -108,7 +109,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             //act
             var commandHandler = new ApplyToJobPostCommandHandler(_mockUserRepository.Object, 
                 _mockPostsRepository.Object, _mockJobApplicationRepository.Object);
-            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command,CancellationToken.None));
+            await Assert.ThrowsAsync<JobApplicationAlreadyExistsException>(() => commandHandler.Handle(command,CancellationToken.None));
 
             //assert
             _mockUserRepository.Verify(u => u.GetByIdAsync(It.IsAny<string>()), Times.Once);

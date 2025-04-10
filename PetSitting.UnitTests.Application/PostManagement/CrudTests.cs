@@ -1,4 +1,5 @@
 using Moq;
+using PetSitting.Application.Exceptions;
 using PetSitting.Application.Features.Common;
 using PetSitting.Application.Features.PostManagement.Commands;
 using PetSitting.Application.Interfaces.Repositories;
@@ -79,7 +80,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
 
             //act
             var commandHandler = new DeleteJobPostCommandHandler(_mockJobPostRepository.Object);
-            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command,CancellationToken.None));
+            await Assert.ThrowsAsync<GenericValidationException>(() => commandHandler.Handle(command,CancellationToken.None));
 
             //assert
             _mockJobPostRepository.Verify(j => j.Delete(It.IsAny<JobPost>()),Times.Never);
@@ -95,7 +96,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
 
             //act
             var commandHandler = new DeleteJobPostCommandHandler(_mockJobPostRepository.Object);
-            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command,CancellationToken.None));
+            await Assert.ThrowsAsync<JobApplicationNotFoundException>(() => commandHandler.Handle(command,CancellationToken.None));
 
             //assert
             _mockJobPostRepository.Verify(j => j.Delete(It.IsAny<JobPost>()),Times.Never);
@@ -135,7 +136,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
 
             //act
             var commandHandler = new UpdatejobPostCommandHandler(_mockJobPostRepository.Object);
-            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command,CancellationToken.None));
+            await Assert.ThrowsAsync<PostNotFoundException>(() => commandHandler.Handle(command,CancellationToken.None));
 
             //assert
             _mockJobPostRepository.Verify(j => j.Update(It.IsAny<JobPost>()), Times.Never);
@@ -208,7 +209,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             var commandHandler = new UpdateJobApplicationCommandHandler(_mockJobApplicationRepository.Object);
             
             //assert
-            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command,CancellationToken.None));
+            await Assert.ThrowsAsync<GenericValidationException>(() => commandHandler.Handle(command,CancellationToken.None));
             _mockJobApplicationRepository.Verify(ja => ja.GetByIdAsync(It.IsAny<string>()), Times.Never);
             _mockJobApplicationRepository.Verify(ja => ja.Update(It.IsAny<JobApplication>()), Times.Never);
 
@@ -228,7 +229,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             var commandHandler = new UpdateJobApplicationCommandHandler(_mockJobApplicationRepository.Object);
             
             //assert
-            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command,CancellationToken.None));
+            await Assert.ThrowsAsync<JobApplicationNotFoundException>(() => commandHandler.Handle(command,CancellationToken.None));
             _mockJobApplicationRepository.Verify(ja => ja.GetByIdAsync(It.IsAny<string>()), Times.Once);
             _mockJobApplicationRepository.Verify(ja => ja.Update(It.IsAny<JobApplication>()), Times.Never);
 

@@ -1,5 +1,6 @@
 using System.Net;
 using Moq;
+using PetSitting.Application.Exceptions;
 using PetSitting.Application.Features.PostManagement.Commands;
 using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Domain.Entities.PostManagement;
@@ -47,7 +48,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
                 .ReturnsAsync((JobApplication?)null);
             //act
             var commandHandler = new UpdateJobOfferStatusCommandHandler(_mockJobApplicationrepository.Object);
-            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command, CancellationToken.None));
+            await Assert.ThrowsAsync<JobApplicationNotFoundException>(() => commandHandler.Handle(command, CancellationToken.None));
 
             //assert
             _mockJobApplicationrepository.Verify(j => j.Update(It.IsAny<JobApplication>()), Times.Never);
@@ -68,7 +69,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
                     });;
             //act
             var commandHandler = new UpdateJobOfferStatusCommandHandler(_mockJobApplicationrepository.Object);
-            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command, CancellationToken.None));
+            await Assert.ThrowsAsync<JobApplicationAlreadyAcceptedException>(() => commandHandler.Handle(command, CancellationToken.None));
 
             //assert
             _mockJobApplicationrepository.Verify(j => j.Update(It.IsAny<JobApplication>()), Times.Never);

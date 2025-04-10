@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Google.Apis.Auth.OAuth2;
 using PetSitting.Application.Interfaces.Services;
 using Firebase.Auth;
+using PetSitting.Application.Exceptions;
+using PetSitting.Application.Exceptions.Firebase;
 
 namespace PetSitting.UnitTests.Application
 {
@@ -119,7 +121,7 @@ namespace PetSitting.UnitTests.Application
                 .Returns(Task.CompletedTask);
 
             //act and assert
-            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command, CancellationToken.None));
+            await Assert.ThrowsAsync<FirebaseUserCannotBeCreatedException>(() => commandHandler.Handle(command, CancellationToken.None));
 
             _mockFirebaseServices.Verify(f => f.CreateUserWithEmailAndPasswordAsync(command.email,command.password), Times.Once);
             _mockRoleRepository.VerifyNoOtherCalls();
@@ -149,7 +151,7 @@ namespace PetSitting.UnitTests.Application
             var commandHandler = new RegisterCommandHandler(_mockUserRepository.Object, _mockRoleRepository.Object,
                 _mockFirebaseServices.Object, _userManager.Object);
 
-            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command, CancellationToken.None));
+            await Assert.ThrowsAsync<InternalRoleNotFoundException>(() => commandHandler.Handle(command, CancellationToken.None));
 
             //act & assert
             _mockUserRepository.Verify(u => u.BeginTransactionAsync(), Times.Once);

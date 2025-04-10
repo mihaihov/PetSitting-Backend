@@ -7,7 +7,7 @@ using PetSitting.Domain.Entities.PostManagement;
 
 namespace PetSitting.Application.Features.PostManagement.Commands
 {
-    public record ApplyToJobPostCommand(string jobPostId, string applicantId) : IRequest<BaseResponse>;
+    public record ApplyToJobPostCommand(string jobPostId, string applicantId, string? title, string description) : IRequest<BaseResponse>;
 
     public class ApplyToJobPostCommandHandler : BaseHandler<ApplyToJobPostCommand,BaseResponse,ApplyToJobPostCommandValidator>
     {
@@ -35,7 +35,7 @@ namespace PetSitting.Application.Features.PostManagement.Commands
                 if(await _applicationsRepository.Exists(request.jobPostId,request.applicantId))
                     throw new Exception("You've already applied to this job!");
 
-                JobApplication ja = JobApplication.Create(request.jobPostId, request.applicantId);
+                JobApplication ja = JobApplication.Create(request.jobPostId, request.applicantId, request.title, request.description);
 
                 await _applicationsRepository.AddAsync(ja);
 

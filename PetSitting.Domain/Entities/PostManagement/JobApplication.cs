@@ -5,6 +5,8 @@ namespace PetSitting.Domain.Entities.PostManagement
     public class JobApplication
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string? Title {get;set;}
+        public required string Description {get;set;}
         public required string JobPostId { get; set; }
 #pragma warning disable
         public JobPost JobPost { get; set; }
@@ -32,11 +34,13 @@ namespace PetSitting.Domain.Entities.PostManagement
             };
         }
 
-        public static JobApplication Create(string jobPostId, string applicantId)
+        public static JobApplication Create(string jobPostId, string applicantId, string? title, string description)
         {
             return new JobApplication {
                     JobPostId = jobPostId,
-                    ApplicantId = applicantId
+                    ApplicantId = applicantId,
+                    Title = title,
+                    Description = description
                 };
         }
 

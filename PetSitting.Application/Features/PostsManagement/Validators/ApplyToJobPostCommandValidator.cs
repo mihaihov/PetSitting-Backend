@@ -14,6 +14,9 @@ namespace PetSitting.Application.Features.PostManagement.Validators
             RuleFor(p => p.applicantId)
                 .NotNull().WithMessage("Applicant Id cannot be null!")
                 .NotEmpty().WithMessage("Applicant Id cannot be empty!");
+
+            RuleFor(p => p.description)
+                .NotNull().NotEmpty().WithMessage("Description cannot be empty!");
         }
     }
 }

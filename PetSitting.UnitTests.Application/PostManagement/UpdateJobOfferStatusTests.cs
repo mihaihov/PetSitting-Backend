@@ -63,8 +63,8 @@ namespace PetSitting.UnitTests.Application.PostManagement
             _mockJobApplicationrepository.Setup(j => j.GetAllJobApplicationsForAJobPost(It.IsAny<string>()))
                     .ReturnsAsync(new List<JobApplication>
                     {
-                        new JobApplication { JobPostId = "TEST", ApplicantId = "test", Status = JobApplicationStatus.Pending },
-                        new JobApplication { JobPostId = "TEST", ApplicantId = "test", Status = JobApplicationStatus.Approved }, // This will be matched by LINQ
+                        new JobApplication { JobPostId = "TEST", ApplicantId = "test", Status = JobApplicationStatus.Pending, Description = "Test" },
+                        new JobApplication { JobPostId = "TEST", ApplicantId = "test", Status = JobApplicationStatus.Approved, Description = "Test" }, // This will be matched by LINQ
                     });;
             //act
             var commandHandler = new UpdateJobOfferStatusCommandHandler(_mockJobApplicationrepository.Object);
@@ -84,8 +84,8 @@ namespace PetSitting.UnitTests.Application.PostManagement
             _mockJobApplicationrepository.Setup(j => j.GetAllJobApplicationsForAJobPost(It.IsAny<string>()))
                     .ReturnsAsync(new List<JobApplication>
                     {
-                        new JobApplication { JobPostId = "TEST", ApplicantId = "test", Status = JobApplicationStatus.Pending },
-                        new JobApplication { JobPostId = "TEST", ApplicantId = "test", Status = JobApplicationStatus.Pending }, // This will be matched by LINQ
+                        new JobApplication { JobPostId = "TEST", ApplicantId = "test", Status = JobApplicationStatus.Pending, Description = "test" },
+                        new JobApplication { JobPostId = "TEST", ApplicantId = "test", Status = JobApplicationStatus.Pending, Description = "test" }, // This will be matched by LINQ
                     });;
             //act
             var commandHandler = new UpdateJobOfferStatusCommandHandler(_mockJobApplicationrepository.Object);

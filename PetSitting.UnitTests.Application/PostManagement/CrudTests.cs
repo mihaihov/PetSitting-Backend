@@ -9,11 +9,15 @@ namespace PetSitting.UnitTests.Application.PostManagement
     public class CrudTests
     {
         private readonly Mock<IBaseRepository<JobPost>> _mockJobPostRepository;
+        private readonly Mock<IJobApplicationRepository> _mockJobApplicationRepository;
         private readonly Mock<JobPost> _mockJobPost;
+        private readonly Mock<JobApplication> _mockJobApplication;
         public CrudTests()
         {
             _mockJobPost = new Mock<JobPost>();
             _mockJobPostRepository = new Mock<IBaseRepository<JobPost>>();
+            _mockJobApplicationRepository = new Mock<IJobApplicationRepository>();
+            _mockJobApplication = new Mock<JobApplication>();
 
             _mockJobPostRepository.Setup(j => j.AddAsync(It.IsAny<JobPost>()))
                 .Returns(Task.FromResult(_mockJobPost.Object));
@@ -187,6 +191,66 @@ namespace PetSitting.UnitTests.Application.PostManagement
             _mockJobPostRepository.Verify(j => j.Update(It.IsAny<JobPost>()), Times.Once);
             Assert.False(!response.Success);
             Assert.Null(response.ValidationErrors);
+
+        }
+
+        [Fact]
+        public async Task HandleCommand_ShouldNotUpdateJobApplication_IfValidationFails()
+        {
+            //arrange
+            var command = new UpdateJobApplicationCommand("","");
+            
+            //act
+            _mockJobApplicationRepository.Setup(ja => ja.GetByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(_mockJobApplication.Object);
+            _mockJobApplicationRepository.Setup(ja => ja.Update(It.IsAny<JobApplication>()))
+                .Returns(Task.CompletedTask);
+            var commandHandler = new UpdateJobApplicationCommandHandler(_mockJobApplicationRepository.Object);
+            
+            //assert
+            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command,CancellationToken.None));
+            _mockJobApplicationRepository.Verify(ja => ja.GetByIdAsync(It.IsAny<string>()), Times.Never);
+            _mockJobApplicationRepository.Verify(ja => ja.Update(It.IsAny<JobApplication>()), Times.Never);
+
+        }
+
+        [Fact]
+        public async Task HandleCommand_ShouldNotUpdateJobApplication_IfJobApplicationIsNotFound()
+        {
+            //arrange
+            var command = new UpdateJobApplicationCommand("test","test");
+            
+            //act
+            _mockJobApplicationRepository.Setup(ja => ja.GetByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync((JobApplication?)null);
+            _mockJobApplicationRepository.Setup(ja => ja.Update(It.IsAny<JobApplication>()))
+                .Returns(Task.CompletedTask);
+            var commandHandler = new UpdateJobApplicationCommandHandler(_mockJobApplicationRepository.Object);
+            
+            //assert
+            await Assert.ThrowsAsync<Exception>(() => commandHandler.Handle(command,CancellationToken.None));
+            _mockJobApplicationRepository.Verify(ja => ja.GetByIdAsync(It.IsAny<string>()), Times.Once);
+            _mockJobApplicationRepository.Verify(ja => ja.Update(It.IsAny<JobApplication>()), Times.Never);
+
+        }
+
+        [Fact]
+        public async Task HandleCommand_ShouldUpdateJobApplication_IfEverythingIsOk()
+        {
+            //arrange
+            var command = new UpdateJobApplicationCommand("test","test");
+            
+            //act
+            _mockJobApplicationRepository.Setup(ja => ja.GetByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(_mockJobApplication.Object);
+            _mockJobApplicationRepository.Setup(ja => ja.Update(It.IsAny<JobApplication>()))
+                .Returns(Task.CompletedTask);
+            var commandHandler = new UpdateJobApplicationCommandHandler(_mockJobApplicationRepository.Object);
+            
+            //assert
+            await commandHandler.Handle(command,CancellationToken.None);
+            _mockJobApplicationRepository.Verify(ja => ja.GetByIdAsync(It.IsAny<string>()), Times.Once);
+            _mockJobApplicationRepository.Verify(ja => ja.Update(It.IsAny<JobApplication>()), Times.Once);
 
         }
     }

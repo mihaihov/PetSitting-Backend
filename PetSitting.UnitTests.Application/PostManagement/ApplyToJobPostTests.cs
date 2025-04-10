@@ -31,7 +31,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
         public async Task HandleCommand_ShouldNotApply_IfValidationFails()
         {
             //arrange
-            var command = new ApplyToJobPostCommand("","");
+            var command = new ApplyToJobPostCommand("","","","");
 
             //act
             var commandHandler = new ApplyToJobPostCommandHandler(_mockUserRepository.Object, 
@@ -52,7 +52,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
         public async Task HandleCommand_ShouldNotApply_IfApplicantIsNotFound()
         {
             //arrange
-            var command = new ApplyToJobPostCommand("test1","test2");
+            var command = new ApplyToJobPostCommand("test1","test2","test3","test4");
             _mockUserRepository.Setup(u => u.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync((ApplicationUser?)null);
 
@@ -72,7 +72,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
         public async Task HandleCommand_ShouldNotApply_IfPostIsNotFound()
         {
             //arrange
-            var command = new ApplyToJobPostCommand("test1","test2");
+            var command = new ApplyToJobPostCommand("test1","test2","test3","test4");
             _mockUserRepository.Setup(u => u.GetByIdAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult(_mockApplicationUser.Object)!);
 
@@ -95,7 +95,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
         public async Task HandleCommand_ShouldNotApply_IfAnApplicationWasAlreadySubmitted()
         {
             //arrange
-            var command = new ApplyToJobPostCommand("test1","test2");
+            var command = new ApplyToJobPostCommand("test1","test2","test3","test4");
             _mockUserRepository.Setup(u => u.GetByIdAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult(_mockApplicationUser.Object)!);
 
@@ -121,7 +121,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
         public async Task HandleCommand_ShouldApply_IfEverythingsSucceeds()
         {
             //arrange
-            var command = new ApplyToJobPostCommand("test1","test2");
+            var command = new ApplyToJobPostCommand("test1","test2","test3","test4");
             _mockUserRepository.Setup(u => u.GetByIdAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult(_mockApplicationUser.Object)!);
 

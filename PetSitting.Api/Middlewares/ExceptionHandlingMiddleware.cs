@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using PetSitting.Application.Exceptions;
 using PetSitting.Application.Exceptions.Firebase;
 
@@ -62,6 +63,16 @@ namespace PetSitting.Api.Middlewares
             catch(FirebaseTokenValidationException ex)
             {
                 httpContext.Response.StatusCode = (int)HttpStatusCode.BadGateway;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch(InternalMessageNotFoundException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch(HubException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
             }
             catch(Exception ex)

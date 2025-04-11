@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using MediatR;
 using PetSitting.Application.Features.Messaging.Commands;
 using PetSitting.Application.Interfaces.Repositories;
@@ -12,30 +14,39 @@ namespace PetSitting.Application.Services
     {
         private readonly IMediator _mediator;
         private readonly IChatSessionRepository _chatSessionRepository;
-        public MessagingServices(IMediator mediator, IChatSessionRepository chatSessionRepository)
+        private readonly IUserRepository _userRepository;
+        private readonly IBaseRepository<JobPost> _jobPostRepository;
+        public MessagingServices(IMediator mediator, IChatSessionRepository chatSessionRepository, IUserRepository userRepository, IBaseRepository<JobPost> jobPostRepository)
         {
             _mediator = mediator;
             _chatSessionRepository = chatSessionRepository;
+            _userRepository = userRepository;
+            _jobPostRepository = jobPostRepository;
         }
-        public bool CanUsersChat(ApplicationUser firstUser, ApplicationUser secondUser, JobPost jobPost, ChatSession chatSession)
+        public async Task<bool> CanUsersChat(string chatSessionId)
         {
-            if(!firstUser.IsPetSitter && !secondUser.IsPetSitter)   return false;
-            if(DateTime.Now < jobPost.StartDate.AddDays(-2) || DateTime.Now > jobPost.StartDate.AddDays(2)) return false;    //doublecheck
+            var chatSession = await _chatSessionRepository.GetByIdAsync(chatSessionId);
+            if(chatSession == null) return false;
+            var firstUser = await _userRepository.GetByIdAsync(chatSession.FirstUserId);
+            var secondUser = await _userRepository.GetByIdAsync(chatSession.SecondUserId);
+            var jobPost = await _jobPostRepository.GetByIdAsync(chatSession.JobPostId);
+
+
+            if(!firstUser!.IsPetSitter && !secondUser!.IsPetSitter)   return false;
+            if(DateTime.Now > jobPost!.StartDate.AddDays(2)) return false;    //doublecheck
             if(!chatSession.IsActive) return false;
             return true;
         }
 
-        public async Task CreateChatsession(string firstUser, string secondUser, string jobPostId)
+        public async Task CreateChatSession(string firstUser, string secondUser, string jobPostId)
         {
             var command = new AddChatSessionCommand(firstUser,secondUser,jobPostId, null);
             await _mediator.Send(command);
         }
 
-        public async Task<bool> DoesChatSessionExists(string chatSessionId)
+        public async Task<ChatSession?> DoesChatSessionExists(string chatSessionId)
         {
-            var chatSession = await _chatSessionRepository.GetByIdAsync(chatSessionId);
-            if(chatSession != null) return true;
-            return false;
+            return await _chatSessionRepository.GetByIdAsync(chatSessionId);
         }
 
         public string GenerateChatSessionId(string firstUser, string secondUser)

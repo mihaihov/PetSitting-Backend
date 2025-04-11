@@ -6,9 +6,9 @@ namespace PetSitting.Application.Interfaces.Services
 {
     public interface IMessagingServices
     {
-        public Task<bool> DoesChatSessionExists(string chatSessionId);
-        public bool CanUsersChat(ApplicationUser firstUser, ApplicationUser secondUser, JobPost jobPost, ChatSession chatSession);
-        public Task CreateChatsession(string firstUser, string secondUser, string jobPostId);
+        public Task<ChatSession?> DoesChatSessionExists(string chatSessionId);
+        public Task<bool> CanUsersChat(string chatSessionId);
+        public Task CreateChatSession(string firstUser, string secondUser, string jobPostId);
         public Task<ICollection<Message>?> GetRecenteMessagesAsync(string chatSessionId, int count);
         public string GenerateChatSessionId(string firstUser, string secondUser);
     }

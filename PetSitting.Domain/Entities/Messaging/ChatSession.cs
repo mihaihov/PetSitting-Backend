@@ -7,8 +7,8 @@ namespace PetSitting.Domain.Entities.Messaging
 #pragma warning disable
         [Key]
         public string ChatSessionId {get;set;}
-        public string PetOwnerId {get;set;}
-        public string PetSitterId {get;set;}
+        public string FirstUserId {get;set;}
+        public string SecondUserId {get;set;}
         public string JobPostId {get;set;}
         public bool IsActive{get;set;}
 

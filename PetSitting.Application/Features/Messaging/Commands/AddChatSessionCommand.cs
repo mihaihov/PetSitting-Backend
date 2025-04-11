@@ -1,3 +1,4 @@
+using System.Threading.Channels;
 using MediatR;
 using PetSitting.Application.Features.Common;
 using PetSitting.Application.Features.Messaging.Validators;
@@ -20,10 +21,10 @@ namespace PetSitting.Application.Features.Messaging.Commands
         protected override async Task<BaseResponse> HandleCommand(AddChatSessionCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
             var chatSession = new ChatSession{
-                PetOwnerId = request.firstUser,
-                PetSitterId = request.secondUser,
+                FirstUserId = request.firstUser,
+                SecondUserId = request.secondUser,
                 JobPostId = request.jobPostId,
-                IsActive = request.isActive == null ? false : true
+                IsActive = request.isActive == null ? true : (bool)request.isActive
             };
             await _chatSessionRepository.AddAsync(chatSession);
             return response;

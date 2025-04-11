@@ -31,7 +31,7 @@ namespace PetSitting.Infrastructure.Repositories
 
         public async Task<ICollection<ChatSession>?> GetByUserAsync(string userId)
         {
-            return await _dbContext.Set<ChatSession>().Where(cs => cs.PetOwnerId == userId || cs.PetSitterId == userId).ToListAsync();
+            return await _dbContext.Set<ChatSession>().Where(cs => cs.FirstUserId == userId || cs.SecondUserId == userId).ToListAsync();
         }
 
         public async Task<ICollection<Message>?> GetRecentMessages(string chatId, int count)

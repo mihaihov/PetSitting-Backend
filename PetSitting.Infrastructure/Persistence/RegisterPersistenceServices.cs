@@ -20,6 +20,8 @@ namespace PetSitting.Infrastructure
             serviceCollection.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             serviceCollection.AddScoped<IUserRepository, UserRepository>();
             serviceCollection.AddTransient<IJobApplicationRepository, JobApplicationRepository>();
+            serviceCollection.AddTransient<IMessageRepository, MessageRepository>();
+            serviceCollection.AddTransient<IChatSessionRepository, ChatSessionRepository>();
             return serviceCollection;
         }
     }

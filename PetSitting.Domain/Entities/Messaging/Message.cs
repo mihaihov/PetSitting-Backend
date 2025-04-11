@@ -5,6 +5,7 @@ namespace PetSitting.Domain.Entities.Messaging
     public class Message
     {
 #pragma warning disable
+        [Key]
         public string MessageId {get;set;}
         public string ChatSessionId {get;set;}
         public ChatSession ChatSession {get;set;}

@@ -27,13 +27,13 @@ namespace PetSitting.Infrastructure.Repositories
             return await _dbContext.Set<Message>().Where(m => m.SenderId == userId).Take(n).ToListAsync();
         }
 
-        public async Task<ICollection<Message>?> GetLatestNMessagesRecievedByUser(string userId, int n)
+        public async Task<ICollection<Message>?> GetLatestNMessagesReceivedByUser(string userId, int n)
         {
             return await _dbContext.Set<Message>().Where(m => m.RecipientId == userId).Take(n).ToListAsync();
         }
 
 
-        public async Task<ICollection<Message>?> GetMessagesByDate(string userId, DateTime date)
+        public async Task<ICollection<Message>?> GetUserMessagesByDate(string userId, DateTime date)
         {
             return await _dbContext.Set<Message>().Where(m => m.Timestamp.Date == date.Date).ToListAsync();
         }

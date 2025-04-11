@@ -7,7 +7,7 @@ using PetSitting.Domain.Entities.Messaging;
 
 namespace PetSitting.Application.Features.Messaging.Commands
 {
-    public record AddChatSessionCommand(string petOwnerId, string petSitterId, 
+    public record AddChatSessionCommand(string firstUser, string secondUser, 
         string jobPostId, bool? isActive) : IRequest<BaseResponse>;
     public class AddChatSessionCommandHandler : BaseHandler<AddChatSessionCommand,BaseResponse,AddChatSessionCommandValidator>
     {
@@ -20,8 +20,8 @@ namespace PetSitting.Application.Features.Messaging.Commands
         protected override async Task<BaseResponse> HandleCommand(AddChatSessionCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
             var chatSession = new ChatSession{
-                PetOwnerId = request.petOwnerId,
-                PetSitterId = request.petSitterId,
+                PetOwnerId = request.firstUser,
+                PetSitterId = request.secondUser,
                 JobPostId = request.jobPostId,
                 IsActive = request.isActive == null ? false : true
             };

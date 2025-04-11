@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Domain.Entities.Messaging;
@@ -31,6 +32,17 @@ namespace PetSitting.Infrastructure.Repositories
         public async Task<ICollection<ChatSession>?> GetByUserAsync(string userId)
         {
             return await _dbContext.Set<ChatSession>().Where(cs => cs.PetOwnerId == userId || cs.PetSitterId == userId).ToListAsync();
+        }
+
+        public async Task<ICollection<Message>?> GetRecentMessages(string chatId, int count)
+        {
+            return await _dbContext.ChatSessions
+                .Where(cs => cs.ChatSessionId == chatId)
+                .SelectMany(cs => cs.Messages)
+                .OrderByDescending(m => m.Timestamp)
+                .Take(count)
+                .OrderBy(m => m.Timestamp)
+                .ToListAsync();
         }
     }
 }

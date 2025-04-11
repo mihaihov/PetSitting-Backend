@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PetSitting.Domain.Entities.Messaging;
 using PetSitting.Domain.Entities.PostManagement;
 using PetSitting.Domain.Entities.Security;
 using PetSitting.Domain.Entities.UserManagement;
@@ -18,6 +19,8 @@ namespace PetSitting.Infrastructure
         public DbSet<Post>? Posts {get;set;}
         public DbSet<JobPost> JobPosts {get;set;}
         public DbSet<JobApplication> JobApplications {get;set;}
+        public DbSet<Message> Messages{get;set;}
+        public DbSet<ChatSession> ChatSessions {get;set;}
         
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -68,6 +71,12 @@ namespace PetSitting.Infrastructure
                 .WithMany(p => p.MediaFiles)
                 .HasForeignKey(m => m.PostId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Message>()
+                .HasOne(m => m.ChatSession)
+                .WithMany(cs => cs.Messages)
+                .HasForeignKey(m => m.ChatSessionId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

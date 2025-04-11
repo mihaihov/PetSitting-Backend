@@ -12,13 +12,15 @@ namespace PetSitting.Api.Controllers
     public class MessagingController : BaseController
     {
         private IMessageRepository _messageRepository;
-        public MessagingController(IMediator mediator, IMessageRepository messageRepository) : base(mediator) 
+        private IChatSessionRepository _chatSessionRepository;
+        public MessagingController(IMediator mediator, IMessageRepository messageRepository, IChatSessionRepository chatSessionRepository) : base(mediator) 
         {
             _messageRepository = messageRepository;
+            _chatSessionRepository = chatSessionRepository;
         }
 
-        [HttpGet("getbyid")]
-        public async Task<ActionResult<Message>> GetByIdAsync([FromQuery]string id)
+        [HttpGet("getmessagebyid")]
+        public async Task<ActionResult<Message>> GetMessage([FromQuery]string id)
         {
             if(string.IsNullOrEmpty(id))    throw new GenericValidationException("Invalid parameters.");
 
@@ -39,5 +41,27 @@ namespace PetSitting.Api.Controllers
         [HttpGet("getusermessagesbydate")]
         public Task<ActionResult<GetUserMessagesByDateCommandResponse>> GetUserMessagesByDate(
             [FromBody]GetUserMessagesByDateCommand command) => HandleRequest<GetUserMessagesByDateCommand,GetUserMessagesByDateCommandResponse>(command);
+
+        [HttpGet("getchatsessionbyid")]
+        public async Task<ActionResult<ChatSession>> GetChatSession([FromQuery]string id)
+        {
+            if(string.IsNullOrEmpty(id))    throw new GenericValidationException("Invalid parameters.");
+
+            var response = await _chatSessionRepository.GetByIdAsync(id);
+            if(response == null) throw new InternalMessageNotFoundException();
+
+            return response;
+        }
+
+        [HttpGet("getchatsessionbyuserid")]
+        public async Task<ICollection<ChatSession>?> GetChatSessionByUser([FromQuery]string userId)
+        {
+            if(string.IsNullOrEmpty(userId))    throw new GenericValidationException("Invalid parameters.");
+
+            var response = await _chatSessionRepository.GetByUserAsync(userId);
+            if(response == null) throw new InternalMessageNotFoundException();
+
+            return response;
+        }
     }
 }

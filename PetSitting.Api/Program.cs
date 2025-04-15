@@ -13,6 +13,7 @@ using System.Text;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text.Json.Serialization;
 using PetSitting.Api.Middlewares;
+using PetSitting.Api.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.AddSwaggerGen(options => {
     });
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+builder.Services.AddSignalR();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers()
     .AddJsonOptions(options => {
@@ -86,11 +88,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("Open");
 app.MapControllers();
+app.MapHub<MessagingHub>("/messaginghub");
 
 app.Run();
 

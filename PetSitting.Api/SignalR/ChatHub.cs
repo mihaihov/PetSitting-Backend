@@ -6,10 +6,10 @@ using PetSitting.Domain.Entities.UserManagement;
 
 namespace PetSitting.Api.SignalR
 {
-    public class ChatHub : Hub
+    public class MessagingHub : Hub
     {
         private readonly IMessagingServices _messagingServices;
-        public ChatHub(IMessagingServices messagingServices)
+        public MessagingHub(IMessagingServices messagingServices)
         {
             _messagingServices = messagingServices;
         }

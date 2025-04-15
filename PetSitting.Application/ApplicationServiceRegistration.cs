@@ -1,3 +1,4 @@
+using System.Reflection;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using PetSitting.Application.Interfaces.Services;
@@ -9,7 +10,7 @@ public static class ApplicationServiceRegistration
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddTransient<IMessagingServices,MessagingServices>();
         return services;
     }

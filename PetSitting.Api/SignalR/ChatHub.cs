@@ -14,6 +14,11 @@ namespace PetSitting.Api.SignalR
             _messagingServices = messagingServices;
         }
 
+        public string Echo(string text)
+        {
+            return text;
+        }
+
         //called by the client when a chat is initiated (a petowner accepted a job offer from a petsitter).
         public async Task InitiateChat(string firstUserId, string secondUserId, string jobPostId)
         {

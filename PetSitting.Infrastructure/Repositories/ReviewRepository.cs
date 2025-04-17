@@ -19,5 +19,10 @@ namespace PetSitting.Infrastructure.Repositories
         {
             return await _dbContext.Reviews.Where(r => r.PostId == postId).ToListAsync();
         }
+
+        public async Task<ICollection<Review>?> GetReviewsByAuthorToPost(string userId, string postId)
+        {
+            return await _dbContext.Reviews.Where(r => r.AuthorId == userId && r.PostId == postId).ToListAsync();
+        }
     }
 }

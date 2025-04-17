@@ -75,6 +75,16 @@ namespace PetSitting.Api.Middlewares
                 httpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
             }
+            catch(CannotReviewException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch(ReviewNotFoundException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
             catch(Exception ex)
             {
                 //log it.

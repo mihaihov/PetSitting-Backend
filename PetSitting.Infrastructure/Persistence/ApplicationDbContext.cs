@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PetSitting.Domain.Entities.Messaging;
 using PetSitting.Domain.Entities.PostManagement;
+using PetSitting.Domain.Entities.ReviewSystem;
 using PetSitting.Domain.Entities.Security;
 using PetSitting.Domain.Entities.UserManagement;
 
@@ -21,6 +22,7 @@ namespace PetSitting.Infrastructure
         public DbSet<JobApplication> JobApplications {get;set;}
         public DbSet<Message> Messages{get;set;}
         public DbSet<ChatSession> ChatSessions {get;set;}
+        public DbSet<Review> Reviews {get;set;}
         
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -76,6 +78,18 @@ namespace PetSitting.Infrastructure
                 .HasOne(m => m.ChatSession)
                 .WithMany(cs => cs.Messages)
                 .HasForeignKey(m => m.ChatSessionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Review>()
+                .HasOne(r => r.Author)
+                .WithMany(u => u.Reviews)
+                .HasForeignKey(r => r.AuthorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Review>()
+                .HasOne(r => r.Post)
+                .WithMany(p => p.Reviews)
+                .HasForeignKey(r => r.PostId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

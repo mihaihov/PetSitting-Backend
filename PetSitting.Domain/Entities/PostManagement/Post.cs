@@ -1,3 +1,4 @@
+using PetSitting.Domain.Entities.ReviewSystem;
 using PetSitting.Domain.Entities.UserManagement;
 
 namespace PetSitting.Domain.Entities.PostManagement
@@ -15,6 +16,9 @@ namespace PetSitting.Domain.Entities.PostManagement
         
         // Discriminator to differentiate post types. Default value is assigned due to configuration in OnModelCreating.
         public PostType PostType { get; set; }
+
+        //FK
+        public virtual ICollection<Review> Reviews {get;set;} = new List<Review>();
     }
 
     public enum PostType

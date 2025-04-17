@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PetSitting.Application.Features.Common;
 using PetSitting.Application.Features.ReviewSystem.Commands;
+using PetSitting.Application.Features.ReviewSystem.Queries;
 
 namespace PetSitting.Api.Controllers
 {
@@ -17,5 +18,18 @@ namespace PetSitting.Api.Controllers
         [HttpPut("updatereview")]
         public Task<ActionResult<BaseResponse>> UpdateReview([FromBody]UpdateReviewCommand command) =>
             HandleRequest<UpdateReviewCommand,BaseResponse>(command);
+
+        [HttpDelete("deletereview")]
+        public Task<ActionResult<BaseResponse>> DeleteReview([FromQuery]DeleteReviewCommand command) =>
+            HandleRequest<DeleteReviewCommand,BaseResponse>(command);
+
+        [HttpGet("getreviewsbypost")]
+        public Task<ActionResult<GetReviewsByPostQueryResponse>> GetReviewsByPost([FromQuery]GetReviewsByPostQuery query) =>
+            HandleRequest<GetReviewsByPostQuery,GetReviewsByPostQueryResponse>(query);
+
+
+        [HttpGet("getreviewsbyuser")]
+        public Task<ActionResult<GetReviewsByUserQueryResponse>> GetReviewsByUser([FromQuery]GetReviewsByUserQuery query) =>
+            HandleRequest<GetReviewsByUserQuery,GetReviewsByUserQueryResponse>(query);
     }
 }

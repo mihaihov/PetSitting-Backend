@@ -4,6 +4,7 @@ using PetSitting.Domain.Entities.Messaging;
 using PetSitting.Domain.Entities.PostManagement;
 using PetSitting.Domain.Entities.ReviewSystem;
 using PetSitting.Domain.Entities.Security;
+using PetSitting.Domain.Entities.Stripe;
 using PetSitting.Domain.Entities.UserManagement;
 
 namespace PetSitting.Infrastructure
@@ -90,6 +91,26 @@ namespace PetSitting.Infrastructure
                 .HasOne(r => r.Post)
                 .WithMany(p => p.Reviews)
                 .HasForeignKey(r => r.PostId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<StripeAccount>()
+                .HasOne(sa => sa.ApplicationUser)
+                .WithOne(au => au.StripeAccount)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<StripeTransaction>()
+                .HasOne(st => st.StripeAccount)
+                .WithMany(sa => sa.StripeTransactions)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<StripeTransaction>()
+                .HasOne(st => st.PaidBy)
+                .WithMany(au => au.StripeTransactions)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<StripeTransaction>()
+                .HasOne(st => st.JobPost)
+                .WithMany(jp => jp.StripeTransactions)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

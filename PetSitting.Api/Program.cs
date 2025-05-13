@@ -14,6 +14,7 @@ using Swashbuckle.AspNetCore.Filters;
 using System.Text.Json.Serialization;
 using PetSitting.Api.Middlewares;
 using PetSitting.Api.SignalR;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,8 @@ builder.Services.RegisterDbContext(builder.Configuration);
 builder.Services.RegisterRepositories();
 //register frirebase service
 builder.Services.RegisterFirebaseServices();
+//stripe services
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:TestEnvironment:SecretKey"];
 //register application srervices
 builder.Services.AddApplicationServices();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

@@ -96,6 +96,7 @@ namespace PetSitting.Infrastructure
             builder.Entity<StripeAccount>()
                 .HasOne(sa => sa.ApplicationUser)
                 .WithOne(au => au.StripeAccount)
+                .HasForeignKey<StripeAccount>(au => au.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<StripeTransaction>()
@@ -112,6 +113,11 @@ namespace PetSitting.Infrastructure
                 .HasOne(st => st.JobPost)
                 .WithMany(jp => jp.StripeTransactions)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<StripeTransaction>()
+                .Property(st => st.Amount)
+                .HasColumnType("decimal(10,2)");
+
         }
     }
 }

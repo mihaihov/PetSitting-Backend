@@ -10,6 +10,7 @@ namespace PetSitting.Infrastructure.Services
         {
             //one instance per application lifetime.
             serviceCollection.AddSingleton<IFirebaseService>(new FirebaseService());
+            serviceCollection.AddSingleton<IStripeServices>(new StripeServices());
             return serviceCollection;
         }
     }

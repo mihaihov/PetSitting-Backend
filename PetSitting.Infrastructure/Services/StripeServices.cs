@@ -14,7 +14,7 @@ namespace PetSitting.Infrastructure.Services
                 Email = email
             };
 
-            var service = new AccountService();
+            var service = new AccountService(); 
             var account = await service.CreateAsync(accountOptions);
             return account.Id;
         }

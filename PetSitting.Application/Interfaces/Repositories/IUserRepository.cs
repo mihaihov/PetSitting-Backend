@@ -7,6 +7,7 @@ namespace PetSitting.Application.Interfaces.Repositories
     public interface IUserRepository : IBaseRepository<ApplicationUser>
     {
         public Task<ApplicationUser?> GetByEmailAsync(string email);
+        public IQueryable<ApplicationUser> QueryByEmailAsync(string email);
         public Task AddRole(IdentityUserRole<string> role);
         public Task AddUserProfile(UserProfile userProfile);
         public Task AddUserSettings(UserSettings userSettings);

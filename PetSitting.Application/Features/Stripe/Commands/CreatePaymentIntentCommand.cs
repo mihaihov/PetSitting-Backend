@@ -8,11 +8,11 @@ using Stripe;
 
 namespace PetSitting.Application.Features.Stripe.Commands
 {
-    public record CreatePaymentIntentCommand(long amount, string currency, string paymentMethodId, string destinationAccount,
+    public record CreatePaymentIntentCommand(long amount, string currency, string destinationAccount,
         string? destinationEmail) : IRequest<CreatePaymentIntentCommandResponse>;
     public record CreatePaymentIntentCommandResponse : BaseResponse
     {
-        public PaymentIntent? PaymentIntent {get;set;}
+        public string? ClientSecret {get;set;}
     }
 
     public class CreatePaymentIntentCommandHandler : BaseHandler<CreatePaymentIntentCommand,CreatePaymentIntentCommandResponse,CreatePaymentIntentCommandValidator>
@@ -25,9 +25,9 @@ namespace PetSitting.Application.Features.Stripe.Commands
         protected override async Task<CreatePaymentIntentCommandResponse> HandleCommand(CreatePaymentIntentCommand request, CreatePaymentIntentCommandResponse response,
             CancellationToken cancellationToken)
         {
-            var paymentIntent = await _stripeServices.CreatePaymentIntent(request.amount,request.currency,request.paymentMethodId,request.destinationAccount,request.destinationEmail);
+            var paymentIntent = await _stripeServices.CreatePaymentIntent(request.amount,request.currency,request.destinationAccount,request.destinationEmail);
             if(paymentIntent is null)   throw new CannotCreatePaymentIntentException();
-            response.PaymentIntent = paymentIntent;
+            response.ClientSecret = paymentIntent.ClientSecret;
             return response;
         }
     }

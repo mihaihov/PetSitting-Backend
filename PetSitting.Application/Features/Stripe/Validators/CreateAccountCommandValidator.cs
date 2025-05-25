@@ -8,6 +8,8 @@ namespace PetSitting.Application.Features.Stripe.Validators
         public CreateAccountCommandValidator()
         {
             RuleFor(p => p.email).NotEmpty().NotNull().EmailAddress();
+            RuleFor(p => p.refreshUrl).NotNull().NotEmpty();
+            RuleFor(p => p.returnUrl).NotNull().NotEmpty();
         }
     }
 }

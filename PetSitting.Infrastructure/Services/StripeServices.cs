@@ -33,14 +33,13 @@ namespace PetSitting.Infrastructure.Services
             return accountLink.Url;
         }
 
-        public async Task<PaymentIntent> CreatePaymentIntent(long amount, string currency, string paymentMethodId, string destinationAccount,
+        public async Task<PaymentIntent> CreatePaymentIntent(long amount, string currency, string destinationAccount,
             string? destinationEmail = null)
         {
             var options = new PaymentIntentCreateOptions 
             {
                 Amount = amount,
                 Currency = currency,
-                PaymentMethod = paymentMethodId,
                 TransferData = new PaymentIntentTransferDataOptions {
                     Destination = destinationAccount
                 },

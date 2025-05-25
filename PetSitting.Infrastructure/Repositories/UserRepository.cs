@@ -32,7 +32,12 @@ namespace PetSitting.Infrastructure.Repositories
 
         public async Task<ApplicationUser?> GetByEmailAsync(string email)
         {
-            return await _dbContext.Set<ApplicationUser>().FirstOrDefaultAsync(au => au.Email == email);
+            return await QueryByEmailAsync(email).FirstOrDefaultAsync();
+        }
+
+        public IQueryable<ApplicationUser> QueryByEmailAsync(string email)
+        {
+            return _dbContext.Set<ApplicationUser>().Where(u => u.Email == email);
         }
 
         public async Task<IReadOnlyList<string>> GetRoles(string UserId)

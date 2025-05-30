@@ -1,14 +1,31 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PetSitting.Application.Exceptions;
 using PetSitting.Application.Features.Stripe.Commands;
 using PetSitting.Application.Features.Stripe.Queries;
+using PetSitting.Application.Interfaces.Repositories;
+using PetSitting.Domain.Entities.Stripe;
 
 namespace PetSitting.Api.Controllers
 {
     [Route("/api/[controller]/")]
     public class StripeController : BaseController
     {
-        public StripeController(IMediator mediator) : base(mediator) {}
+        private readonly IStripeTransactionRepository _stripeTransactionRepository;
+        public StripeController(IStripeTransactionRepository stripeTransactionRepository, IMediator mediator) 
+            : base(mediator) 
+        {
+            _stripeTransactionRepository = stripeTransactionRepository;
+        }
+
+        [HttpGet("getbyid")]
+        private async Task<ActionResult<StripeTransaction?>> GetById(string transactionId)
+        {
+            if(string.IsNullOrEmpty(transactionId)) throw new GenericValidationException("Transaction id cannot be empty.");
+                
+            var transaction = await _stripeTransactionRepository.GetById(transactionId);
+            return Ok(transaction);
+        }
 
         [HttpPost("createstripeaccount")]
         public Task<ActionResult<CreateAccountCommandResponse>> CreateStripeAccount(CreateAccountCommand command) =>

@@ -8,19 +8,19 @@ using PetSitting.Domain.Entities.Messaging;
 
 namespace PetSitting.Application.Features.Messaging.Queries
 {
-    public record GetLatestNMessagesSentCommand(string userId, int n) : IRequest<GetLatestNMessagesSentCommandResponse>;
-    public record GetLatestNMessagesSentCommandResponse : BaseResponse
+    public record QueryLatestNMessagesSent(string userId, int n) : IRequest<QueryLatestNMessagesSentResponse>;
+    public record QueryLatestNMessagesSentResponse : BaseResponse
     {
         public ICollection<Message>? Messages {get;set;}
     }
-    public class GetLatestNMessagesSentCommandHandler : BaseHandler<GetLatestNMessagesSentCommand, GetLatestNMessagesSentCommandResponse>
+    public class QueryLatestNMessagesSentHandler : BaseHandler<QueryLatestNMessagesSent, QueryLatestNMessagesSentResponse>
     {
         private readonly IMessageRepository _messageRepository;
-        public GetLatestNMessagesSentCommandHandler(IMessageRepository messageRepository)
+        public QueryLatestNMessagesSentHandler(IMessageRepository messageRepository)
         {
             _messageRepository = messageRepository;
         }
-        protected override async Task<GetLatestNMessagesSentCommandResponse> HandleCommand(GetLatestNMessagesSentCommand request, GetLatestNMessagesSentCommandResponse response, CancellationToken cancellationToken)
+        protected override async Task<QueryLatestNMessagesSentResponse> HandleCommand(QueryLatestNMessagesSent request, QueryLatestNMessagesSentResponse response, CancellationToken cancellationToken)
         {
             if(string.IsNullOrEmpty(request.userId) || request.n <= 0)
                 throw new GenericValidationException("Invalid parameters!");

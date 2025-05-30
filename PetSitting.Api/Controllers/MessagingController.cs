@@ -31,16 +31,16 @@ namespace PetSitting.Api.Controllers
         }
 
         [HttpGet("getlatestnmessagessentbyuser")]
-        public Task<ActionResult<GetLatestNMessagesSentCommandResponse>> GetLatestNMessagesSentByUser(
-            [FromBody]GetLatestNMessagesSentCommand command) => HandleRequest<GetLatestNMessagesSentCommand,GetLatestNMessagesSentCommandResponse>(command);
+        public Task<ActionResult<QueryLatestNMessagesSentResponse>> GetLatestNMessagesSentByUser(
+            [FromBody]QueryLatestNMessagesSent command) => HandleRequest<QueryLatestNMessagesSent,QueryLatestNMessagesSentResponse>(command);
         
         [HttpGet("getlatestnmessagesreceivedbyuser")]
-        public Task<ActionResult<GetLatestNMessagesReceivedCommandResponse>> GetLatestNMessagesReceivedByUser(
-            [FromBody]GetLatestNMessagesReceivedCommand command) => HandleRequest<GetLatestNMessagesReceivedCommand,GetLatestNMessagesReceivedCommandResponse>(command);
+        public Task<ActionResult<QueryLatestNMessagesReceivedResponse>> GetLatestNMessagesReceivedByUser(
+            [FromBody]QueryLatestNMessagesReceived command) => HandleRequest<QueryLatestNMessagesReceived,QueryLatestNMessagesReceivedResponse>(command);
 
         [HttpGet("getusermessagesbydate")]
-        public Task<ActionResult<GetUserMessagesByDateCommandResponse>> GetUserMessagesByDate(
-            [FromBody]GetUserMessagesByDateCommand command) => HandleRequest<GetUserMessagesByDateCommand,GetUserMessagesByDateCommandResponse>(command);
+        public Task<ActionResult<QueryUserMessagesByDateResponse>> GetUserMessagesByDate(
+            [FromBody]QueryUserMessagesByDate command) => HandleRequest<QueryUserMessagesByDate,QueryUserMessagesByDateResponse>(command);
 
         [HttpGet("getchatsessionbyid")]
         public async Task<ActionResult<ChatSession>> GetChatSession([FromQuery]string id)

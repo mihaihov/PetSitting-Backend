@@ -23,8 +23,8 @@ namespace PetSitting.UnitTests.Application.ReviewSystem.Queries
             _mockReviewRepository.Setup(r => r.GetByPostIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(_mockReviews.Object);
 
-            var command = new GetReviewsByPostQuery("");
-            var commandHandler = new GetReviewsByPostQueryHandler(_mockReviewRepository.Object);
+            var command = new QueryReviewsByPost("");
+            var commandHandler = new QueryReviewsByPostHandler(_mockReviewRepository.Object);
 
             //act&assert
             await Assert.ThrowsAsync<GenericValidationException>(() => commandHandler.Handle(command,CancellationToken.None));
@@ -41,8 +41,8 @@ namespace PetSitting.UnitTests.Application.ReviewSystem.Queries
             _mockReviewRepository.Setup(r => r.GetByPostIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(_mockReviews.Object);
 
-            var command = new GetReviewsByPostQuery("test");
-            var commandHandler = new GetReviewsByPostQueryHandler(_mockReviewRepository.Object);
+            var command = new QueryReviewsByPost("test");
+            var commandHandler = new QueryReviewsByPostHandler(_mockReviewRepository.Object);
 
             //act&assert
             await commandHandler.Handle(command,CancellationToken.None);
@@ -59,8 +59,8 @@ namespace PetSitting.UnitTests.Application.ReviewSystem.Queries
             _mockReviewRepository.Setup(r => r.GetByAuthorIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(_mockReviews.Object);
 
-            var command = new GetReviewsByUserQuery("");
-            var commandHandler = new GetReviewsByUserQueryHandler(_mockReviewRepository.Object);
+            var command = new QueryReviewsByUser("");
+            var commandHandler = new QueryReviewsByUserHandler(_mockReviewRepository.Object);
 
             //act&assert
             await Assert.ThrowsAsync<GenericValidationException>(() => commandHandler.Handle(command,CancellationToken.None));
@@ -77,8 +77,8 @@ namespace PetSitting.UnitTests.Application.ReviewSystem.Queries
             _mockReviewRepository.Setup(r => r.GetByAuthorIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(_mockReviews.Object);
 
-            var command = new GetReviewsByUserQuery("test");
-            var commandHandler = new GetReviewsByUserQueryHandler(_mockReviewRepository.Object);
+            var command = new QueryReviewsByUser("test");
+            var commandHandler = new QueryReviewsByUserHandler(_mockReviewRepository.Object);
 
             //act&assert
             await commandHandler.Handle(command,CancellationToken.None);

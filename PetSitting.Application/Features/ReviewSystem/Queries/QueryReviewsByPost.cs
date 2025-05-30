@@ -7,20 +7,20 @@ using PetSitting.Domain.Entities.ReviewSystem;
 
 namespace PetSitting.Application.Features.ReviewSystem.Queries
 {
-    public record GetReviewsByPostQuery(string postId) : IRequest<GetReviewsByPostQueryResponse>;
-    public record GetReviewsByPostQueryResponse : BaseResponse
+    public record QueryReviewsByPost(string postId) : IRequest<QueryReviewsByPostResponse>;
+    public record QueryReviewsByPostResponse : BaseResponse
     {
         public ICollection<Review>? Reviews {get;set;}
     }
 
-    public class GetReviewsByPostQueryHandler : BaseHandler<GetReviewsByPostQuery, GetReviewsByPostQueryResponse>
+    public class QueryReviewsByPostHandler : BaseHandler<QueryReviewsByPost, QueryReviewsByPostResponse>
     {
         private readonly IReviewRepository _reviewRepository;
-        public GetReviewsByPostQueryHandler(IReviewRepository reviewRepository)
+        public QueryReviewsByPostHandler(IReviewRepository reviewRepository)
         {
             _reviewRepository = reviewRepository;
         }
-        protected override async Task<GetReviewsByPostQueryResponse> HandleCommand(GetReviewsByPostQuery request, GetReviewsByPostQueryResponse response, CancellationToken cancellationToken)
+        protected override async Task<QueryReviewsByPostResponse> HandleCommand(QueryReviewsByPost request, QueryReviewsByPostResponse response, CancellationToken cancellationToken)
         {
             if(string.IsNullOrEmpty(request.postId))
                 throw new GenericValidationException("Invalid parameters.");

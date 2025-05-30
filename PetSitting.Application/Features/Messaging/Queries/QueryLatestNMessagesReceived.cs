@@ -8,19 +8,19 @@ using PetSitting.Domain.Entities.Messaging;
 
 namespace PetSitting.Application.Features.Messaging.Queries
 {
-    public record GetLatestNMessagesReceivedCommand(string userId, int n) : IRequest<GetLatestNMessagesReceivedCommandResponse>;
-    public record GetLatestNMessagesReceivedCommandResponse : BaseResponse
+    public record QueryLatestNMessagesReceived(string userId, int n) : IRequest<QueryLatestNMessagesReceivedResponse>;
+    public record QueryLatestNMessagesReceivedResponse : BaseResponse
     {
         public ICollection<Message>? Messages {get;set;}
     }
-    public class GetLatestNMessagesReceivedCommandHandler : BaseHandler<GetLatestNMessagesReceivedCommand, GetLatestNMessagesReceivedCommandResponse>
+    public class QueryLatestNMessagesReceivedHandler : BaseHandler<QueryLatestNMessagesReceived, QueryLatestNMessagesReceivedResponse>
     {
         private readonly IMessageRepository _messageRepository;
-        public GetLatestNMessagesReceivedCommandHandler(IMessageRepository messageRepository)
+        public QueryLatestNMessagesReceivedHandler(IMessageRepository messageRepository)
         {
             _messageRepository = messageRepository;
         }
-        protected override async Task<GetLatestNMessagesReceivedCommandResponse> HandleCommand(GetLatestNMessagesReceivedCommand request, GetLatestNMessagesReceivedCommandResponse response, CancellationToken cancellationToken)
+        protected override async Task<QueryLatestNMessagesReceivedResponse> HandleCommand(QueryLatestNMessagesReceived request, QueryLatestNMessagesReceivedResponse response, CancellationToken cancellationToken)
         {
             if(string.IsNullOrEmpty(request.userId) || request.n <= 0)
                 throw new GenericValidationException("Invalid parameters!");

@@ -7,20 +7,20 @@ using PetSitting.Domain.Entities.Messaging;
 
 namespace PetSitting.Application.Features.Messaging.Queries
 {
-    public record GetUserMessagesByDateCommand(string userId, DateTime timeStamp) : IRequest<GetUserMessagesByDateCommandResponse>;
-    public record GetUserMessagesByDateCommandResponse : BaseResponse
+    public record QueryUserMessagesByDate(string userId, DateTime timeStamp) : IRequest<QueryUserMessagesByDateResponse>;
+    public record QueryUserMessagesByDateResponse : BaseResponse
     {
         public ICollection<Message>? Messages {get;set;}
     }
 
-    public class GetUserMessagesByDateCommandHandler : BaseHandler<GetUserMessagesByDateCommand, GetUserMessagesByDateCommandResponse>
+    public class QueryUserMessagesByDateHandler : BaseHandler<QueryUserMessagesByDate, QueryUserMessagesByDateResponse>
     {
         private readonly IMessageRepository _messageRepository;
-        public GetUserMessagesByDateCommandHandler(IMessageRepository messageRepository)
+        public QueryUserMessagesByDateHandler(IMessageRepository messageRepository)
         {
             _messageRepository = messageRepository;
         }
-        protected override async Task<GetUserMessagesByDateCommandResponse> HandleCommand(GetUserMessagesByDateCommand request, GetUserMessagesByDateCommandResponse response, CancellationToken cancellationToken)
+        protected override async Task<QueryUserMessagesByDateResponse> HandleCommand(QueryUserMessagesByDate request, QueryUserMessagesByDateResponse response, CancellationToken cancellationToken)
         {
             if(string.IsNullOrEmpty(request.userId))
                 throw new GenericValidationException("Invalid parameters.");

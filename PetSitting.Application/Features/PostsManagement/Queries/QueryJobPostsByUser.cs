@@ -7,22 +7,22 @@ using PetSitting.Domain.Entities.PostManagement;
 
 namespace PetSitting.Application.Features.PostManagement.Queries
 {
-    public record GetJobPostsByUserQuery(string userId) : IRequest<GetJobPostsByUserQueryResponse>;
+    public record QueryJobPostsByUser(string userId) : IRequest<QueryJobPostsByUserResponse>;
 
-    public record GetJobPostsByUserQueryResponse : BaseResponse
+    public record QueryJobPostsByUserResponse : BaseResponse
     {
         public IEnumerable<JobPost>? PostsByUser {get;set;}
     }
 
-    public class GetJobPostsByUserQueryHandler : BaseHandler<GetJobPostsByUserQuery,GetJobPostsByUserQueryResponse>
+    public class QueryJobPostsByUserHandler : BaseHandler<QueryJobPostsByUser,QueryJobPostsByUserResponse>
     {
         private readonly IBaseRepository<JobPost> _baseJobPostRepository;
-        public GetJobPostsByUserQueryHandler(IBaseRepository<JobPost> baseJobPostRepository)
+        public QueryJobPostsByUserHandler(IBaseRepository<JobPost> baseJobPostRepository)
         {
             _baseJobPostRepository = baseJobPostRepository;
         }
 
-        protected override async Task<GetJobPostsByUserQueryResponse> HandleCommand(GetJobPostsByUserQuery request, GetJobPostsByUserQueryResponse response, CancellationToken cancellationToken)
+        protected override async Task<QueryJobPostsByUserResponse> HandleCommand(QueryJobPostsByUser request, QueryJobPostsByUserResponse response, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(request.userId))
                 throw new GenericValidationException("User id cannot is not valid!");

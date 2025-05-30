@@ -24,12 +24,12 @@ namespace PetSitting.Api.Controllers
             HandleRequest<DeleteReviewCommand,BaseResponse>(command);
 
         [HttpGet("getreviewsbypost")]
-        public Task<ActionResult<GetReviewsByPostQueryResponse>> GetReviewsByPost([FromQuery]GetReviewsByPostQuery query) =>
-            HandleRequest<GetReviewsByPostQuery,GetReviewsByPostQueryResponse>(query);
+        public Task<ActionResult<QueryReviewsByPostResponse>> GetReviewsByPost([FromQuery]QueryReviewsByPost query) =>
+            HandleRequest<QueryReviewsByPost,QueryReviewsByPostResponse>(query);
 
 
         [HttpGet("getreviewsbyuser")]
-        public Task<ActionResult<GetReviewsByUserQueryResponse>> GetReviewsByUser([FromQuery]GetReviewsByUserQuery query) =>
-            HandleRequest<GetReviewsByUserQuery,GetReviewsByUserQueryResponse>(query);
+        public Task<ActionResult<QueryReviewsByUserResponse>> GetReviewsByUser([FromQuery]QueryReviewsByUser query) =>
+            HandleRequest<QueryReviewsByUser,QueryReviewsByUserResponse>(query);
     }
 }

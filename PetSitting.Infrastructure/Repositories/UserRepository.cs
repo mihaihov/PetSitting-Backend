@@ -52,5 +52,10 @@ namespace PetSitting.Infrastructure.Repositories
             await _dbContext.Set<RefreshToken>().AddAsync(token);
             await _dbContext.SaveChangesAsync();
         }
+
+        public IQueryable<ApplicationUser> QueryByIdAsync(string id)
+        {
+            return _dbContext.Set<ApplicationUser>().Where(au => au.Id == id);
+        }
     }
 }

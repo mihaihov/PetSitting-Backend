@@ -8,6 +8,7 @@ namespace PetSitting.Application.Interfaces.Repositories
     {
         public Task<ApplicationUser?> GetByEmailAsync(string email);
         public IQueryable<ApplicationUser> QueryByEmailAsync(string email);
+        public IQueryable<ApplicationUser> QueryByIdAsync(string id);
         public Task AddRole(IdentityUserRole<string> role);
         public Task AddUserProfile(UserProfile userProfile);
         public Task AddUserSettings(UserSettings userSettings);

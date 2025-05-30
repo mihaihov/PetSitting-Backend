@@ -23,6 +23,7 @@ namespace PetSitting.Infrastructure
             serviceCollection.AddTransient<IMessageRepository, MessageRepository>();
             serviceCollection.AddTransient<IChatSessionRepository, ChatSessionRepository>();
             serviceCollection.AddTransient<IReviewRepository,ReviewRepository>();
+            serviceCollection.AddTransient<IStripeTransactionRepository,StripeTransactionRepository>();
             return serviceCollection;
         }
     }

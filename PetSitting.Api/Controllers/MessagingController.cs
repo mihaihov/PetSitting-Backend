@@ -32,15 +32,15 @@ namespace PetSitting.Api.Controllers
 
         [HttpGet("getlatestnmessagessentbyuser")]
         public Task<ActionResult<QueryLatestNMessagesSentResponse>> GetLatestNMessagesSentByUser(
-            [FromBody]QueryLatestNMessagesSent command) => HandleRequest<QueryLatestNMessagesSent,QueryLatestNMessagesSentResponse>(command);
+            [FromBody]QueryLatestNMessagesSent query) => HandleRequest<QueryLatestNMessagesSent,QueryLatestNMessagesSentResponse>(query);
         
         [HttpGet("getlatestnmessagesreceivedbyuser")]
         public Task<ActionResult<QueryLatestNMessagesReceivedResponse>> GetLatestNMessagesReceivedByUser(
-            [FromBody]QueryLatestNMessagesReceived command) => HandleRequest<QueryLatestNMessagesReceived,QueryLatestNMessagesReceivedResponse>(command);
+            [FromBody]QueryLatestNMessagesReceived query) => HandleRequest<QueryLatestNMessagesReceived,QueryLatestNMessagesReceivedResponse>(query);
 
         [HttpGet("getusermessagesbydate")]
         public Task<ActionResult<QueryUserMessagesByDateResponse>> GetUserMessagesByDate(
-            [FromBody]QueryUserMessagesByDate command) => HandleRequest<QueryUserMessagesByDate,QueryUserMessagesByDateResponse>(command);
+            [FromBody]QueryUserMessagesByDate query) => HandleRequest<QueryUserMessagesByDate,QueryUserMessagesByDateResponse>(query);
 
         [HttpGet("getchatsessionbyid")]
         public async Task<ActionResult<ChatSession>> GetChatSession([FromQuery]string id)

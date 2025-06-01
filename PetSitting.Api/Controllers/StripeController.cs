@@ -8,7 +8,7 @@ using PetSitting.Domain.Entities.Stripe;
 
 namespace PetSitting.Api.Controllers
 {
-    [Route("/api/[controller]/")]
+    [Route("api/[controller]/")]
     public class StripeController : BaseController
     {
         private readonly IStripeTransactionRepository _stripeTransactionRepository;

@@ -13,7 +13,7 @@ namespace PetSitting.Application.Interfaces.Repositories
         public Task<T?> GetByIdAsync(string Id);
         public Task<T?> FirstOrDefaultAsync(Expression<Func<T,bool>> predicate); 
         public Task Delete(T Entity);
-        public Task Update(T Entity);
+        public Task UpdateAsync(T Entity);
         public Task<T> AddAsync(T Entity);
     }
 }

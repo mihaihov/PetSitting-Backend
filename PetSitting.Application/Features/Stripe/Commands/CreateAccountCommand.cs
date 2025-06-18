@@ -49,7 +49,7 @@ namespace PetSitting.Application.Features.Stripe.Commands
                         UpdatedAt = DateTime.Now
                     };
                     user.StripeAccount = stripeAccount;
-                    await _userRepository.Update(user);
+                    await _userRepository.UpdateAsync(user);
                 }
 
                 response.AccountLinkUrl = await _stripeServices.GenerateAccountLink(stripeAccountId, request.refreshUrl, request.returnUrl);

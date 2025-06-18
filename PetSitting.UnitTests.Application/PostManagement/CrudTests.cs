@@ -22,7 +22,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
 
             _mockJobPostRepository.Setup(j => j.AddAsync(It.IsAny<JobPost>()))
                 .Returns(Task.FromResult(_mockJobPost.Object));
-            _mockJobPostRepository.Setup(j => j.Update(It.IsAny<JobPost>()))
+            _mockJobPostRepository.Setup(j => j.UpdateAsync(It.IsAny<JobPost>()))
                 .Returns(Task.FromResult(_mockJobPost.Object));
             _mockJobPostRepository.Setup(j => j.Delete(It.IsAny<JobPost>()))
                 .Returns(Task.FromResult(_mockJobPost.Object));
@@ -139,7 +139,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             await Assert.ThrowsAsync<PostNotFoundException>(() => commandHandler.Handle(command,CancellationToken.None));
 
             //assert
-            _mockJobPostRepository.Verify(j => j.Update(It.IsAny<JobPost>()), Times.Never);
+            _mockJobPostRepository.Verify(j => j.UpdateAsync(It.IsAny<JobPost>()), Times.Never);
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             var response = await commandHandler.Handle(command,CancellationToken.None);
 
             //assert
-            _mockJobPostRepository.Verify(j => j.Update(It.IsAny<JobPost>()), Times.Never);
+            _mockJobPostRepository.Verify(j => j.UpdateAsync(It.IsAny<JobPost>()), Times.Never);
             Assert.False(response.Success);
             Assert.NotNull(response.ValidationErrors);
             Assert.NotEmpty(response.ValidationErrors);
@@ -189,7 +189,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             var response = await commandHandler.Handle(command,CancellationToken.None);
 
             //assert
-            _mockJobPostRepository.Verify(j => j.Update(It.IsAny<JobPost>()), Times.Once);
+            _mockJobPostRepository.Verify(j => j.UpdateAsync(It.IsAny<JobPost>()), Times.Once);
             Assert.False(!response.Success);
             Assert.Null(response.ValidationErrors);
 
@@ -204,14 +204,14 @@ namespace PetSitting.UnitTests.Application.PostManagement
             //act
             _mockJobApplicationRepository.Setup(ja => ja.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(_mockJobApplication.Object);
-            _mockJobApplicationRepository.Setup(ja => ja.Update(It.IsAny<JobApplication>()))
+            _mockJobApplicationRepository.Setup(ja => ja.UpdateAsync(It.IsAny<JobApplication>()))
                 .Returns(Task.CompletedTask);
             var commandHandler = new UpdateJobApplicationCommandHandler(_mockJobApplicationRepository.Object);
             
             //assert
             await Assert.ThrowsAsync<GenericValidationException>(() => commandHandler.Handle(command,CancellationToken.None));
             _mockJobApplicationRepository.Verify(ja => ja.GetByIdAsync(It.IsAny<string>()), Times.Never);
-            _mockJobApplicationRepository.Verify(ja => ja.Update(It.IsAny<JobApplication>()), Times.Never);
+            _mockJobApplicationRepository.Verify(ja => ja.UpdateAsync(It.IsAny<JobApplication>()), Times.Never);
 
         }
 
@@ -224,14 +224,14 @@ namespace PetSitting.UnitTests.Application.PostManagement
             //act
             _mockJobApplicationRepository.Setup(ja => ja.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync((JobApplication?)null);
-            _mockJobApplicationRepository.Setup(ja => ja.Update(It.IsAny<JobApplication>()))
+            _mockJobApplicationRepository.Setup(ja => ja.UpdateAsync(It.IsAny<JobApplication>()))
                 .Returns(Task.CompletedTask);
             var commandHandler = new UpdateJobApplicationCommandHandler(_mockJobApplicationRepository.Object);
             
             //assert
             await Assert.ThrowsAsync<JobApplicationNotFoundException>(() => commandHandler.Handle(command,CancellationToken.None));
             _mockJobApplicationRepository.Verify(ja => ja.GetByIdAsync(It.IsAny<string>()), Times.Once);
-            _mockJobApplicationRepository.Verify(ja => ja.Update(It.IsAny<JobApplication>()), Times.Never);
+            _mockJobApplicationRepository.Verify(ja => ja.UpdateAsync(It.IsAny<JobApplication>()), Times.Never);
 
         }
 
@@ -244,14 +244,14 @@ namespace PetSitting.UnitTests.Application.PostManagement
             //act
             _mockJobApplicationRepository.Setup(ja => ja.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(_mockJobApplication.Object);
-            _mockJobApplicationRepository.Setup(ja => ja.Update(It.IsAny<JobApplication>()))
+            _mockJobApplicationRepository.Setup(ja => ja.UpdateAsync(It.IsAny<JobApplication>()))
                 .Returns(Task.CompletedTask);
             var commandHandler = new UpdateJobApplicationCommandHandler(_mockJobApplicationRepository.Object);
             
             //assert
             await commandHandler.Handle(command,CancellationToken.None);
             _mockJobApplicationRepository.Verify(ja => ja.GetByIdAsync(It.IsAny<string>()), Times.Once);
-            _mockJobApplicationRepository.Verify(ja => ja.Update(It.IsAny<JobApplication>()), Times.Once);
+            _mockJobApplicationRepository.Verify(ja => ja.UpdateAsync(It.IsAny<JobApplication>()), Times.Once);
 
         }
     }

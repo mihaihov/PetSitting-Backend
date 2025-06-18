@@ -13,7 +13,7 @@ namespace PetSitting.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<T> AddAsync(T Entity)
+        public virtual async Task<T> AddAsync(T Entity)
         {
             await _dbContext.Set<T>().AddAsync(Entity);
             await _dbContext.SaveChangesAsync();
@@ -21,49 +21,49 @@ namespace PetSitting.Infrastructure.Repositories
             return Entity;
         }
 
-        public async Task Delete(T Entity)
+        public virtual async Task Delete(T Entity)
         {
             _dbContext.Set<T>().Remove(Entity);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<IReadOnlyList<T>> GetAllAsync()
+        public virtual async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(string Id)
+        public virtual async Task<T?> GetByIdAsync(string Id)
         {
             return await _dbContext.Set<T>().FindAsync(Id);
         }
 
-        public async Task Update(T Entity)
+        public virtual async Task UpdateAsync(T Entity)
         {
             _dbContext.Entry(Entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task SaveChangesAsync()
+        public virtual async Task SaveChangesAsync()
         {
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task RollbackTransactionAsync()
+        public virtual async Task RollbackTransactionAsync()
         {
             await _dbContext.Database.RollbackTransactionAsync();
         }
 
-        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        public virtual async Task<IDbContextTransaction> BeginTransactionAsync()
         {
             return await _dbContext.Database.BeginTransactionAsync();
         }
 
-        public async Task CommitTransactionAsync()
+        public virtual async Task CommitTransactionAsync()
         {
             await _dbContext.Database.CommitTransactionAsync();
         }
 
-        public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        public virtual async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbContext.Set<T>().FirstOrDefaultAsync(predicate);
         }

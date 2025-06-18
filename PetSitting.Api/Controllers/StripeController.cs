@@ -23,7 +23,7 @@ namespace PetSitting.Api.Controllers
         {
             if(string.IsNullOrEmpty(transactionId)) throw new GenericValidationException("Transaction id cannot be empty.");
                 
-            var transaction = await _stripeTransactionRepository.GetById(transactionId);
+            var transaction = await _stripeTransactionRepository.GetByIdAsync(transactionId);
             return Ok(transaction);
         }
 

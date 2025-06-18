@@ -164,7 +164,7 @@ namespace PetSitting.UnitTests.Application.ReviewSystem
             var _mockReview = new Mock<Review>();
             _mockReviewRepository.Setup(r => r.GetByIdAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult(_mockReview.Object)!);
-            _mockReviewRepository.Setup(r => r.Update(It.IsAny<Review>()))
+            _mockReviewRepository.Setup(r => r.UpdateAsync(It.IsAny<Review>()))
                 .Returns(Task.FromResult(_mockReview.Object));
 
             var command = new UpdateReviewCommand("","","","","",0);
@@ -173,7 +173,7 @@ namespace PetSitting.UnitTests.Application.ReviewSystem
             //act & assert
             await Assert.ThrowsAsync<GenericValidationException>(() => commandHandler.Handle(command,CancellationToken.None));
             _mockReviewRepository.Verify(r => r.GetByIdAsync(It.IsAny<string>()), Times.Never);
-            _mockReviewRepository.Verify(r => r.Update(It.IsAny<Review>()), Times.Never);
+            _mockReviewRepository.Verify(r => r.UpdateAsync(It.IsAny<Review>()), Times.Never);
         }
 
         [Fact]
@@ -185,7 +185,7 @@ namespace PetSitting.UnitTests.Application.ReviewSystem
             var _mockReview = new Mock<Review>();
             _mockReviewRepository.Setup(r => r.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync((Review?)null);
-            _mockReviewRepository.Setup(r => r.Update(It.IsAny<Review>()))
+            _mockReviewRepository.Setup(r => r.UpdateAsync(It.IsAny<Review>()))
                 .Returns(Task.FromResult(_mockReview.Object));
 
             var command = new UpdateReviewCommand("test","test","test","test","test",2);
@@ -194,7 +194,7 @@ namespace PetSitting.UnitTests.Application.ReviewSystem
             //act & assert
             await Assert.ThrowsAsync<ReviewNotFoundException>(() => commandHandler.Handle(command,CancellationToken.None));
             _mockReviewRepository.Verify(r => r.GetByIdAsync(It.IsAny<string>()), Times.Once);
-            _mockReviewRepository.Verify(r => r.Update(It.IsAny<Review>()), Times.Never);
+            _mockReviewRepository.Verify(r => r.UpdateAsync(It.IsAny<Review>()), Times.Never);
         }
 
         [Fact]
@@ -207,7 +207,7 @@ namespace PetSitting.UnitTests.Application.ReviewSystem
             _mockReview.Object.UpdatedCount = 2;
             _mockReviewRepository.Setup(r => r.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(_mockReview.Object);
-            _mockReviewRepository.Setup(r => r.Update(It.IsAny<Review>()))
+            _mockReviewRepository.Setup(r => r.UpdateAsync(It.IsAny<Review>()))
                 .Returns(Task.FromResult(_mockReview.Object));
 
             var command = new UpdateReviewCommand("test","test","test","test","test",2);
@@ -216,7 +216,7 @@ namespace PetSitting.UnitTests.Application.ReviewSystem
             //act & assert
             await Assert.ThrowsAsync<CannotUpdateException>(() => commandHandler.Handle(command,CancellationToken.None));
             _mockReviewRepository.Verify(r => r.GetByIdAsync(It.IsAny<string>()), Times.Once);
-            _mockReviewRepository.Verify(r => r.Update(It.IsAny<Review>()), Times.Never);
+            _mockReviewRepository.Verify(r => r.UpdateAsync(It.IsAny<Review>()), Times.Never);
         }
 
         [Fact]
@@ -229,7 +229,7 @@ namespace PetSitting.UnitTests.Application.ReviewSystem
             _mockReview.Object.UpdatedCount = 1;
             _mockReviewRepository.Setup(r => r.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(_mockReview.Object);
-            _mockReviewRepository.Setup(r => r.Update(It.IsAny<Review>()))
+            _mockReviewRepository.Setup(r => r.UpdateAsync(It.IsAny<Review>()))
                 .Returns(Task.FromResult(_mockReview.Object));
 
             var command = new UpdateReviewCommand("test","test","test","test","test",2);
@@ -238,7 +238,7 @@ namespace PetSitting.UnitTests.Application.ReviewSystem
             //act & assert
             await commandHandler.Handle(command,CancellationToken.None);
             _mockReviewRepository.Verify(r => r.GetByIdAsync(It.IsAny<string>()), Times.Once);
-            _mockReviewRepository.Verify(r => r.Update(It.IsAny<Review>()), Times.Once);
+            _mockReviewRepository.Verify(r => r.UpdateAsync(It.IsAny<Review>()), Times.Once);
         }
     }
 }

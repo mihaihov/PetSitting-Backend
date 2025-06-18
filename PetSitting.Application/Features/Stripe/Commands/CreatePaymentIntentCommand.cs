@@ -27,6 +27,10 @@ namespace PetSitting.Application.Features.Stripe.Commands
         {
             var paymentIntent = await _stripeServices.CreatePaymentIntent(request.amount,request.currency,request.destinationAccount,request.destinationEmail);
             if(paymentIntent is null)   throw new CannotCreatePaymentIntentException();
+
+            //BASED ON THIS PAYMENT INTENT, A TRANSACTION IS CREATED AND STORED IN THE DB. THIS IS DONE IN THE StripeWebhookController, when a webhook of type
+                //PaymentIntentCreated arrives.
+
             response.ClientSecret = paymentIntent.ClientSecret;
             return response;
         }

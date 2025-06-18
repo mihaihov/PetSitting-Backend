@@ -33,7 +33,7 @@ namespace PetSitting.Application.Features.PostManagement.Commands
             if (request.payment is not null) jobPost.Payment = request.payment;
             if (request.isOpen is not null) jobPost.IsOpen = (bool)request.isOpen;
 
-            await _jobPostRepository.Update(jobPost);
+            await _jobPostRepository.UpdateAsync(jobPost);
 
             return response;
         }

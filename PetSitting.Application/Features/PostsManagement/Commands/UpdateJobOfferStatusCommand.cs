@@ -33,7 +33,7 @@ namespace PetSitting.Application.Features.PostManagement.Commands
             }
 
             jobApplication.UpdateStatus(request.status);
-            await _jobApplicationRepository.Update(jobApplication);
+            await _jobApplicationRepository.UpdateAsync(jobApplication);
 
             return response;
         }

@@ -37,7 +37,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                 throw new InternalUserNotFoundException();
             sqlUser.PasswordHash = _userManager.PasswordHasher.HashPassword(sqlUser, request.newPassword);
 
-            await _userRepository.Update(sqlUser);
+            await _userRepository.UpdateAsync(sqlUser);
             await _firebaseservice.ResetPasswordAsync(request.firebaseToken, request.newPassword);
             return response;
         }

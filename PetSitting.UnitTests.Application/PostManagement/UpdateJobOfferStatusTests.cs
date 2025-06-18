@@ -18,7 +18,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             _mockJobApplication = new Mock<JobApplication>();
             _mockJobApplicationList = new Mock<IReadOnlyList<JobApplication>>();
             _mockJobApplicationrepository = new Mock<IJobApplicationRepository>();
-            _mockJobApplicationrepository.Setup(j => j.Update(It.IsAny<JobApplication>()))
+            _mockJobApplicationrepository.Setup(j => j.UpdateAsync(It.IsAny<JobApplication>()))
                 .Returns(Task.CompletedTask);
         }
 
@@ -36,7 +36,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             Assert.False(respons.Success);
             Assert.NotNull(respons.ValidationErrors);
             Assert.NotEmpty(respons.ValidationErrors);
-            _mockJobApplicationrepository.Verify(j => j.Update(It.IsAny<JobApplication>()), Times.Never);
+            _mockJobApplicationrepository.Verify(j => j.UpdateAsync(It.IsAny<JobApplication>()), Times.Never);
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             await Assert.ThrowsAsync<JobApplicationNotFoundException>(() => commandHandler.Handle(command, CancellationToken.None));
 
             //assert
-            _mockJobApplicationrepository.Verify(j => j.Update(It.IsAny<JobApplication>()), Times.Never);
+            _mockJobApplicationrepository.Verify(j => j.UpdateAsync(It.IsAny<JobApplication>()), Times.Never);
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             await Assert.ThrowsAsync<JobApplicationAlreadyAcceptedException>(() => commandHandler.Handle(command, CancellationToken.None));
 
             //assert
-            _mockJobApplicationrepository.Verify(j => j.Update(It.IsAny<JobApplication>()), Times.Never);
+            _mockJobApplicationrepository.Verify(j => j.UpdateAsync(It.IsAny<JobApplication>()), Times.Never);
         }
 
                 [Fact]
@@ -93,7 +93,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             await commandHandler.Handle(command, CancellationToken.None);
 
             //assert
-            _mockJobApplicationrepository.Verify(j => j.Update(It.IsAny<JobApplication>()), Times.Once);
+            _mockJobApplicationrepository.Verify(j => j.UpdateAsync(It.IsAny<JobApplication>()), Times.Once);
         }
     }
 }

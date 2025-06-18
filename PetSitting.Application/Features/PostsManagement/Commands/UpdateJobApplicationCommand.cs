@@ -27,7 +27,7 @@ namespace PetSitting.Application.Features.PostManagement.Commands
                 throw new JobApplicationNotFoundException();
 
             jobApplication.Description = request.description;
-            await _jobApplicationRepository.Update(jobApplication);
+            await _jobApplicationRepository.UpdateAsync(jobApplication);
             return response;
         }
     }

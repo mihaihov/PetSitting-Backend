@@ -34,7 +34,7 @@ namespace PetSitting.Application.Features.ReviewSystem.Commands
             review.UpdatedAt = DateTime.Now;
             review.UpdatedCount ++;
 
-            await _reviewRepository.Update(review);
+            await _reviewRepository.UpdateAsync(review);
             return response;
         }
     }

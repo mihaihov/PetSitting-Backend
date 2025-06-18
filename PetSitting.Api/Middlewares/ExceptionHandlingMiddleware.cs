@@ -85,6 +85,11 @@ namespace PetSitting.Api.Middlewares
                 httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
             }
+            catch(StripeWebhookNotHandledException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
             catch(Exception ex)
             {
                 //log it.

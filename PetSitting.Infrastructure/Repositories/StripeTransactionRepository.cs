@@ -37,9 +37,15 @@ namespace PetSitting.Infrastructure.Repositories
                 .Include(u => u.StripeTransactions).ToListAsync() as IReadOnlyList<StripeTransaction>;
         }
 
-        public async Task<StripeTransaction?> GetById(string transactionId)
+        public async Task<StripeTransaction?> GetByIdAsync(string transactionId)
         {
             return await _dbContext.Set<StripeTransaction>().FindAsync(transactionId);
+        }
+
+        public async Task UpdateAsync(StripeTransaction entity)
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

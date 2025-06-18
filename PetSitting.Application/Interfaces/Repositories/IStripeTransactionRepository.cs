@@ -8,7 +8,8 @@ namespace PetSitting.Application.Interfaces.Repositories
     {
         public Task<IReadOnlyList<StripeTransaction>?> GetAllByUser(string email);
         public Task<IReadOnlyList<StripeTransaction>?> GetAllByUser(ApplicationUser applicationUser);
-        public Task<StripeTransaction?> GetById(string transactionId);
+        public Task<StripeTransaction?> GetByIdAsync(string transactionId);
         public Task<IReadOnlyList<StripeTransaction>?> GetAllByJobPost(string jobPostId);
+        public Task UpdateAsync(StripeTransaction entity);
     }
 }

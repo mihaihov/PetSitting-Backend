@@ -1,5 +1,7 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PetSitting.Application.Exceptions;
+using PetSitting.Application.Features.Stripe.Commands;
 using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Domain.Entities.Stripe;
 using PetSitting.Domain.Enums;
@@ -15,15 +17,17 @@ namespace PetSitting.Api.Controllers
         private readonly string _webhookSecret;
         private readonly IStripeTransactionRepository _stripeTransactionRepository;
         private readonly IBaseRepository<StripeAccount> _stripeAccountRepository;
+        private readonly IMediator _mediator;
         
         public StripeWebhookController(IConfiguration configuration, IStripeTransactionRepository stripeTransactionRepository, 
-            IBaseRepository<StripeAccount> stripeAccountRepository)
+            IBaseRepository<StripeAccount> stripeAccountRepository, IMediator mediator)
         {
             var apiKey = StripeConfiguration.ApiKey = configuration["Stripe:TestEnvironment:SecretKey"];
             _client = new StripeClient(apiKey);
             _webhookSecret = configuration["Stripe:TestEnvironment:WebhookSignature"]!;
             _stripeTransactionRepository = stripeTransactionRepository;
             _stripeAccountRepository = stripeAccountRepository;
+            _mediator = mediator;
         }
         [HttpPost("index")]
         public async Task<IActionResult> Index()
@@ -53,17 +57,11 @@ namespace PetSitting.Api.Controllers
                         var paymentIntentCreated = stripeEvent.Data.Object as Stripe.PaymentIntent;
                         if(paymentIntentCreated is null) break;
 
-                        //THIS CAN NEVER BE NULL. TRANSACTION IS CREATED FIRST IN THE BACKEND AND THEN BY STRIPE
-                        var stripeTransaction = await _stripeTransactionRepository.GetByIdAsync(paymentIntentCreated.Id);
+                        await _mediator.Send(new CreateTransactionCommand(paymentIntentCreated.Metadata["internalTransactionId"],
+                            paymentIntentCreated.Id,paymentIntentCreated.Status,paymentIntentCreated.Amount,paymentIntentCreated.Currency,
+                            paymentIntentCreated.Created,paymentIntentCreated.TransferData?.DestinationId,paymentIntentCreated.CustomerId));
 
-                        stripeTransaction!.PaymentIntentId = paymentIntentCreated.Id;
-                        stripeTransaction!.Status = paymentIntentCreated.Status;
-                        stripeTransaction!.Amount = paymentIntentCreated.Amount;
-                        stripeTransaction!.Currency = paymentIntentCreated.Currency;
-                        stripeTransaction!.CreatedAt = paymentIntentCreated.Created;
-                        
-                        await _stripeTransactionRepository.UpdateAsync(stripeTransaction);
-                    break;
+                        break;
                     case EventTypes.PaymentIntentSucceeded:
                         break;
                     case EventTypes.PaymentIntentPaymentFailed:

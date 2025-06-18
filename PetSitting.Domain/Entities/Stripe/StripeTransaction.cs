@@ -14,6 +14,7 @@ namespace PetSitting.Domain.Entities.Stripe
         public DateTime? CreatedAt {get;set;} = DateTime.Now;
 
         //FKs
+        public string? StripeAccountid {get;set;}
         public StripeAccount? StripeAccount {get;set;}
         public string? PaidById {get;set;}
         public StripeAccount? PaidBy {get;set;}

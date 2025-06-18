@@ -11,6 +11,7 @@ namespace PetSitting.Application.Features.Stripe.Validators
             RuleFor(p => p.currency).NotEmpty().NotNull();
             RuleFor(p => p.destinationAccount).NotEmpty().NotNull();
             RuleFor(p => p.destinationEmail).EmailAddress();
+            RuleFor(p => p.jobPostId).NotNull().NotEmpty();
         }
     }
 }

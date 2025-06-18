@@ -8,15 +8,13 @@ using PetSitting.Domain.Entities.UserManagement;
 
 namespace PetSitting.Infrastructure.Repositories
 {
-    public class StripeTransactionRepository : IStripeTransactionRepository
+    public class StripeTransactionRepository : BaseRepository<StripeTransaction>, IStripeTransactionRepository
     {
         private readonly IUserRepository _userRepository;
-        private readonly ApplicationDbContext _dbContext;
         public StripeTransactionRepository(IUserRepository userRepository, IBaseRepository<StripeTransaction> stripeTransactionRepository,
-            ApplicationDbContext dbContext)
+            ApplicationDbContext dbContext) : base(dbContext)
         {
             _userRepository = userRepository;
-            _dbContext = dbContext;
         }
         public async Task<IReadOnlyList<StripeTransaction>?> GetAllByJobPost(string jobPostId)
         {
@@ -35,17 +33,6 @@ namespace PetSitting.Infrastructure.Repositories
         {
             return await _userRepository.QueryByIdAsync(applicationUser.Id)
                 .Include(u => u.StripeTransactions).ToListAsync() as IReadOnlyList<StripeTransaction>;
-        }
-
-        public async Task<StripeTransaction?> GetByIdAsync(string transactionId)
-        {
-            return await _dbContext.Set<StripeTransaction>().FindAsync(transactionId);
-        }
-
-        public async Task UpdateAsync(StripeTransaction entity)
-        {
-            _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
         }
     }
 }

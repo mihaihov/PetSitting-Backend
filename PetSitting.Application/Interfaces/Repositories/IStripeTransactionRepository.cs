@@ -10,5 +10,7 @@ namespace PetSitting.Application.Interfaces.Repositories
         public Task<IReadOnlyList<StripeTransaction>?> GetAllByUser(ApplicationUser applicationUser);
         public Task<IReadOnlyList<StripeTransaction>?> GetAllByJobPost(string jobPostId);
 
+        public Task<StripeTransaction?> GetByPaymentIntentId(string paymentIntentId);
+
     }
 }

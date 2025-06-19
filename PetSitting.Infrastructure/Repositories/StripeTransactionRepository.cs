@@ -34,5 +34,10 @@ namespace PetSitting.Infrastructure.Repositories
             return await _userRepository.QueryByIdAsync(applicationUser.Id)
                 .Include(u => u.StripeTransactions).ToListAsync() as IReadOnlyList<StripeTransaction>;
         }
+
+        public async Task<StripeTransaction?> GetByPaymentIntentId(string paymentIntentId)
+        {
+            return await _dbContext.Set<StripeTransaction>().FirstOrDefaultAsync(st => st.PaymentIntentId == paymentIntentId);
+        }
     }
 }

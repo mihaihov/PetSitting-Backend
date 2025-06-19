@@ -40,7 +40,6 @@ namespace PetSitting.Api.Controllers
 
                 switch (stripeEvent.Type) {
                     case EventTypes.AccountUpdated:
-                        if(stripeEvent is null) break;
                         var stripePayload = stripeEvent.Data.Object as Stripe.Account;
                         if(stripePayload is null)   break;
 
@@ -60,10 +59,18 @@ namespace PetSitting.Api.Controllers
                         await _mediator.Send(new CreateTransactionCommand(paymentIntentCreated.Metadata["internalTransactionId"],
                             paymentIntentCreated.Id,paymentIntentCreated.Status,paymentIntentCreated.Amount,paymentIntentCreated.Currency,
                             paymentIntentCreated.Created,paymentIntentCreated.TransferData?.DestinationId,paymentIntentCreated.CustomerId));
-
-                        break;
+                    break;
                     case EventTypes.PaymentIntentSucceeded:
-                        break;
+                        var paymentIntentSucceeded = stripeEvent.Data.Object as Stripe.PaymentIntent;
+                        if(paymentIntentSucceeded is null) break;
+
+                        var stripeTransaction = await _stripeTransactionRepository.GetByPaymentIntentId(paymentIntentSucceeded.Id);
+                        if (stripeTransaction is null) break;
+                        
+                        stripeTransaction.Status = paymentIntentSucceeded.Status;
+                        
+                        await _stripeTransactionRepository.UpdateAsync(stripeTransaction);
+                    break;
                     case EventTypes.PaymentIntentPaymentFailed:
                         break;
                     case EventTypes.TransferCreated:

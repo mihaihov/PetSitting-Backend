@@ -72,6 +72,14 @@ namespace PetSitting.Api.Controllers
                         await _stripeTransactionRepository.UpdateAsync(stripeTransaction);
                     break;
                     case EventTypes.PaymentIntentPaymentFailed:
+                        var paymentIntentFailed = stripeEvent.Data.Object as Stripe.PaymentIntent;
+                        if(paymentIntentFailed is null) break;
+
+                        var failedTransaction = await _stripeTransactionRepository.GetByPaymentIntentId(paymentIntentFailed.Id);
+                        if (failedTransaction is null) break;
+
+                        failedTransaction.Status = paymentIntentFailed.Status;
+                        await _stripeTransactionRepository.UpdateAsync(failedTransaction);
                         break;
                     case EventTypes.TransferCreated:
                         break;

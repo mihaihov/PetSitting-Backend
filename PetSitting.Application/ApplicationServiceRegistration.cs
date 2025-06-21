@@ -13,6 +13,7 @@ public static class ApplicationServiceRegistration
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddScoped<IMessagingServices,MessagingServices>();
         services.AddHostedService<StripeWorker>();
+        services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
         return services;
     }
 }

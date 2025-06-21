@@ -1,7 +1,7 @@
 using System.Threading.Channels;
 using PetSitting.Application.Interfaces.Services;
 
-namespace PetSitting.Infrastructure.Services
+namespace PetSitting.Application.Services
 {
     public class BackgroundTaskQueue : IBackgroundTaskQueue
     {

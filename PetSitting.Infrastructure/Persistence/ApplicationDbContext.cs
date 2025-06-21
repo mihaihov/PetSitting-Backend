@@ -24,6 +24,8 @@ namespace PetSitting.Infrastructure
         public DbSet<Message> Messages{get;set;}
         public DbSet<ChatSession> ChatSessions {get;set;}
         public DbSet<Review> Reviews {get;set;}
+        public DbSet<StripeAccount> StripeAccounts {get;set;}
+        public DbSet<StripeTransaction> StripeTransactions {get;set;}
         
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -104,10 +106,6 @@ namespace PetSitting.Infrastructure
                 .WithMany(sa => sa.StripeTransactions)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<StripeTransaction>()
-                .HasOne(st => st.PaidBy)
-                .WithMany(au => au.StripeTransactions)
-                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<StripeTransaction>()
                 .HasOne(st => st.JobPost)

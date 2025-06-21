@@ -17,9 +17,7 @@ namespace PetSitting.Domain.Entities.Stripe
         public string? StripeAccountid {get;set;}
         public StripeAccount? StripeAccount {get;set;}
         public string? PaidById {get;set;}
-        public StripeAccount? PaidBy {get;set;}
         public string? PaidToId {get;set;}
-        public StripeAccount? PaidTo {get;set;}
         public string? JobPostId {get;set;}
         public JobPost? JobPost {get;set;}
     }

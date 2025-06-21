@@ -44,7 +44,7 @@ builder.Services.AddCors(options  => {
 builder.Services.RegisterDbContext(builder.Configuration);
 builder.Services.RegisterRepositories();
 //register frirebase service
-builder.Services.RegisterFirebaseServices();
+builder.Services.AddInfrastructureServices();
 //stripe services
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:TestEnvironment:SecretKey"];
 //register application srervices

@@ -6,11 +6,12 @@ namespace PetSitting.Infrastructure.Services
 {
     public static class InfrastructureServiceRegistration
     {
-        public static IServiceCollection RegisterFirebaseServices(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection serviceCollection)
         {
             //one instance per application lifetime.
-            serviceCollection.AddSingleton<IFirebaseService>(new FirebaseService());
-            serviceCollection.AddSingleton<IStripeServices>(new StripeServices());
+            serviceCollection.AddScoped<IFirebaseService,FirebaseService>();
+            serviceCollection.AddScoped<IStripeServices,StripeServices>();
+            serviceCollection.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
             return serviceCollection;
         }
     }

@@ -11,7 +11,8 @@ public static class ApplicationServiceRegistration
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddMediatR(Assembly.GetExecutingAssembly());
-        services.AddTransient<IMessagingServices,MessagingServices>();
+        services.AddScoped<IMessagingServices,MessagingServices>();
+        services.AddHostedService<StripeWorker>();
         return services;
     }
 }

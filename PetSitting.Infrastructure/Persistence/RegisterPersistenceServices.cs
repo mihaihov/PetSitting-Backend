@@ -19,11 +19,11 @@ namespace PetSitting.Infrastructure
             //one instance per http request.
             serviceCollection.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             serviceCollection.AddScoped<IUserRepository, UserRepository>();
-            serviceCollection.AddTransient<IJobApplicationRepository, JobApplicationRepository>();
-            serviceCollection.AddTransient<IMessageRepository, MessageRepository>();
-            serviceCollection.AddTransient<IChatSessionRepository, ChatSessionRepository>();
-            serviceCollection.AddTransient<IReviewRepository,ReviewRepository>();
-            serviceCollection.AddTransient<IStripeTransactionRepository,StripeTransactionRepository>();
+            serviceCollection.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
+            serviceCollection.AddScoped<IMessageRepository, MessageRepository>();
+            serviceCollection.AddScoped<IChatSessionRepository, ChatSessionRepository>();
+            serviceCollection.AddScoped<IReviewRepository,ReviewRepository>();
+            serviceCollection.AddScoped<IStripeTransactionRepository,StripeTransactionRepository>();
             return serviceCollection;
         }
     }

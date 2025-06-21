@@ -90,7 +90,32 @@ namespace PetSitting.Api.Middlewares
                 httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
             }
-            catch(Exception ex)
+            catch (CannotCreatePaymentIntentException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                await httpContext.Response.WriteAsJsonAsync(new { message = ex.Message });
+            }
+            catch(CannotUpdateException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch(JobApplicationAlreadyAcceptedException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch(JobApplicationNotFoundException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch(InternalRoleNotFoundException ex)
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                await httpContext.Response.WriteAsJsonAsync(new {message = ex.Message});
+            }
+            catch (Exception ex)
             {
                 //log it.
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

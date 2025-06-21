@@ -34,7 +34,7 @@ namespace PetSitting.Infrastructure.Services
         }
 
         public async Task<PaymentIntent> CreatePaymentIntent(long amount, string currency, string destinationAccount,
-            string? destinationEmail = null, Dictionary<string,string>? metadata = null)
+            string? destinationEmail = null)
         {
             var options = new PaymentIntentCreateOptions 
             {
@@ -43,7 +43,6 @@ namespace PetSitting.Infrastructure.Services
                 TransferData = new PaymentIntentTransferDataOptions {
                     Destination = destinationAccount
                 },
-                Metadata = metadata,
                 Confirm = true
             };
 

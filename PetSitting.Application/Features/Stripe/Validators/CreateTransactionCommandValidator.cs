@@ -9,7 +9,7 @@ namespace PetSitting.Application.Features.Stripe.Validators
         {
             RuleFor(p => p.ammount).NotNull().Must(ammount => ammount>0.0m);
             RuleFor(p => p.currency).NotNull().NotEmpty();
-            RuleFor(p => p.transactionId).NotNull().NotEmpty();
+            RuleFor(p => p.paymentIntentId).NotNull().NotEmpty();
         }
     }
 }

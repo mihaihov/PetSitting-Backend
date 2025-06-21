@@ -56,8 +56,8 @@ namespace PetSitting.Api.Controllers
                         var paymentIntentCreated = stripeEvent.Data.Object as Stripe.PaymentIntent;
                         if(paymentIntentCreated is null) break;
 
-                        await _mediator.Send(new CreateTransactionCommand(paymentIntentCreated.Metadata["internalTransactionId"],
-                            paymentIntentCreated.Id,paymentIntentCreated.Status,paymentIntentCreated.Amount,paymentIntentCreated.Currency,
+                        await _mediator.Send(new CreateTransactionCommand(paymentIntentCreated.Id,
+                            paymentIntentCreated.Status,paymentIntentCreated.Amount,paymentIntentCreated.Currency,
                             paymentIntentCreated.Created,paymentIntentCreated.TransferData?.DestinationId,paymentIntentCreated.CustomerId));
                     break;
                     case EventTypes.PaymentIntentSucceeded:
@@ -80,10 +80,6 @@ namespace PetSitting.Api.Controllers
 
                         failedTransaction.Status = paymentIntentFailed.Status;
                         await _stripeTransactionRepository.UpdateAsync(failedTransaction);
-                        break;
-                    case EventTypes.TransferCreated:
-                        break;
-                    case EventTypes.PayoutFailed:
                         break;
                     default:
                         throw new StripeWebhookNotHandledException();

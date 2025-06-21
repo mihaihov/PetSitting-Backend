@@ -52,12 +52,14 @@ namespace PetSitting.Application.Features.Stripe.Commands
                 destinationStripeAccount = await _userRepoistory.QueryByIdAsync(request.destinationAccount).Include(u => u.StripeAccount).FirstOrDefaultAsync();
 
             if(destinationStripeAccount is null)    throw new GenericValidationException("Destination account is invalid.");
+            if(destinationStripeAccount.StripeAccountId is null)    throw new GenericValidationException("Destination account is invalid.");
             destinationStripeAccountId = destinationStripeAccount.Id;
 
 
             var paymentIntent = await _stripeServices.CreatePaymentIntent(request.amount,request.currency,destinationStripeAccountId,
-                request.destinationEmail, new Dictionary<string, string>() {{"internalTransactionId", transaction.Id}});
+                request.destinationEmail);
             if(paymentIntent is null)   throw new CannotCreatePaymentIntentException();
+            transaction.PaymentIntentId = paymentIntent.Id;
             await _stripeTransactionRepository.AddAsync(transaction);
 
             response.ClientSecret = paymentIntent.ClientSecret;

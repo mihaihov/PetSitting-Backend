@@ -8,7 +8,7 @@ using PetSitting.Domain.Entities.Stripe;
 
 namespace PetSitting.Application.Features.Stripe.Commands
 {
-    public record CreateTransactionCommand(string transactionId, string? paymentIntentId, string? status, decimal? ammount,
+    public record CreateTransactionCommand(string paymentIntentId, string? status, decimal? ammount,
         string? currency, DateTime? createdAt, string? paidTo, string? paidBy) : IRequest<BaseResponse>;
 
     public class CreateTransactionCommandHandler : BaseHandler<CreateTransactionCommand, BaseResponse, CreateTransactionCommandValidator>
@@ -20,7 +20,7 @@ namespace PetSitting.Application.Features.Stripe.Commands
         }
         protected override async Task<BaseResponse> HandleCommand(CreateTransactionCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
-            var transaction = await _stripeTransactionRepository.GetByIdAsync(request.transactionId);
+            var transaction = await _stripeTransactionRepository.GetByPaymentIntentId(request.paymentIntentId);
             if(transaction == null)
                 throw new GenericValidationException("Stripe transaction not found in the internal Database.");
 
@@ -28,7 +28,7 @@ namespace PetSitting.Application.Features.Stripe.Commands
             transaction.Status = request.status;
             transaction.Amount = request.ammount / 100m; //Convert from cents to dollars
             transaction.Currency = request.currency;
-            transaction.CreatedAt = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(request.createdAt)).UtcDateTime;
+            transaction.CreatedAt = request.createdAt;
             transaction.PaidToId = request.paidTo;
             transaction.PaidById = request.paidBy;
 

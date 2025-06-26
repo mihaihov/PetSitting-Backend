@@ -15,9 +15,9 @@ namespace PetSitting.Application.Features.NewsFeed.Queries
     }
     public class QueryNewsFeedByUserHandler : BaseHandler<QueryNewsFeedByUser, QueryNewsFeedByUserResponse>
     {
-        private readonly IBaseRepository<Feed> _newsFeedRepository;
+        private readonly INewsFeedRepository _newsFeedRepository;
         private readonly IBaseRepository<Post> _postRepository;
-        public QueryNewsFeedByUserHandler(IBaseRepository<Feed> newsFeedRepository, IBaseRepository<Post> postRepository)
+        public QueryNewsFeedByUserHandler(INewsFeedRepository newsFeedRepository, IBaseRepository<Post> postRepository)
         {
             _newsFeedRepository = newsFeedRepository;
             _postRepository = postRepository;
@@ -26,6 +26,20 @@ namespace PetSitting.Application.Features.NewsFeed.Queries
         {
             if (string.IsNullOrEmpty(request.userId))
                 throw new GenericValidationException("Invalid data.");
+
+            var feed = await _newsFeedRepository.GetFeedByUserAsync(request.userId);
+            response.Posts = new List<Post>();
+
+            var posts = feed?.Select(feed => feed.PostId);
+            if (posts != null)
+            {
+                foreach (var postId in posts)
+                {
+                    var post = await _postRepository.GetByIdAsync(postId);
+                    if(post != null)
+                        response.Posts.Add(post);
+                }
+            }
 
             return response;
         }

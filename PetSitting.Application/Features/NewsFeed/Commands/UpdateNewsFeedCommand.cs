@@ -21,8 +21,8 @@ namespace PetSitting.Application.Features.NewsFeed.Commands
 
     public class UpdateNewsFeedCommandHandler : BaseHandler<UpdateNewsFeedCommand,BaseResponse,UpdateNewsFeedCommandValidator>
     {
-        IBaseRepository<Feed> _newsFeedRepository;
-        public UpdateNewsFeedCommandHandler(IBaseRepository<Feed> newsFeedRepository)
+        private readonly INewsFeedRepository _newsFeedRepository;
+        public UpdateNewsFeedCommandHandler(INewsFeedRepository newsFeedRepository)
         {
             _newsFeedRepository = newsFeedRepository;
         }

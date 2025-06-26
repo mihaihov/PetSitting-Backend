@@ -24,6 +24,7 @@ namespace PetSitting.Infrastructure
             serviceCollection.AddScoped<IChatSessionRepository, ChatSessionRepository>();
             serviceCollection.AddScoped<IReviewRepository,ReviewRepository>();
             serviceCollection.AddScoped<IStripeTransactionRepository,StripeTransactionRepository>();
+            serviceCollection.AddScoped<INewsFeedRepository,NewsFeedRepository>();
             return serviceCollection;
         }
     }

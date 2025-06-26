@@ -2,7 +2,7 @@ using PetSitting.Domain.Entities.NewsFeed;
 
 namespace PetSitting.Application.Interfaces.Repositories
 {
-    public interface INewsFeedRepository
+    public interface INewsFeedRepository : IBaseRepository<Feed>
     {
         public IQueryable<Feed>? QueryFeedByUser(string userId);
         public IQueryable<Feed>? QueryFeedByPost(string postId);

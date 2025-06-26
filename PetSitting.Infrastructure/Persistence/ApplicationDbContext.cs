@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PetSitting.Domain.Entities.Messaging;
+using PetSitting.Domain.Entities.NewsFeed;
 using PetSitting.Domain.Entities.PostManagement;
 using PetSitting.Domain.Entities.ReviewSystem;
 using PetSitting.Domain.Entities.Security;
@@ -26,6 +27,7 @@ namespace PetSitting.Infrastructure
         public DbSet<Review> Reviews {get;set;}
         public DbSet<StripeAccount> StripeAccounts {get;set;}
         public DbSet<StripeTransaction> StripeTransactions {get;set;}
+        public DbSet<Feed> Feeds {get;set;}
         
 
         protected override void OnModelCreating(ModelBuilder builder)

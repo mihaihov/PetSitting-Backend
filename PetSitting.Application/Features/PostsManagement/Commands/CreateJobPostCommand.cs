@@ -7,8 +7,7 @@ using PetSitting.Domain.Entities.PostManagement;
 
 namespace PetSitting.Application.Features.PostManagement.Commands
 {
-    public record CreateJobPostCommand(string? description, string authorId, ICollection<Media>? medias,
-        string? title, string location, DateTime startDate, DateTime endDate, decimal? payment) : IRequest<BaseResponse>;
+    public record CreateJobPostCommand(JobPost JobPost) : IRequest<BaseResponse>;
 
     public class CreateJobPostCommandHandler : BaseHandler<CreateJobPostCommand,BaseResponse,CreateJobPostCommandValidator>
     {
@@ -20,19 +19,7 @@ namespace PetSitting.Application.Features.PostManagement.Commands
 
         protected override async Task<BaseResponse> HandleCommand(CreateJobPostCommand request, BaseResponse response, CancellationToken cancellationToken)
         {
-            JobPost jobPost = new JobPost
-            {
-                Description = request.description,
-                AuthorId = request.authorId,
-                MediaFiles = request.medias,
-                Title = request.title,
-                Location = request.location,
-                StartDate = request.startDate,
-                EndDate = request.endDate,
-                Payment = request.payment
-            };
-
-            await _jobPost.AddAsync(jobPost);
+            await _jobPost.AddAsync(request.JobPost);
 
             return response;
         }

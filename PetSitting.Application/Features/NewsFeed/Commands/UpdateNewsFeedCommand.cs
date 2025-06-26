@@ -15,8 +15,7 @@ namespace PetSitting.Application.Features.NewsFeed.Commands
 {
     public record UpdateNewsFeedCommand(
         string userId,
-        string postId,
-        string location
+        string postId    
     ) : IRequest<BaseResponse>;
 
     public class UpdateNewsFeedCommandHandler : BaseHandler<UpdateNewsFeedCommand,BaseResponse,UpdateNewsFeedCommandValidator>

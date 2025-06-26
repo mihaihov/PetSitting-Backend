@@ -9,8 +9,8 @@ namespace PetSitting.Domain.Entities.UserManagement
         public string Id {get;set;}
 #pragma warning restore CS8618
 
-        [ForeignKey(nameof(Id))]
-        public virtual ApplicationUser User {get;set;} = new ApplicationUser();
+        public string ApplicationUserId { get; set; } = string.Empty;
+        public ApplicationUser? User { get; set; }
 
         public bool ReceiveEmailNotifications {get;set;} = false;
         public bool ReceiveSMSNotifications {get;set;} = false;

@@ -10,7 +10,6 @@ namespace PetSitting.Application.Features.NewsFeed.Validators
         {
             RuleFor(x => x.userId).NotNull().NotEmpty();
             RuleFor(x => x.postId).NotNull().NotEmpty();
-            RuleFor(x => x.location).NotNull().NotEmpty();
         }
     }
 }

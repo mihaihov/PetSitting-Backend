@@ -67,5 +67,10 @@ namespace PetSitting.Infrastructure.Repositories
         {
             return await _dbContext.Set<T>().FirstOrDefaultAsync(predicate);
         }
+
+        public IQueryable<T> BaseQuery()
+        {
+            return _dbContext.Set<T>();
+        }
     }
 }

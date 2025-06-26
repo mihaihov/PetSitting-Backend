@@ -32,14 +32,17 @@ namespace PetSitting.UnitTests.Application.PostManagement
         public async Task HandleCommand_ShouldCreatePost_WhenValidationSucceeds()
         {
             //arrange
-            var command = new CreateJobPostCommand(description: "Test description",
-                                                                authorId: "testauthor",
-                                                                medias: null,
-                                                                title: "test title",
-                                                                location: "test location",
-                                                                startDate: DateTime.Now,
-                                                                endDate: DateTime.Now,
-                                                                payment: 99.99m);
+            var command = new CreateJobPostCommand(new JobPost
+                {
+                    Description = "Test description",
+                    AuthorId = "testauthor",
+                    MediaFiles = null,
+                    Title = "test title",
+                    Location = "test location",
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now,
+                    Payment = 99.99m
+                });
             //act
             var commandHandler = new CreateJobPostCommandHandler(_mockJobPostRepository.Object);
             await commandHandler.Handle(command, CancellationToken.None);
@@ -52,14 +55,17 @@ namespace PetSitting.UnitTests.Application.PostManagement
         public async Task HandleCommand_ShouldNotCreatePost_WhenValidationFails()
         {
             //arrange
-            var command = new CreateJobPostCommand(description: "Test description",
-                                                    authorId: "",
-                                                    medias: null,
-                                                    title: "test title",
-                                                    location: "test location",
-                                                    startDate: DateTime.Now,
-                                                    endDate: DateTime.Now,
-                                                    payment: 99.99m);
+            var command = new CreateJobPostCommand(new JobPost
+                {
+                    Description = "Test description",
+                    AuthorId = "testauthor",
+                    MediaFiles = null,
+                    Title = "test title",
+                    Location = "test location",
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now,
+                    Payment = 99.99m
+                });
 
             //act
             var commandHandler = new CreateJobPostCommandHandler(_mockJobPostRepository.Object);

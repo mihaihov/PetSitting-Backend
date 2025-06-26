@@ -7,7 +7,7 @@ namespace PetSitting.Domain.Entities.PostManagement
         public string? Title { get; set; }
         public required string Location { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime EndDate { get; set; }
         public decimal? Payment { get; set; }
         public bool IsOpen { get; set; } = true;
 

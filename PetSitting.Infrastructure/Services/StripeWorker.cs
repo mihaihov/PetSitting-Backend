@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using PetSitting.Application.Interfaces.Services;
 
-namespace PetSitting.Application.Services
+namespace PetSitting.Infrastructure.Services
 {
     public class StripeWorker : BackgroundService
     {

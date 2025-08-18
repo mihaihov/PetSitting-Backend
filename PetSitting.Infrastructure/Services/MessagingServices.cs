@@ -6,9 +6,8 @@ using PetSitting.Application.Interfaces.Repositories;
 using PetSitting.Application.Interfaces.Services;
 using PetSitting.Domain.Entities.Messaging;
 using PetSitting.Domain.Entities.PostManagement;
-using PetSitting.Domain.Entities.UserManagement;
 
-namespace PetSitting.Application.Services
+namespace PetSitting.Infrastructure.Services
 {
     public class MessagingServices : IMessagingServices
     {

@@ -12,6 +12,8 @@ namespace PetSitting.Infrastructure.Services
             serviceCollection.AddScoped<IFirebaseService,FirebaseService>();
             serviceCollection.AddScoped<IStripeServices,StripeServices>();
             serviceCollection.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+            serviceCollection.AddScoped<IMessagingServices, MessagingServices>();
+            serviceCollection.AddHostedService<StripeWorker>();
             return serviceCollection;
         }
     }

@@ -58,7 +58,7 @@ namespace PetSitting.UnitTests.Application.PostManagement
             var command = new CreateJobPostCommand(new JobPost
                 {
                     Description = "Test description",
-                    AuthorId = "testauthor",
+                    AuthorId = "",
                     MediaFiles = null,
                     Title = "test title",
                     Location = "test location",

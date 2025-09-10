@@ -27,7 +27,8 @@ namespace PetSitting.Infrastructure.Services
 
             await _mediator.Send(new CreateJobPostCommand(entity));     //ads post to Post table in DB
 
-            var nearbyUsers = await _userRepository.BaseQuery()
+            var users = _userRepository.BaseQuery();
+            var nearbyUsers = await users
                 .Include(u => u.UserProfile)
                 .Where(u => u.UserProfile!.Location == entity.Location)
                 .Select(u => u.Id)
@@ -41,7 +42,7 @@ namespace PetSitting.Infrastructure.Services
 
         public async Task<IReadOnlyList<JobPost>?> Retrieve(string retrieveBy)
         {
-            var posts = (await _mediator.Send(new QueryNewsFeedByUser(retrieveBy))).Posts;
+            List<JobPost>? posts = (await _mediator.Send(new QueryNewsFeedByUser(retrieveBy)))?.Posts;
             posts?.Sort((a, b) => Convert.ToInt32(a.Payment > b.Payment));
             posts?.Sort((a, b) => Convert.ToInt32(a.Applications.Count > b.Applications.Count ));
             posts?.Sort((a, b) => Convert.ToInt32(a.CreatedAt > b.CreatedAt));

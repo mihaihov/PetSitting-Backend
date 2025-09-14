@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PetSitting.Domain.Entities.UserManagement
 {
     public class UserProfile {
-#pragma warning disable CS8618
-        [Key]
-        public string Id {get;set;}
-#pragma warning restore CS8618
 
+        [Key]
         public string ApplicationUserId { get; set; } = string.Empty;
+        [ForeignKey(nameof(ApplicationUserId))]
         public ApplicationUser? User { get; set; }
         
         public string? Bio {get;set;}

@@ -34,10 +34,10 @@ namespace PetSitting.Infrastructure
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<UserProfile>()
-                .HasOne(up => up.User)
+            builder.Entity<ApplicationUser>()
+                .HasOne(au => au.UserProfile)
                 .WithOne()
-                .HasForeignKey<UserProfile>(up => up.Id)
+                .HasForeignKey<UserProfile>(up => up.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<UserSettings>()

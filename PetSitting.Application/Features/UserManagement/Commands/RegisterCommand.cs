@@ -67,7 +67,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                     throw new InternalRoleNotFoundException(Roles.PetOwner.ToString());
 
                 await _userRepository.AddRole(new IdentityUserRole<string> { RoleId = role.Id.ToString(), UserId = firebaseUser.User.LocalId });
-                await _userRepository.AddUserProfile(new UserProfile { User = newUser });
+                await _userRepository.AddUserProfile(new UserProfile { ApplicationUserId = newUser.Id });
                 await _userRepository.AddUserSettings(new UserSettings { User = newUser });
 
                 await _userRepository.SaveChangesAsync();

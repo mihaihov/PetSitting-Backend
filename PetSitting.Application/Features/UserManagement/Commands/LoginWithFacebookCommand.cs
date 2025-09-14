@@ -51,7 +51,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
                 UserProfile newUserProfile = new UserProfile
                 {
                     //get access to other data from user's fb profile by using Facebook Graph API.
-                    Id = firebaseTokenAuthenticity.Uid,
+                    ApplicationUserId = firebaseTokenAuthenticity.Uid,
                     ProfilePictureUrl = firebaseUser.PhotoUrl
                 };
 

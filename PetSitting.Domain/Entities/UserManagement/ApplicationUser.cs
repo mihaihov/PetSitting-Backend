@@ -25,5 +25,6 @@ namespace PetSitting.Domain.Entities.UserManagement
         //one user can pay for multiple petsitting jobs. The FK from StripeTransaction would be PaidBy.
         public virtual ICollection<StripeTransaction>? StripeTransactions { get; set; }
         public UserProfile? UserProfile { get; set; }
+        public UserSettings? UserSettings { get; set; }
     }
 }

@@ -40,10 +40,10 @@ namespace PetSitting.Infrastructure
                 .HasForeignKey<UserProfile>(up => up.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<UserSettings>()
-                .HasOne(us => us.User)
+            builder.Entity<ApplicationUser>()
+                .HasOne(au => au.UserSettings)
                 .WithOne()
-                .HasForeignKey<UserSettings>(us => us.Id)
+                .HasForeignKey<UserSettings>(us => us.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Post>()

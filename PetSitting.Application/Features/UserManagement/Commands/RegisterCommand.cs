@@ -68,7 +68,7 @@ namespace PetSitting.Application.Features.UserManagement.Commands
 
                 await _userRepository.AddRole(new IdentityUserRole<string> { RoleId = role.Id.ToString(), UserId = firebaseUser.User.LocalId });
                 await _userRepository.AddUserProfile(new UserProfile { ApplicationUserId = newUser.Id });
-                await _userRepository.AddUserSettings(new UserSettings { User = newUser });
+                await _userRepository.AddUserSettings(new UserSettings { ApplicationUserId = newUser.Id });
 
                 await _userRepository.SaveChangesAsync();
                 await _roleRepository.SaveChangesAsync();
